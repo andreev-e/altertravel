@@ -17,7 +17,10 @@ class CreatePoisTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('url');
+            $table->string('owner')->default(0);
+            $table->integer('status')->default(0);
             $table->timestamps();
+
         });
     }
 

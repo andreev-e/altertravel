@@ -25,6 +25,8 @@ class poiFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'url' => Str::random(6),
+            'owner' => rand(1,12),
+            'status' => rand(0,1),
         ];
     }
 

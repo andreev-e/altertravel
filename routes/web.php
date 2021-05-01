@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,23 +11,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     return view('home');
-});
-
-/*
-Route::get('/catalog', function () {
-    return view('catalog');
-})->name('catalog');
-*/
+})->name('/');;
 
 Route::get('/catalog', 'App\Http\Controllers\PoiController@index')->name('catalog');
 
-Route::get('/place/{url}', function ($url) {
-    return view('poi');
-});
+Route::get('/place/{url}', 'App\Http\Controllers\PoiController@single')->name('single-poi');
+Route::get('/edit/{url}', 'App\Http\Controllers\PoiController@single_edit')->name('single-poi-edit');
 
-Auth::routes();
-
-Route::get('/secure', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/secure', 'App\Http\Controllers\PoiController@secure_index')->name('secure');
