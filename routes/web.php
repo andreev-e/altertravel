@@ -23,3 +23,5 @@ Route::get('/place/{url}', 'App\Http\Controllers\PoiController@single')->name('s
 Route::get('/edit/{url}', 'App\Http\Controllers\PoiController@single_edit')->name('single-poi-edit');
 
 Route::get('/secure', 'App\Http\Controllers\PoiController@secure_index')->name('secure');
+
+Route::post('/secure/add', 'App\Http\Controllers\AddController@index')->name('add');
