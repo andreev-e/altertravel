@@ -17,9 +17,17 @@ Route::get('/', function () {
     return view('home');
 });
 
+/*
 Route::get('/catalog', function () {
     return view('catalog');
 })->name('catalog');
+*/
+
+Route::get('/catalog', 'App\Http\Controllers\PoiController@index')->name('catalog');
+
+Route::get('/place/{url}', function ($url) {
+    return view('poi');
+});
 
 Auth::routes();
 
