@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/catalog', function () {
+    return view('catalog');
+})->name('catalog');
+
 Auth::routes();
 
 Route::get('/secure', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
