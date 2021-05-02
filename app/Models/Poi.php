@@ -8,5 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Poi extends Model
 {
     use HasFactory;
-    
+
+    protected $fillable = [
+        'name',
+        'url',
+        'owner',
+        'status'
+    ];
+
 }
