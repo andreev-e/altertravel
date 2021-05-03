@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Poi;
+use App\Models\Pois;
 use Auth;
 
-class PoiController extends Controller
+class PoisController extends Controller
 {
     public function index()
     {
-        $pois=Poi::where('status','=',1)->get();
+        $pois=Pois::where('status','=',1)->get();
         return view('catalog', compact('pois'));
     }
     public function secure_index()
@@ -21,13 +21,13 @@ class PoiController extends Controller
     }
     public function single($url)
     {
-        $poi=Poi::firstWhere('url', $url);
+        $poi=Pois::firstWhere('url', $url);
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));
     }
     public function single_edit($url)
     {
-        $poi=Poi::firstWhere('url', $url);
+        $poi=Pois::firstWhere('url', $url);
         if (auth()->user()!==null and auth()->user()->id==$poi->owner) return view('poi_secure', compact('poi'));
         else return redirect()->route('single-poi', $poi->url);
 

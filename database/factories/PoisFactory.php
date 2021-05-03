@@ -6,14 +6,14 @@ use App\Models\poi;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class poiFactory extends Factory
+class poisFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = poi::class;
+    protected $model = Pois::class;
 
     /**
      * Define the model's default state.

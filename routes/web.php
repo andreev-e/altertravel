@@ -17,11 +17,11 @@ Route::get('/', function () {
     return view('home');
 })->name('/');;
 
-Route::get('/catalog', 'App\Http\Controllers\PoiController@index')->name('catalog');
+Route::get('/catalog', 'App\Http\Controllers\PoisController@index')->name('catalog');
 
-Route::get('/place/{url}', 'App\Http\Controllers\PoiController@single')->name('single-poi');
-Route::get('/edit/{url}', 'App\Http\Controllers\PoiController@single_edit')->name('single-poi-edit');
+Route::get('/place/{url}', 'App\Http\Controllers\PoisController@single')->name('single-poi');
+Route::get('/edit/{url}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit');
 
-Route::get('/secure', 'App\Http\Controllers\PoiController@secure_index')->name('secure');
+Route::get('/secure', 'App\Http\Controllers\PoisController@secure_index')->name('secure');
 
 Route::post('/secure/add', 'App\Http\Controllers\AddController@store')->name('add');

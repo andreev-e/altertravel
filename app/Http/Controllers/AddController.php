@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Models\Poi;
+use App\Models\Pois;
 use Auth;
 
 class AddController extends Controller
@@ -36,7 +36,7 @@ class AddController extends Controller
                 $image = '';
         endif;
 
-        if ($validated and Auth::check()) Poi::create([
+        if ($validated and Auth::check()) Pois::create([
           'name' => $request->get('title'),
           'url'=> Str::slug($request->get('title'), '_'),
           'owner'=>auth()->user()->id,
