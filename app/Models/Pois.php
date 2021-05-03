@@ -12,7 +12,7 @@ class Pois extends Model
 
     public function locations()
     {
-       return $this->belongsToMany(Locations::class);
+       return $this->belongsToMany(Locations::class, 'pois_locations');
     }
     public function tags()
     {

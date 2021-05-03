@@ -22,7 +22,7 @@ class TagsFactory extends Factory
      */
     public function definition()
     {
-        $name=$this->faker->name();
+        $name="tag".rand(100,999);
         return [
           'name' => $name,
           'url' => Str::slug($name),

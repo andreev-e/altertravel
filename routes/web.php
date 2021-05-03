@@ -18,9 +18,15 @@ Route::get('/', function () {
 })->name('/');;
 
 Route::get('/catalog', 'App\Http\Controllers\PoisController@index')->name('catalog');
+Route::get('/location/{url}', 'App\Http\Controllers\PoisController@location')->name('location');
+Route::get('/tag/{url}', 'App\Http\Controllers\PoisController@tag')->name('tag');
 
 Route::get('/place/{url}', 'App\Http\Controllers\PoisController@single')->name('single-poi');
 Route::get('/edit/{url}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit');
+
+Route::post('/hide/{url}', 'App\Http\Controllers\PoisController@hide')->name('poi-hide');
+Route::post('/show/{url}', 'App\Http\Controllers\PoisController@show')->name('poi-show');
+Route::post('/delete/{url}', 'App\Http\Controllers\PoisController@delete')->name('poi-delete');
 
 Route::get('/secure', 'App\Http\Controllers\PoisController@secure_index')->name('secure');
 

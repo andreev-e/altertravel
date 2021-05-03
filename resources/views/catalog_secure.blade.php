@@ -12,18 +12,41 @@
       @foreach ($pois as $poi)
         <tr>
         <td>
-          <a href="{{ route('single-poi-edit', $poi->url) }}"><b>{{ $poi->name }}</b> <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          <a href="{{ route('single-poi-edit', $poi->url) }}"><b>{{ $poi->name }}</b></a>
+          <a class="btn btn-outline-info" target="_blank" href="{{ route('single-poi', $poi->url) }}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
         </td>
-        <td><i class="fa fa-map-marker" aria-hidden="true"></i> Country / Region / Area </td>
+        <td><i class="fa fa-map-marker" aria-hidden="true"></i>
+          @foreach ($poi->locations as $location)
+            <a href="{{ route('location', $location->url) }}">{{ $location->name }}</a>{{ ($loop->last ? '' : ' / ') }}
+          @endforeach
+        </td>
+        <td>
+          @foreach ($poi->tags as $tag)
+            <a href="{{ route('tag', $tag->url) }}">{{ $tag->name }}</a>{{ ($loop->last ? '' : ',') }}
+          @endforeach
+        </td>
       @if ($poi->status==1)
       <td><span class="text-success">опубликовано</span>
-        <td><button class="btn btn-outline-danger">Скрыть</button></td>
+        <td>
+          <form id="hide{{$poi->id}}" action="{{ route('poi-hide', $poi->id) }}" method="post">
+          @csrf
+          <button type="submit" class="btn btn-outline-danger">Скрыть</button></td>
+          </form>
       @endif
       @if ($poi->status==0)
       <td><span class="text-danger">скрыто</span>
-        <td><button class="btn btn-outline-success">Опубликовать</button></td>
+        <td>
+          <form id="show{{$poi->id}}" action="{{ route('poi-show', $poi->id) }}" method="post">
+            @csrf
+          <button type="submit" class="btn btn-outline-success">Опубликовать</button></td>
+          </form>
       @endif
-      <td><a class="btn btn-outline-info" target="_blank" href="{{ route('single-poi', $poi->url) }}">Посмотреть</a>
+      <td>
+      <td>
+        <form id="delete{{$poi->id}}" action="{{ route('poi-delete', $poi->id) }}" method="post">
+        @csrf
+        <button type="submit" class="btn btn-outline-danger">Удалить</button></td>
+        </form>
       </div>
       @endforeach
       </table>

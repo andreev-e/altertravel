@@ -13,12 +13,11 @@ class CreatePoisTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pois_to_tags', function (Blueprint $table) {
-          $table->id();
-          $table->unsignedBigInteger('poi_id');
-         $table->unsignedBigInteger('tag_id');
-         $table->foreign('poi_id')->references('id')->on('pois');
-         $table->foreign('tag_id')->references('id')->on('tags');
+        Schema::create('pois_tags', function (Blueprint $table) {
+          $table->unsignedBigInteger('pois_id');
+         $table->unsignedBigInteger('tags_id');
+         $table->foreign('pois_id')->references('id')->on('pois');
+         $table->foreign('tags_id')->references('id')->on('tags');
         });
     }
 
@@ -29,6 +28,6 @@ class CreatePoisTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pois_to_tags');
+        Schema::dropIfExists('pois_tags');
     }
 }

@@ -23,11 +23,11 @@ class LocationsFactory extends Factory
     public function definition()
     {
 
-      $name=$this->faker->name();
+      $name="location".rand(100,999);
         return [
           'name' => $name,
           'url' => Str::slug($name),
-          'parent' =>rand(0,50),
+          'parent' =>rand(0,20),
           'type' =>rand(0,3),
         ];
     }

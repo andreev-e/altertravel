@@ -13,12 +13,11 @@ class CreatePoisLocationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pois_to_locations', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('poi_id');
-           $table->unsignedBigInteger('location_id');
-           $table->foreign('poi_id')->references('id')->on('pois');
-           $table->foreign('location_id')->references('id')->on('locations');
+        Schema::create('pois_locations', function (Blueprint $table) {
+            $table->unsignedBigInteger('pois_id');
+           $table->unsignedBigInteger('locations_id');
+           $table->foreign('pois_id')->references('id')->on('pois');
+           $table->foreign('locations_id')->references('id')->on('locations');
         });
     }
 
@@ -29,6 +28,6 @@ class CreatePoisLocationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pois_to_locations');
+        Schema::dropIfExists('pois_locations');
     }
 }
