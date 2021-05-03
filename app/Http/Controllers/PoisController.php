@@ -16,7 +16,7 @@ class PoisController extends Controller
     public function secure_index()
     {
         $pois=array();
-        if (Auth::check()) $pois=Poi::where('owner','=',auth()->user()->id)->get();
+        if (Auth::check()) $pois=Pois::where('owner','=',auth()->user()->id)->get();
         return view('catalog_secure', compact('pois'));
     }
     public function single($url)

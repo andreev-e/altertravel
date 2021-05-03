@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\poi;
+use App\Models\Pois;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,9 +22,10 @@ class poisFactory extends Factory
      */
     public function definition()
     {
+        $name=$this->faker->name();
         return [
-            'name' => $this->faker->name(),
-            'url' => Str::random(6),
+          'name' => $name,
+          'url' => Str::slug($name),
             'owner' => rand(1,12),
             'status' => rand(0,1),
         ];
