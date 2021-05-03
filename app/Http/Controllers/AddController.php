@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Poi;
-
+use Auth;
 
 class AddController extends Controller
 {
@@ -22,15 +22,37 @@ class AddController extends Controller
             'description'  => 'required|min:20',
         ]);
 
-        if ($validated) Poi::create([
+        $images = $request->file('photos');
+        if ($request->hasFile('photos')) :
+        foreach ($images as $item):
+            $var = date_create();
+            $time = date_format($var, 'YmdHis');
+            $imageName = $time . '-' . $item->getClientOriginalName();
+            $item->move(base_path() . '/uploads/file/', $imageName);
+            $arr[] = $imageName;
+        endforeach;
+        $image = implode(",", $arr);
+        else:
+                $image = '';
+        endif;
+
+        if ($validated and Auth::check()) Poi::create([
           'name' => $request->get('title'),
           'url'=> Str::slug($request->get('title'), '_'),
           'owner'=>auth()->user()->id,
-          'status'=>1
+          'status'=>1,
+          'description'=>$request->get('description'),
+          'category'=>$request->get('category'),
+          'prim'=>$request->get('prim'),
+          'route'=>$request->get('route'),
+          'video'=>$request->get('video'),
+          'photos'=>$image,
         ]);
 
 
-        return redirect()->route('secure'); 
+
+
+        return redirect()->route('secure');
 
     }
     }

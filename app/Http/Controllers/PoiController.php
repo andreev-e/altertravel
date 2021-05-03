@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Poi;
-
+use Auth;
 
 class PoiController extends Controller
 {
@@ -15,8 +15,8 @@ class PoiController extends Controller
     }
     public function secure_index()
     {
-        //$pois=Poi::all();
-        $pois=Poi::where('owner','=',auth()->user()->id)->get();
+        $pois=array();
+        if (Auth::check()) $pois=Poi::where('owner','=',auth()->user()->id)->get();
         return view('catalog_secure', compact('pois'));
     }
     public function single($url)
@@ -29,7 +29,7 @@ class PoiController extends Controller
     {
         $poi=Poi::firstWhere('url', $url);
         if (auth()->user()!==null and auth()->user()->id==$poi->owner) return view('poi_secure', compact('poi'));
-        else return redirect()->route('single-poi', $poi->url); 
+        else return redirect()->route('single-poi', $poi->url);
 
     }
 }

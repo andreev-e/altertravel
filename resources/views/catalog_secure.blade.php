@@ -7,10 +7,27 @@
     <p>Вы не авторизованы
     @else
     <div class="row">
+      <table class="table table-stried">
       @if (count($pois)>0)
       @foreach ($pois as $poi)
-        <div class="col-sm-12"><a href="{{ route('single-poi-edit', $poi->url) }}">{{ $poi->name }}</a></div>
+        <tr>
+        <td>
+          <a href="{{ route('single-poi-edit', $poi->url) }}"><b>{{ $poi->name }}</b> <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+
+        </td>
+        <td><i class="fa fa-map-marker" aria-hidden="true"></i> Country / Region / Area </td>
+      @if ($poi->status==1)
+      <td><span class="text-success">опубликовано</span>
+        <td><button class="btn btn-outline-danger">Скрыть</button></td>
+      @endif
+      @if ($poi->status==0)
+      <td><span class="text-danger">скрыто</span>
+        <td><button class="btn btn-outline-success">Опубликовать</button></td>
+      @endif
+      <td><a class="btn btn-outline-info" href="{{ route('single-poi', $poi->url) }}">Редактировать</a>
+      </div>
       @endforeach
+      </table>
       @else
       <div class="col-12">
         <div class="alert alert-danger">
@@ -39,13 +56,12 @@
           <small class="form-text text-muted">Местоположение будет определено по координатам, пожалуйста не указывайте его в названии</small>
         </div>
         <p>Укажите точку на карте
-        <div style="height:300px;" id="map_guide"></div>
+
         <div class="form-row">
-          <div class="col">
+          <div class="col-8"><div style="height:300px;" id="map_guide"></div></div>
+          <div class="col-4">
             <label for="lat">Широта</label>
             <input type="text" id="currentmarkerlat" class="form-control @error('lat') is-invalid @enderror"  name="lat" value="{{ old('lat') }}">
-          </div>
-          <div class="col">
             <label for="lng">Долгота</label>
             <input type="text" id="currentmarkerlng" class="form-control @error('lng') is-invalid @enderror"  name="lng" value="{{ old('lng') }}">
           </div>
@@ -56,7 +72,7 @@
         </div>
         <div class="form-group">
           <label for="photos">Загрузите фотографии</label>
-          <input multiple="multiple"  class="form-control-file @error('photos') is-invalid @enderror" name="photos[]" type="file">
+          <input multiple="multiple" class="form-control-file @error('photos') is-invalid @enderror" name="photos[]" type="file">
           <small class="form-text text-muted">Хотя бы одно фото</small>
         </div>
         <div class="form-group">

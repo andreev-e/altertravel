@@ -13,7 +13,13 @@ class Poi extends Model
         'name',
         'url',
         'owner',
-        'status'
+        'status',
+        'description',
+        'category',
+        'route',
+        'prim',
+        'video',
+        'photos'
     ];
 
 }

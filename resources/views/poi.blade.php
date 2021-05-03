@@ -7,7 +7,7 @@
   <h1>Страница объекта {{$poi->name}}</h1>
     <div class="row justify-content-center">
         <div class="col-md-8">
-
+            {{dd($poi)}}
         </div>
     </div>
 </div>

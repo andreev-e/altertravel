@@ -17,8 +17,14 @@ class CreatePoisTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('url');
-            $table->string('owner')->default(0);
+            $table->string('description')->nullable();
+            $table->string('category')->nullable();
+            $table->string('prim')->nullable();
+            $table->string('route')->nullable();
+            $table->string('video')->nullable();
+            $table->integer('owner')->default(0);
             $table->integer('status')->default(0);
+            $table->string('photos')->nullable();
             $table->timestamps();
 
         });
