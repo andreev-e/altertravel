@@ -15,6 +15,8 @@ class CreatePoisTable extends Migration
     {
         Schema::create('pois', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');
             $table->string('url');
             $table->string('description')->nullable();
@@ -22,7 +24,6 @@ class CreatePoisTable extends Migration
             $table->string('prim')->nullable();
             $table->string('route')->nullable();
             $table->string('video')->nullable();
-            $table->integer('owner')->default(0);
             $table->integer('status')->default(0);
             $table->string('photos')->nullable();
             $table->timestamps();

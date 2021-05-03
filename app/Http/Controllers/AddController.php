@@ -36,18 +36,20 @@ class AddController extends Controller
                 $image = '';
         endif;
 
-        if ($validated and Auth::check()) Pois::create([
-          'name' => $request->get('title'),
-          'url'=> Str::slug($request->get('title'), '_'),
-          'owner'=>auth()->user()->id,
-          'status'=>1,
-          'description'=>$request->get('description'),
-          'category'=>$request->get('category'),
-          'prim'=>$request->get('prim'),
-          'route'=>$request->get('route'),
-          'video'=>$request->get('video'),
-          'photos'=>$image,
-        ]);
+        if ($validated and Auth::check()) {
+          $new_poi=Pois::create([
+            'name' => $request->get('title'),
+            'url'=> Str::slug($request->get('title'), '_'),
+            'user_id'=>auth()->user()->id,
+            'status'=>1,
+            'description'=>$request->get('description'),
+            'category'=>$request->get('category'),
+            'prim'=>$request->get('prim'),
+            'route'=>$request->get('route'),
+            'video'=>$request->get('video'),
+            'photos'=>$image,
+          ]);
+        }
 
 
 

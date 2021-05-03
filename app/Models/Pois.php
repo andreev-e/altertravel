@@ -4,20 +4,30 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquement\SoftDeletes;
 
 class Pois extends Model
 {
     use HasFactory;
 
+    public function locations()
+    {
+       return $this->belongsToMany(Locations::class);
+    }
     public function tags()
-     {
-         return $this->hasMany(Tags::class);
-     }
+    {
+       return $this->belongsToMany(Tags::class);
+    }
+    public function user()
+    {
+       return $this->belongsTo(User::class);
+    }
+
 
     protected $fillable = [
         'name',
         'url',
-        'owner',
+        'user_id',
         'status',
         'description',
         'category',

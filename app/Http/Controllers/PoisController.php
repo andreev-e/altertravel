@@ -16,7 +16,7 @@ class PoisController extends Controller
     public function secure_index()
     {
         $pois=array();
-        if (Auth::check()) $pois=Pois::where('owner','=',auth()->user()->id)->get();
+        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->get();
         return view('catalog_secure', compact('pois'));
     }
     public function single($url)
@@ -30,6 +30,9 @@ class PoisController extends Controller
         $poi=Pois::firstWhere('url', $url);
         if (auth()->user()!==null and auth()->user()->id==$poi->owner) return view('poi_secure', compact('poi'));
         else return redirect()->route('single-poi', $poi->url);
-
     }
+
+
+
+
 }

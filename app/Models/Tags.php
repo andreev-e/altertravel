@@ -10,7 +10,7 @@ class Tags extends Model
 
   public function pois()
   {
-    return $this->belongsToMany(Pois::class, 'tags_to_pois');
+    return $this->belongsToMany(Pois::class, 'pois_to_tags');
   }
 
 

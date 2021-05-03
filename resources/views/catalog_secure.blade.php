@@ -13,7 +13,6 @@
         <tr>
         <td>
           <a href="{{ route('single-poi-edit', $poi->url) }}"><b>{{ $poi->name }}</b> <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-
         </td>
         <td><i class="fa fa-map-marker" aria-hidden="true"></i> Country / Region / Area </td>
       @if ($poi->status==1)
@@ -24,7 +23,7 @@
       <td><span class="text-danger">скрыто</span>
         <td><button class="btn btn-outline-success">Опубликовать</button></td>
       @endif
-      <td><a class="btn btn-outline-info" href="{{ route('single-poi', $poi->url) }}">Редактировать</a>
+      <td><a class="btn btn-outline-info" target="_blank" href="{{ route('single-poi', $poi->url) }}">Посмотреть</a>
       </div>
       @endforeach
       </table>

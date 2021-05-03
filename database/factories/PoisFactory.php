@@ -26,8 +26,8 @@ class poisFactory extends Factory
         return [
           'name' => $name,
           'url' => Str::slug($name),
-            'owner' => rand(1,12),
-            'status' => rand(0,1),
+          'user_id' => 1,
+          'status' => rand(0,1),
         ];
     }
 
