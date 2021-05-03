@@ -13,7 +13,7 @@
         <tr>
         <td>
           <a href="{{ route('single-poi-edit', $poi->url) }}"><b>{{ $poi->name }}</b></a>
-          <a class="btn btn-outline-info" target="_blank" href="{{ route('single-poi', $poi->url) }}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+          <a  target="_blank" href="{{ route('single-poi', $poi->url) }}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
         </td>
         <td><i class="fa fa-map-marker" aria-hidden="true"></i>
           @foreach ($poi->locations as $location)
@@ -30,7 +30,7 @@
         <td>
           <form id="hide{{$poi->id}}" action="{{ route('poi-hide', $poi->id) }}" method="post">
           @csrf
-          <button type="submit" class="btn btn-outline-danger">Скрыть</button></td>
+          <button type="submit" class="btn btn-outline-secondary">Скрыть</button></td>
           </form>
       @endif
       @if ($poi->status==0)
@@ -38,7 +38,7 @@
         <td>
           <form id="show{{$poi->id}}" action="{{ route('poi-show', $poi->id) }}" method="post">
             @csrf
-          <button type="submit" class="btn btn-outline-success">Опубликовать</button></td>
+          <button type="submit" class="btn btn-success">Опубликовать</button></td>
           </form>
       @endif
       <td>

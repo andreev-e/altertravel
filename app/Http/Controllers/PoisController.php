@@ -51,9 +51,9 @@ class PoisController extends Controller
     public function hide($id)
     {
         if (auth()->user()!==null) {
-        $poi = Pois::firstWhere('id', $id);
+        $poi = Pois::find($id);
         $poi->status=0;
-        $poi->save();
+        if ($poi->user_id==auth()->user()->id) $poi->save();
         }
         return redirect()->route('secure');
     }
@@ -61,9 +61,9 @@ class PoisController extends Controller
     public function show($id)
     {
       if (auth()->user()!==null) {
-      $poi = Pois::firstWhere('id', $id);
+      $poi = Pois::find($id);
       $poi->status=1;
-      $poi->save();
+      if ($poi->user_id==auth()->user()->id) $poi->save();
       }
         return redirect()->route('secure');
     }
@@ -71,9 +71,9 @@ class PoisController extends Controller
     public function delete($id)
     {
       if (auth()->user()!==null) {
-      $poi = Pois::firstWhere('id', $id);
+      $poi = Pois::find($id);
       $poi->status=99;
-      $poi->save();
+      if ($poi->user_id==auth()->user()->id) $poi->save();
       }
         return redirect()->route('secure');
     }
