@@ -28,11 +28,7 @@ class PoisController extends Controller
     public function single($url)
     {
         $poi=Pois::firstWhere('url', $url);
-        $photos=explode(",",$poi->photos);
-        foreach ($photos as $key => $file) {
-          //$photos[$key]=Image::make(Storage::get($file))->resize(300, 200);
-        }
-        $poi->photos=$photos;
+        $poi->photos=explode(",",$poi->photos);
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));
     }
@@ -80,12 +76,8 @@ public function store(Request $request)
 
     $images = $request->file('photos');
     if ($request->hasFile('photos')) :
-    foreach ($images as $item):
-        $var = date_create();
-        $time = date_format($var, 'YmdHis');
-        $imageName = $time . '-' . $item->getClientOriginalName();
-        $item->move(base_path() . '/uploads/file/', $imageName);
-        $arr[] = $imageName;
+    foreach ($images as $file):
+      $arr[] =$file->store('pois');
     endforeach;
     $image = implode(",", $arr);
     else:

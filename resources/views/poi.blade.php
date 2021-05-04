@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container">
-  <h1>Страница объекта {{$poi->name}}</h1>
+  <h1>{{$poi->name}}</h1>
   <p>Автор <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a>
 <nav>
 <ul class="fastnav">
@@ -14,7 +14,7 @@
   <li>Отзывы и комментарии
 </ul>
 </nav>
-Фото @foreach ($poi->photos as $photo) {{ $photo }} @endforeach
+@foreach ($poi->photos as $photo) <img src="{{ Storage::disk('public')->url($photo) }}" alt="{{$poi->name}}"/> @endforeach
 
 Теги @foreach ($poi->tags as $tag) {{ $tag->name }}, @endforeach
     <div class="row justify-content-center">
