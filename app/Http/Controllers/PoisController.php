@@ -77,7 +77,7 @@ public function store(Request $request)
     $images = $request->file('photos');
     if ($request->hasFile('photos')) :
     foreach ($images as $file):
-    $arr[] =$file->store('pois');
+    $arr[] =$file->store('public');
     endforeach;
     $image = implode(",", $arr);
     else:
