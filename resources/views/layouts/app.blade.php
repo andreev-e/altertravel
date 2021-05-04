@@ -57,7 +57,7 @@
                         @else
                             <li class="nav-item">
                                 <a  class="nav-link" href="{{ Route('secure') }}"  >
-                                    Мои публикации {{ Auth::user()->name }}
+                                    Мои публикации 
                                 </a>
                                 </li>
                                 <li class="nav-item">
