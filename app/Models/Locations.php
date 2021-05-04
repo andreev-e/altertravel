@@ -12,5 +12,14 @@ class Locations extends Model
     {
        return $this->belongsToMany(Pois::class, 'pois_locations');
     }
-    
+
+    protected $fillable = [
+        'name',
+        'url',
+        'parent',
+        'type',
+        'lat',
+        'lng'
+
+    ];
 }

@@ -34,7 +34,9 @@ class Pois extends Model
         'route',
         'prim',
         'video',
-        'photos'
+        'photos',
+        'lat',
+        'lng'
     ];
 
 }

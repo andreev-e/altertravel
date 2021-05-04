@@ -22,10 +22,10 @@ class CreateLocationsTable extends Migration
             $table->string('name_pred')->default('');
             $table->string('flag')->default('');
             $table->integer('parent');
-            $table->integer('type');
+            $table->string('type');
             $table->integer('scale')->default(7);
-            $table->float('lat')->default(0);
-            $table->float('lng')->default(0);
+            $table->string('lat')->default(0);
+            $table->string('lng')->default(0);
             $table->integer('count')->default(0);
             $table->timestamps();
         });
