@@ -14,7 +14,7 @@
   <li>Отзывы и комментарии
 </ul>
 </nav>
-@foreach ($poi->photos as $photo) <img src="{{ Storage::disk('public')->url($photo) }}" alt="{{$poi->name}}"/> @endforeach
+@foreach ($poi->photos as $photo) <img src="{{ Storage::url($photo) }}" alt="{{$poi->name}}"/> @endforeach
 
 Теги @foreach ($poi->tags as $tag) {{ $tag->name }}, @endforeach
     <div class="row justify-content-center">
