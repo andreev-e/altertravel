@@ -7,6 +7,9 @@ use App\Models\Pois;
 use App\Models\Tags;
 use App\Models\User;
 use App\Models\Locations;
+use Illuminate\Support\Str;
+use Image;
+use Storage;
 use Auth;
 
 class PoisController extends Controller
@@ -25,7 +28,11 @@ class PoisController extends Controller
     public function single($url)
     {
         $poi=Pois::firstWhere('url', $url);
-        $poi->photos=explode(",",$poi->photos);
+        $photos=explode(",",$poi->photos);
+        foreach ($photos as $key => $file) {
+          //$photos[$key]=Image::make(Storage::get($file))->resize(300, 200);
+        }
+        $poi->photos=$photos;
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));
     }
@@ -56,6 +63,58 @@ class PoisController extends Controller
         return view('user', compact('pois'));
     }
 ////////////////actions////////////////////////
+
+
+public function store(Request $request)
+{
+  // выполнять код, если есть POST-запрос
+    if ($request->isMethod('post')) {
+
+    // валидация формы
+    $validated = $request->validate([
+        'title'  => 'required|min:5|max:255',
+        'lat'  => 'required',
+        'lng'  => 'required',
+        'description'  => 'required|min:20',
+    ]);
+
+    $images = $request->file('photos');
+    if ($request->hasFile('photos')) :
+    foreach ($images as $item):
+        $var = date_create();
+        $time = date_format($var, 'YmdHis');
+        $imageName = $time . '-' . $item->getClientOriginalName();
+        $item->move(base_path() . '/uploads/file/', $imageName);
+        $arr[] = $imageName;
+    endforeach;
+    $image = implode(",", $arr);
+    else:
+            $image = '';
+    endif;
+
+    if ($validated and Auth::check()) {
+      $new_poi=Pois::create([
+        'name' => $request->get('title'),
+        'url'=> Str::slug($request->get('title'), '_'),
+        'user_id'=>auth()->user()->id,
+        'status'=>1,
+        'description'=>$request->get('description'),
+        'category'=>$request->get('category'),
+        'prim'=>$request->get('prim'),
+        'route'=>$request->get('route'),
+        'video'=>$request->get('video'),
+        'photos'=>$image,
+      ]);
+    }
+
+
+
+
+    return redirect()->route('secure');
+
+}
+}
+
 
     public function hide($id)
     {

@@ -32,4 +32,4 @@ Route::post('/delete/{url}', 'App\Http\Controllers\PoisController@delete')->name
 
 Route::get('/secure', 'App\Http\Controllers\PoisController@secure_index')->name('secure');
 
-Route::post('/secure/add', 'App\Http\Controllers\AddController@store')->name('add');
+Route::post('/secure/add', 'App\Http\Controllers\PoisController@store')->name('add');
