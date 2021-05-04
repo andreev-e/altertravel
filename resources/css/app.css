@@ -1,3 +1,5 @@
-h1 {
-  color:red;
+#fastnav li a {
+    display: inline-block;
+    border-bottom: 2px dotted #234358;
+    text-decoration: none;
 }

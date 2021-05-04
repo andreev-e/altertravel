@@ -20,6 +20,8 @@ Route::get('/', function () {
 Route::get('/catalog', 'App\Http\Controllers\PoisController@index')->name('catalog');
 Route::get('/location/{url}', 'App\Http\Controllers\PoisController@location')->name('location');
 Route::get('/tag/{url}', 'App\Http\Controllers\PoisController@tag')->name('tag');
+Route::get('/user/{url}', 'App\Http\Controllers\PoisController@user')->name('user');
+
 
 Route::get('/place/{url}', 'App\Http\Controllers\PoisController@single')->name('single-poi');
 Route::get('/edit/{url}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit');

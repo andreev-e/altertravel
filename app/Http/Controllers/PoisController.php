@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pois;
 use App\Models\Tags;
+use App\Models\User;
 use App\Models\Locations;
 use Auth;
 
@@ -24,6 +25,7 @@ class PoisController extends Controller
     public function single($url)
     {
         $poi=Pois::firstWhere('url', $url);
+        $poi->photos=explode(",",$poi->photos);
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));
     }
@@ -47,6 +49,13 @@ class PoisController extends Controller
         $pois=$tag->pois()->where('status','=',1)->get();
         return view('tag', compact('pois'));
     }
+    public function user($url)
+    {
+        $user=User::firstWhere('login', $url);
+        $pois=$user->pois()->where('status','=',1)->get();
+        return view('user', compact('pois'));
+    }
+////////////////actions////////////////////////
 
     public function hide($id)
     {
@@ -60,21 +69,21 @@ class PoisController extends Controller
 
     public function show($id)
     {
-      if (auth()->user()!==null) {
-      $poi = Pois::find($id);
-      $poi->status=1;
-      if ($poi->user_id==auth()->user()->id) $poi->save();
-      }
+        if (auth()->user()!==null) {
+        $poi = Pois::find($id);
+        $poi->status=1;
+        if ($poi->user_id==auth()->user()->id) $poi->save();
+        }
         return redirect()->route('secure');
     }
 
     public function delete($id)
     {
-      if (auth()->user()!==null) {
-      $poi = Pois::find($id);
-      $poi->status=99;
-      if ($poi->user_id==auth()->user()->id) $poi->save();
-      }
+        if (auth()->user()!==null) {
+        $poi = Pois::find($id);
+        $poi->status=99;
+        if ($poi->user_id==auth()->user()->id) $poi->save();
+        }
         return redirect()->route('secure');
     }
 }
