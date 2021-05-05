@@ -3,7 +3,12 @@
 @section('title'){{$poi->name}}@endsection
 
 @section('content')
+
 <div class="container">
+  <ul class="breadcrumbs">
+    <li><a href="{{ route ('/') }}"><i class="fa fa-home" aria-hidden="true"></i></a>
+    @foreach ($poi->locations as $location)<li><a href="{{ route ('location',$location->url) }}">{{ $location->name }}</a></li>@endforeach
+  </ul>
   <h1>{{$poi->name}}</h1>
   <p>Автор <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a>
 <nav>

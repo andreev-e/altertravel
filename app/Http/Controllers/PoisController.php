@@ -29,7 +29,7 @@ class PoisController extends Controller
     public function single($url)
     {
         $poi=Pois::firstWhere('url', $url);
-        PoisController::make_pois_geocodes($poi);
+        if (count($poi->locations)==0) PoisController::make_pois_geocodes($poi);
         $poi->photos=explode(",",$poi->photos);
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));

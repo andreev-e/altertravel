@@ -1,5 +1,19 @@
-#fastnav li a {
+.fastnav li a {
     display: inline-block;
     border-bottom: 2px dotted #234358;
     text-decoration: none;
+}
+ul.breadcrumbs {
+  padding: 0;
+}
+.breadcrumbs li {
+    display: inline-block;
+}
+.breadcrumbs li:after {
+  content: "/";
+  color:#244255;
+  margin: 0 5px;
+}
+.breadcrumbs li:last-child:after {
+  display: none;
 }
