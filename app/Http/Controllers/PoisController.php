@@ -22,12 +22,12 @@ class PoisController extends Controller
 
   public function new()
   {
-      $pois=Pois::where('status','=',1)->limit(15)->orderby('created_at','desc')->get();
+      $pois=Pois::where('status','=',1)->orderby('created_at','desc')->simplePaginate(15);
       return view('catalog', compact('pois'));
   }
   public function popular()
   {
-      $pois=Pois::where('status','=',1)->limit(15)->orderby('views','desc')->get();
+      $pois=Pois::where('status','=',1)->orderby('views','desc')->simplePaginate(15);
       return view('catalog', compact('pois'));
   }
     public function catalog()
@@ -45,7 +45,7 @@ class PoisController extends Controller
     {
         $poi=Pois::firstWhere('url', $url);
         $poi->increment('views');
-        if (count($poi->locations)==0) { PoisController::make_pois_geocodes($poi);$poi=Pois::firstWhere('url', $url);}
+        if (count($poi->locations)==0) { $this->make_pois_geocodes($poi);$poi=Pois::firstWhere('url', $url);}
         $poi->photos=explode(",",$poi->photos);
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));
@@ -60,8 +60,19 @@ class PoisController extends Controller
     public function location($url)
     {
         $location=Locations::firstWhere('url', $url);
+        $breadcrumbs=$this->get_parent_location($location->parent);
         $pois=$location->pois()->where('status','=',1)->get();
-        return view('location', compact('pois'));
+        return view('location', compact('pois','location','breadcrumbs'));
+    }
+
+
+    public function get_parent_location($parent) {
+      static $out = [];
+      $loc=Locations::firstWhere('id', $parent);
+      if ($loc) {$out[]=array('name'=>$loc->name,'url'=>$loc->url);
+      if ($loc->type!='country' and count($out)<10) $this->get_parent_location($loc->parent);
+      }
+      return array_reverse($out);
     }
 
     public function tag($url)

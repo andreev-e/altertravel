@@ -8,6 +8,7 @@
     <div class="col-sm-4"><a href="{{ route('single-poi', $poi->url) }}">{{ $poi->name }}</a></div>
 @endforeach
 </div>
+{{$pois->render()}}
 </div>
 
 @endsection
