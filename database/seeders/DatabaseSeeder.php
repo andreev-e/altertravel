@@ -22,17 +22,8 @@ class DatabaseSeeder extends Seeder
     'password'  =>'$2y$10$1ed9zbgKBZCY3zXAfPUlmuK4fO3KbOqdE2u18LVlqITzceI0JvOrm',
     ]);
 
-         \App\Models\Tags::factory(20)->create();
-         \App\Models\Pois::factory(50)->create();
-
-         for ($i=0; $i < 20; $i++) {
-              DB::table('pois_tags')->insert([
-            'pois_id'  =>rand(1,20),
-            'tags_id'  =>rand(1,20),
-            ]);
-         }
-
-
+         \App\Models\Tags::factory(5)->create();
+         \App\Models\Pois::factory(200)->create();
 
     }
 }

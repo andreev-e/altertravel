@@ -22,6 +22,7 @@ class poisFactory extends Factory
      */
     public function definition()
     {
+        $categories= array('Архитектура','Природа','Природа','История/Культура','Техноген','Музей','Памятник','Ночлег','Еда','Покупки','Развлечения');
         $name=$this->faker->name();
         return [
           'name' => $name,
@@ -30,6 +31,7 @@ class poisFactory extends Factory
           'status' => 1,
           'lat' => rand(-60,60).".".rand(0,10000),
           'lng' => rand(-90,90).".".rand(0,10000),
+          'category' => $categories[array_rand($categories)],
         ];
     }
 

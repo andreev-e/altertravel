@@ -32,9 +32,27 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+
+
                       @if (Route::has('catalog'))
+                          <li class="nav-item dropdown">
+                              <a class="nav-link  dropdown-toggle"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Страны</a>
+
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          @foreach (App\Models\Locations::where('type','=','country')->get() as $locaton)
+                            <a class="dropdown-item" href="{{route('location',$locaton->url)}}">{{$locaton->name}}</a>
+                          @endforeach
+                          </div>
+                          </li>
+                      @endif
+                      @if (Route::has('new'))
                           <li class="nav-item">
-                              <a class="nav-link" href="{{ route('catalog') }}">{{ __('Каталог') }}</a>
+                              <a class="nav-link" href="{{route('new')}}">Новое</a>
+                          </li>
+                      @endif
+                      @if (Route::has('popular'))
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{route('popular')}}">Популярное</a>
                           </li>
                       @endif
                     </ul>
@@ -57,7 +75,7 @@
                         @else
                             <li class="nav-item">
                                 <a  class="nav-link" href="{{ Route('secure') }}"  >
-                                    Мои публикации 
+                                    Мои публикации
                                 </a>
                                 </li>
                                 <li class="nav-item">

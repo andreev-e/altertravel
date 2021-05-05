@@ -27,7 +27,9 @@ class CreatePoisTable extends Migration
             $table->string('route')->nullable();
             $table->string('video')->nullable();
             $table->integer('status')->default(0);
+            $table->string('photo')->default('no-photo.jpg');
             $table->string('photos')->nullable();
+            $table->string('views')->default('0');
             $table->timestamps();
         });
     }

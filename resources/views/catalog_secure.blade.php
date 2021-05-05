@@ -15,6 +15,9 @@
           <a href="{{ route('single-poi-edit', $poi->url) }}"><b>{{ $poi->name }}</b></a>
           <a  target="_blank" href="{{ route('single-poi', $poi->url) }}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
         </td>
+        <td>
+          {{ $poi->category }}
+        </td>
         <td><i class="fa fa-map-marker" aria-hidden="true"></i>
           @foreach ($poi->locations as $location)
             <a href="{{ route('location', $location->url) }}">{{ $location->name }}</a>{{ ($loop->last ? '' : ' / ') }}
@@ -106,11 +109,23 @@
                 <option value="Техноген">Техноген</option>
                 <option value="Музей">Музей</option>
                 <option value="Памятник">Памятник</option>
-                <option value="Памятник">Ночлег</option>
-                <option value="Памятник">Еда</option>
-                <option value="Памятник">Покупки</option>
-                <option value="Памятник">Развлечения</option>
+                <option value="Ночлег">Ночлег</option>
+                <option value="Еда">Еда</option>
+                <option value="Покупки">Покупки</option>
+                <option value="Развлечения">Развлечения</option>
             </select>
+        </div>
+        <div class="form-group">
+          <label for="checkboxes">Метки</label>
+        <div class="form-group">
+          @foreach (App\Models\Tags::get() as $tag)
+          <label class="col-md-2 checkbox-inline" for="tag{{$tag->id}}">
+          <input type="checkbox" name="checkboxes" id="tag{{$tag->id}}" value="{{$tag->id}}">
+          {{$tag->name}}
+          </label>
+
+          @endforeach
+        </div>
         </div>
         <div class="form-group">
           <label for="route">Как добраться?</label>

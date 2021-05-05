@@ -18,6 +18,7 @@ class CreatePoisTagsTable extends Migration
          $table->unsignedBigInteger('tags_id');
          $table->foreign('pois_id')->references('id')->on('pois');
          $table->foreign('tags_id')->references('id')->on('tags');
+         $table->unique(['pois_id', 'tags_id']);
         });
     }
 

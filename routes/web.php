@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 
-Route::get('/', function () {
-    return view('home');
-})->name('/');;
+Route::get('/', 'App\Http\Controllers\PoisController@index')->name('/');
 
-Route::get('/catalog', 'App\Http\Controllers\PoisController@index')->name('catalog');
+Route::get('/catalog', 'App\Http\Controllers\PoisController@catalog')->name('catalog');
+Route::get('/new', 'App\Http\Controllers\PoisController@new')->name('new');
+Route::get('/popular', 'App\Http\Controllers\PoisController@popular')->name('popular');
 Route::get('/location/{url}', 'App\Http\Controllers\PoisController@location')->name('location');
 Route::get('/tag/{url}', 'App\Http\Controllers\PoisController@tag')->name('tag');
 Route::get('/user/{url}', 'App\Http\Controllers\PoisController@user')->name('user');

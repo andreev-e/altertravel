@@ -14,8 +14,23 @@ use Auth;
 
 class PoisController extends Controller
 {
+  public function index()
+  {
+      $pois=Pois::where('status','=',1)->limit(6)->get();
+      return view('home', compact('pois'));
+  }
 
-    public function index()
+  public function new()
+  {
+      $pois=Pois::where('status','=',1)->limit(15)->orderby('created_at','desc')->get();
+      return view('catalog', compact('pois'));
+  }
+  public function popular()
+  {
+      $pois=Pois::where('status','=',1)->limit(15)->orderby('views','desc')->get();
+      return view('catalog', compact('pois'));
+  }
+    public function catalog()
     {
         $pois=Pois::where('status','=',1)->get();
         return view('catalog', compact('pois'));
@@ -29,6 +44,7 @@ class PoisController extends Controller
     public function single($url)
     {
         $poi=Pois::firstWhere('url', $url);
+        $poi->increment('views');
         if (count($poi->locations)==0) { PoisController::make_pois_geocodes($poi);$poi=Pois::firstWhere('url', $url);}
         $poi->photos=explode(",",$poi->photos);
         if (auth()->user()!==null) return view('poi', compact('poi'));
