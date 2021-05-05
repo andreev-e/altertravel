@@ -29,7 +29,7 @@ class PoisController extends Controller
     public function single($url)
     {
         $poi=Pois::firstWhere('url', $url);
-        if (count($poi->locations)==0) PoisController::make_pois_geocodes($poi);
+        if (count($poi->locations)==0) { PoisController::make_pois_geocodes($poi);$poi=Pois::firstWhere('url', $url);}
         $poi->photos=explode(",",$poi->photos);
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));
@@ -88,15 +88,15 @@ $file=json_decode($file);
 $file=array_reverse($file->response->GeoObjectCollection->featureMember);
 $prev_loc=0;
 $exclude_kinds = array('street','house');
-
+$prev_loc_name="";
+//dd($file);
 foreach ($file as $location) {
 
-   //$location->GeoObject->name;
+   if ($location->GeoObject->name==$prev_loc_name) continue;
    $latlng=explode(" ",$location->GeoObject->Point->pos);
 
-
    if (Locations::where('name', '=', $location->GeoObject->name)->count() == 0)  {
-
+     //Создаем новую локацию по названию
      if(!in_array($location->GeoObject->metaDataProperty->GeocoderMetaData->kind,$exclude_kinds)) {
      $new_loc=Locations::create([
          'name'=>$location->GeoObject->name,
@@ -107,14 +107,17 @@ foreach ($file as $location) {
          'lng'=>$latlng[1],
          'type'=>$location->GeoObject->metaDataProperty->GeocoderMetaData->kind,
          ]);
-         $new_loc->pois()->save($poi); //привязка локаций к объекту
+         $new_loc->pois()->save($poi);
          $prev_loc=$new_loc->id;
+         $prev_loc_name=$new_loc->name;
        }
 
        }
        else  {
-         $new_loc=Locations::where('name', '=', $location->GeoObject->name)->first();
+         $new_loc=Locations::where('name', '=', $location->GeoObject->name)->first(); //берем существующую локацию по названию
+         $new_loc->pois()->save($poi);
          $prev_loc=$new_loc->id;
+         $prev_loc_name=$new_loc->name;
        }
 }
    }

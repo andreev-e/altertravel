@@ -18,6 +18,7 @@ class CreatePoisLocationsTable extends Migration
            $table->unsignedBigInteger('locations_id');
            $table->foreign('pois_id')->references('id')->on('pois');
            $table->foreign('locations_id')->references('id')->on('locations');
+           //$table->unique('pois_id', 'locations_id');
         });
     }
 
