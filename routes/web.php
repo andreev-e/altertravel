@@ -33,3 +33,5 @@ Route::post('/delete/{url}', 'App\Http\Controllers\PoisController@delete')->name
 Route::get('/secure', 'App\Http\Controllers\PoisController@secure_index')->name('secure');
 
 Route::post('/secure/add', 'App\Http\Controllers\PoisController@store')->name('add');
+
+Route::get('/json/poi.json', 'App\Http\Controllers\PoisController@poi_json')->name('poi_json');

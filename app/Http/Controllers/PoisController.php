@@ -87,6 +87,11 @@ class PoisController extends Controller
         $pois=$user->pois()->where('status','=',1)->get();
         return view('user', compact('pois'));
     }
+      public function poi_json() {
+        $pois=Pois::where('status','=',1)->limit(50)->get();
+        //dd($pois);
+        return json_encode($pois);
+      }
 ////////////////actions////////////////////////
 
 function GetBetween($content,$start,$end){
