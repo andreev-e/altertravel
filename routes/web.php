@@ -24,6 +24,7 @@ Route::get('/user/{url}', 'App\Http\Controllers\PoisController@user')->name('use
 
 
 Route::get('/place/{url}', 'App\Http\Controllers\PoisController@single')->name('single-poi');
+Route::get('/place/', 'App\Http\Controllers\PoisController@single')->name('pois');
 Route::get('/edit/{url}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit');
 
 Route::post('/hide/{url}', 'App\Http\Controllers\PoisController@hide')->name('poi-hide');
