@@ -16,7 +16,7 @@ class PoisController extends Controller
 {
   public function index()
   {
-      $pois=Pois::where('status','=',1)->limit(6)->get();
+      $pois=Pois::where('status','=',1)->limit(3)->get();
       return view('home', compact('pois'));
   }
 
@@ -66,7 +66,7 @@ class PoisController extends Controller
     }
 
 
-    public function get_parent_location($parent) {
+    private function get_parent_location($parent) {
       static $out = [];
       $loc=Locations::firstWhere('id', $parent);
       if ($loc) {$out[]=array('name'=>$loc->name,'url'=>$loc->url);
@@ -87,23 +87,27 @@ class PoisController extends Controller
         $pois=$user->pois()->where('status','=',1)->get();
         return view('user', compact('pois'));
     }
-      public function poi_json() {
-        $pois=Pois::where('status','=',1)->limit(50)->get();
-        //dd($pois);
+    public function poi_json(Request $request) {
+        if ($request->get('mne')!==NULL and $request->get('msw')!==NULL) {
+        list($nelat,$nelng) = explode(',',$request->get('mne'));
+        list($swlat,$swlng) = explode(',',$request->get('msw'));
+        $latreduce=abs($nelat-$swlat)/20;
+        $lngreduce=abs($swlng-$nelng)/40;
+         $pois=Pois::where([
+           ['status','=',1],
+           ['lat', '>=', $swlat+$latreduce],
+           ['lat', '<=', $nelat-$latreduce],
+           ['lng', '<=', $nelng-$lngreduce],
+           ['lng', '>=', $swlng+$lngreduce]
+         ])->orderby('views','DESC')->limit(100)->get();
+      }
+        else $pois=Pois::where('status','=',1)->orderby('views','DESC')->limit(100)->get();
         return json_encode($pois);
       }
 ////////////////actions////////////////////////
 
-function GetBetween($content,$start,$end){
-	    $r = explode($start, $content);
-	    if (isset($r[1])){
-	        $r = explode($end, $r[1]);
-	        return $r[0];
-	    }
-	    return '';
-	}
 
-public function make_pois_geocodes($poi){
+private function make_pois_geocodes($poi){
 
 $url="https://geocode-maps.yandex.ru/1.x/?format=json&geocode=$poi->lng,$poi->lat&apikey=7483ad1f-f61c-489b-a4e5-815eb06d5961" ;
 if ($curl = curl_init()) {
@@ -130,13 +134,14 @@ foreach ($file as $location) {
    if (Locations::where('name', '=', $location->GeoObject->name)->count() == 0)  {
      //Создаем новую локацию по названию
      if(!in_array($location->GeoObject->metaDataProperty->GeocoderMetaData->kind,$exclude_kinds)) {
+
      $new_loc=Locations::create([
          'name'=>$location->GeoObject->name,
          'url'=>Str::slug($location->GeoObject->name, '_'),
          'parent'=>$prev_loc,
          'type'=>0,
-         'lat'=>$latlng[0],
-         'lng'=>$latlng[1],
+         'lat'=>$latlng[1],
+         'lng'=>$latlng[0],
          'type'=>$location->GeoObject->metaDataProperty->GeocoderMetaData->kind,
          ]);
          $new_loc->pois()->save($poi);

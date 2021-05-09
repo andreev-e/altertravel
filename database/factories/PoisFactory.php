@@ -29,8 +29,8 @@ class poisFactory extends Factory
           'url' => Str::slug($name),
           'user_id' => 1,
           'status' => 1,
-          'lat' => rand(-60,60).".".rand(0,10000),
-          'lng' => rand(-90,90).".".rand(0,10000),
+          'lat' => rand(-90,90),
+          'lng' => rand(-180,180),
           'category' => $categories[array_rand($categories)],
         ];
     }

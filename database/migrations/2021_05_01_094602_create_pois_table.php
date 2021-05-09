@@ -19,8 +19,8 @@ class CreatePoisTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');
             $table->string('url');
-            $table->string('lat')->default('0');
-            $table->string('lng')->default('0');
+            $table->double('lat')->default('0');
+            $table->double('lng')->default('0');
             $table->string('description')->nullable();
             $table->string('category')->nullable();
             $table->string('prim')->nullable();

@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
     ]);
 
          \App\Models\Tags::factory(5)->create();
-         \App\Models\Pois::factory(200)->create();
+         \App\Models\Pois::factory(500)->create();
 
     }
 }
