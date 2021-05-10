@@ -16,7 +16,7 @@ class PoisController extends Controller
 {
   public function index()
   {
-      $pois=Pois::where('status','=',1)->limit(3)->get();
+      $pois=Pois::where('status','=',1)->limit(6)->get();
       return view('home', compact('pois'));
   }
 

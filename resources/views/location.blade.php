@@ -1,46 +1,84 @@
 @push('scripts')
-  <script type="text/javascript">
-  var json = "{{ route('poi_json') }}";
-  var infowindow = new google.maps.InfoWindow();
 
-window.onload = function() {
+<script type="text/javascript">
+//var icon = "http://path/to/icon.png";
+var json_url = "{{ route('poi_json') }}";
+var infowindow = new google.maps.InfoWindow();
+var markersArray = [];
+var first=true; //
+window.onload = function()
+{
+map = new google.maps.Map(document.getElementById("map"),
+{
+  center: new google.maps.LatLng({{$location->lat}}, {{$location->lng}}), zoom: 6
+});
 
-    map = new google.maps.Map(document.getElementById("map"), {
-   center: new google.maps.LatLng({{$location->lat}}, {{$location->lng}}),
-zoom: 6
-    });
+function bindInfoWindow(marker, map, infowindow, strDescription) {
+google.maps.event.addListener(marker, 'click', function () {
+    infowindow.setContent(strDescription);
+    infowindow.open(map, marker);
+});
+}
+function clearOverlays() {
+if (markersArray) {
+for (i in markersArray) {
+  markersArray[i].setMap(null);
+}
+}
+}
 
-    $.getJSON(json, function(json1) {
+function clearOverlays() {
+for (var i = 0; i < markersArray.length; i++ ) {
+markersArray[i].setMap(null);
+}
+markersArray.length = 0;
+}
+
+function loadPointsfomJSON() {
+var i=0;
+clearOverlays();
+var bounds = map.getBounds();
+var url=json_url+'?mne=' + bounds.getNorthEast().toUrlValue() + '&msw=' + bounds.getSouthWest().toUrlValue();
+
+$.getJSON(url, function(json) {
+$('#shown_on_map').empty();
+$.each(json, function (key, data) {
+var latLng = new google.maps.LatLng(data.lat, data.lng);
+var marker = new google.maps.Marker({
+    position: latLng,
+    map: map,
+    //icon: icon,
+    title: data.name
+});
+markersArray.push(marker);
+var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
+bindInfoWindow(marker, map, infowindow, details);
+
+});
+});
+}
 
 
-        $.each(json1, function (key, data) {
-
-      var latLng = new google.maps.LatLng(data.lat, data.lng);
-
-      var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          //icon: icon,
-          title: data.name
-      });
-
-      var details = data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
-
-      bindInfoWindow(marker, map, infowindow, details);
-
-      });
+google.maps.event.addListener(map, 'dragend', function() {
+     loadPointsfomJSON();
   });
+google.maps.event.addListener(map, 'zoom_changed', function() {
+     loadPointsfomJSON();
+  });
+var first=true;
+google.maps.event.addListener(map, 'idle', function() {
+              var bounds =  map.getBounds();
+              var ne = bounds.getNorthEast();
+              var sw = bounds.getSouthWest();
+              //do whatever you want with those bounds
+              if (first) { first=false; loadPointsfomJSON(); }
+     });
 
-  function bindInfoWindow(marker, map, infowindow, strDescription) {
-      google.maps.event.addListener(marker, 'click', function () {
-          infowindow.setContent(strDescription);
-          infowindow.open(map, marker);
-      });
-  }
+}
 
-           }
+</script>
 
-      </script>
+
 @endpush
 @extends('layouts.app')
 @section('title')Достопримечательности {{$location->name}} @endsection

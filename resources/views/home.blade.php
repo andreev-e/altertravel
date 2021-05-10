@@ -54,7 +54,7 @@ function loadPointsfomJSON() {
     bindInfoWindow(marker, map, infowindow, details);
     /// carousel
     i=i+1;
-    if (i<4) $('#shown_on_map').append('<div class="col-sm-4"><div class="card"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div>  <a href="{{ route('pois') }}/'+data.url+'" class="btn btn-primary">Смотреть</a></div></div></div>');
+    if (i<=6) $('#shown_on_map ').append('<div class="col-sm-2"><div class="card"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div>  <a href="{{ route('pois') }}/'+data.url+'" class="btn btn-primary">Смотреть</a></div></div></div>');
     });
 });
 }
@@ -84,21 +84,21 @@ google.maps.event.addListener(map, 'idle', function() {
 
 @section('content')
 <div class="container">
-  <h1>Карта достопримечательностей</h1>
+  <h1>Альтернативный путеводитель</h1>
 </div>
 <div class="container-fluid">
   <div class="row">
   <div class="map" id="map"></div>
   </div>
 </div>
-<div class="container">
-    <div class="row mt-3" id="shown_on_map">
-  @foreach ($pois as $poi)
-    <div class="col-sm-4">
+<div class="container-fluid mt-3">
+         <div  class="row" id="shown_on_map" >
+  @foreach ($pois as $key => $poi)
+    <div class="col-sm-2">
       <div class="card">
          <img class="card-img-top" src="{{ $poi->photo }}" alt="{{ $poi->name }}">
          <div class="card-body">
-      <div class="h4 card-title">{{ $poi->name }}</div>
+      <div class="h5 card-title">{{ $poi->name }}</div>
       <a href="{{ route('single-poi', $poi->url) }}" class="btn btn-primary">Смотреть</a>
       </div>
       </div>

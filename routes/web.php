@@ -21,18 +21,14 @@ Route::get('/popular', 'App\Http\Controllers\PoisController@popular')->name('pop
 Route::get('/location/{url}', 'App\Http\Controllers\PoisController@location')->name('location');
 Route::get('/tag/{url}', 'App\Http\Controllers\PoisController@tag')->name('tag');
 Route::get('/user/{url}', 'App\Http\Controllers\PoisController@user')->name('user');
-
-
 Route::get('/place/{url}', 'App\Http\Controllers\PoisController@single')->name('single-poi');
 Route::get('/place/', 'App\Http\Controllers\PoisController@single')->name('pois');
 Route::get('/edit/{url}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit');
-
 Route::post('/hide/{url}', 'App\Http\Controllers\PoisController@hide')->name('poi-hide');
 Route::post('/show/{url}', 'App\Http\Controllers\PoisController@show')->name('poi-show');
 Route::post('/delete/{url}', 'App\Http\Controllers\PoisController@delete')->name('poi-delete');
-
 Route::get('/secure', 'App\Http\Controllers\PoisController@secure_index')->name('secure');
-
 Route::post('/secure/add', 'App\Http\Controllers\PoisController@store')->name('add');
-
 Route::get('/json/poi.json', 'App\Http\Controllers\PoisController@poi_json')->name('poi_json');
+
+Route::get('/import', 'App\Http\Controllers\PoisController@import')->name('import');
