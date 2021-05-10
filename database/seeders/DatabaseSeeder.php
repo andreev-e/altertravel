@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
     'password'  =>'$2y$10$1ed9zbgKBZCY3zXAfPUlmuK4fO3KbOqdE2u18LVlqITzceI0JvOrm',
     ]);
 
-         \App\Models\Tags::factory(5)->create();
-         \App\Models\Pois::factory(500)->create();
+         //\App\Models\Tags::factory(5)->create();
+         //\App\Models\Pois::factory(500)->create();
 
     }
 }

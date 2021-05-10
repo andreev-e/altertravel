@@ -15,6 +15,7 @@ class CreatePoisTable extends Migration
     {
         Schema::create('pois', function (Blueprint $table) {
             $table->id();
+            $table->integer('old_id')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');

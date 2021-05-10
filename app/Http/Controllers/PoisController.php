@@ -8,6 +8,8 @@ use App\Models\Tags;
 use App\Models\User;
 use App\Models\Locations;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Hash;
 use Image;
 use Storage;
 use Auth;
@@ -103,6 +105,52 @@ class PoisController extends Controller
       }
         else $pois=Pois::where('status','=',1)->orderby('views','DESC')->limit(100)->get();
         return json_encode($pois);
+      }
+
+
+      public function import() {
+        $echo='';
+
+        $all=json_decode(file_get_contents (__DIR__.'/import/all.json'));
+        $chekins=$all[2];
+        $comments=$all[3];
+        $poi=$all[4];
+        $relationship=$all[5];
+        $routes=$all[6];
+        $route_comments=$all[7];
+        $tags=$all[8];
+        $users=$all[9];
+        unset($all);
+
+        // dd($users->data);
+
+        foreach ($users->data as $value) {
+          if ($value->publications>0 and strlen($value->email)>0)
+          $poi=User::firstOrCreate([
+            'name' => $value->firstname." ".$value->lastname,
+            'email' => $value->email,
+            'login' => $value->username,
+            'site' => $value->homepage,
+            'about' => $value->about,
+            'old_password' => $value->password,
+            'password' => Hash::make($value->password),
+          ]);
+        }
+        unset($users);
+        $echo.='User ok<br>';
+        /*
+        foreach ($poi->data as $value) {
+          $poi=Pois::create([
+            'old_id' => $value->id,
+            'user_id' => 0,
+            'name' => $value->name,
+            'url' => Str::slug($value->name, '_'),
+          ]);
+        }
+        */
+
+        //dd($all);
+        return view('import',compact('echo'));
       }
 ////////////////actions////////////////////////
 
