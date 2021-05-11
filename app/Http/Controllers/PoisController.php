@@ -134,6 +134,7 @@ class PoisController extends Controller
             'about' => $value->about,
             'old_password' => $value->password,
             'password' => Hash::make($value->password),
+            'publications' => $value->publications,
           ]);
         }
         unset($users);

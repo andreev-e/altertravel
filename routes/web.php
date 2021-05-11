@@ -31,4 +31,7 @@ Route::get('/secure', 'App\Http\Controllers\PoisController@secure_index')->name(
 Route::post('/secure/add', 'App\Http\Controllers\PoisController@store')->name('add');
 Route::get('/json/poi.json', 'App\Http\Controllers\PoisController@poi_json')->name('poi_json');
 
+Route::get('/users', 'App\Http\Controllers\UsersController@list')->name('users');
+
+
 Route::get('/import', 'App\Http\Controllers\PoisController@import')->name('import');

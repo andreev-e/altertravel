@@ -50,6 +50,11 @@
                               <a class="nav-link" href="{{route('popular')}}">Популярное</a>
                           </li>
                       @endif
+                      @if (Route::has('users'))
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{route('users')}}">Авторы</a>
+                          </li>
+                      @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
