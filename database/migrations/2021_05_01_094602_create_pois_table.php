@@ -15,22 +15,26 @@ class CreatePoisTable extends Migration
     {
         Schema::create('pois', function (Blueprint $table) {
             $table->id();
-            $table->integer('old_id')->default(0);
-            $table->unsignedBigInteger('user_id');
+            $table->string('old_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');
             $table->string('url');
             $table->double('lat')->default('0');
             $table->double('lng')->default('0');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('category')->nullable();
-            $table->string('prim')->nullable();
-            $table->string('route')->nullable();
+            $table->text('prim')->nullable();
+            $table->text('route')->nullable();
+            $table->text('route_o')->nullable();
             $table->string('video')->nullable();
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(1);
             $table->string('photo')->default('no-photo.jpg');
             $table->string('photos')->nullable();
+            $table->string('copyright')->nullable();
+            $table->text('links')->nullable();;
             $table->string('views')->default('0');
+            $table->string('dominatecolor')->default('#ffffff');
             $table->timestamps();
         });
     }

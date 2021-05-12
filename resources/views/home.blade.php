@@ -84,7 +84,7 @@ google.maps.event.addListener(map, 'idle', function() {
 
 @section('content')
 <div class="container">
-  <h1>Альтернативный путеводитель</h1>
+  <h1>Карта достопримечательностей</h1>
 </div>
 <div class="container-fluid">
   <div class="row">

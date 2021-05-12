@@ -112,20 +112,21 @@ class PoisController extends Controller
         $echo='';
 
         $all=json_decode(file_get_contents (__DIR__.'/import/all.json'));
-        //$chekins=$all[2];
-        //$comments=$all[3];
-        //$poi=$all[4];
-        //$relationship=$all[5];
-        //$routes=$all[6];
-        //$route_comments=$all[7];
-        $tags=$all[8];
-        $users=$all[9];
+        $chekins=$all[2];
+        $comments=$all[3];
+        $edits=$all[4];
+        $poi=$all[5];
+        $relationship=$all[6];
+        $routes=$all[7];
+        $route_comments=$all[8];
+        $tags=$all[9];
+        $users=$all[10];
         unset($all);
 
-      
+        /*
         foreach ($users->data as $value) {
           if ($value->publications>0 and strlen($value->email)>0)
-          $poi=User::firstOrCreate([
+          $tmp=User::firstOrCreate([
             'name' => $value->firstname." ".$value->lastname,
             'email' => $value->email,
             'login' => $value->username,
@@ -142,7 +143,7 @@ class PoisController extends Controller
 
         foreach ($tags->data as $value) {
 
-          if ( $value->TYPE==0) $poi=Tags::create([
+          if ( $value->TYPE==0) $tmp=Tags::firstOrCreate([
             'name' => $value->NAME,
             'url' => Str::slug($value->NAME, '_'),
             'name_rod' =>$value->NAME_ROD,
@@ -150,7 +151,48 @@ class PoisController extends Controller
             'count'=>$value->COUNT,
           ]);
         }
+          unset($tags);
         $echo.='Tags ok';
+
+
+        foreach ($poi->data as $value) {
+          //dd($value);
+          $user=User::where('login','=',$value->author)->first();
+          if (isset($user)) $user_id=$user->id; else $user_id=8;
+          if ($value->lat!=0 and $value->lng!=0) $tmp=Pois::create([
+            'old_id'=>$value->id,
+            'name' => $value->name,
+            'user_id' => $user_id,
+            'url' => Str::slug($value->name, '_'),
+            'lat' =>$value->lat,
+            'lng' =>$value->lng,
+            'category'=>$value->type,
+            'description'=>$value->description,
+            'route'=>$value->route,
+            'category'=>$value->type,
+            'views'=>$value->views,
+            'status'=>$value->show,
+            'prim'=>$value->addon,
+            'video'=>$value->ytb,
+            'links'=>$value->links,
+            'copyright'=>$value->copyright,
+            'dominatecolor'=>$value->dominatecolor,
+          ]);
+        }
+          unset($poi);
+        $echo.='Poi ok';
+        */
+
+        foreach ($relationship->data as $value) {
+          //dd($value);
+          $poi=Pois::where('old_id','=',$value->POSTID)->first();
+          $tag=Tags::where('old_id','=',$value->TAGID)->first();
+          if (isset($tag) and isset($poi)) $tag->pois()->save($poi);
+
+
+        }
+          unset($relationship);
+        $echo.='Relationship ok';
 
 
         //dd($all);
@@ -247,10 +289,12 @@ public function store(Request $request)
         'category'=>$request->get('category'),
         'prim'=>$request->get('prim'),
         'route'=>$request->get('route'),
+        'route_o'=>$request->get('route_o'),
         'video'=>$request->get('video'),
         'lat'=>$request->get('lat'),
         'lng'=>$request->get('lng'),
         'photos'=>$image,
+
 
       ]);
     }

@@ -28,15 +28,21 @@ class Pois extends Model
         'name',
         'url',
         'user_id',
+        'old_id',
         'status',
         'description',
         'category',
         'route',
+        'route_o',
         'prim',
         'video',
         'photos',
         'lat',
-        'lng'
+        'lng',
+        'views',
+        'dominatecolor',
+        'copyright',
+        'links'
     ];
 
 }
