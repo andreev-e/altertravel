@@ -13,4 +13,14 @@ use HasFactory;
      return $this->belongsToMany(Pois::class, 'pois_tags');
   }
 
+
+  protected $fillable = [
+      'name',
+      'url',
+      'name_rod',
+      'count',
+      'old_id',
+  ];
+
+
 }

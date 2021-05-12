@@ -112,18 +112,17 @@ class PoisController extends Controller
         $echo='';
 
         $all=json_decode(file_get_contents (__DIR__.'/import/all.json'));
-        $chekins=$all[2];
-        $comments=$all[3];
-        $poi=$all[4];
-        $relationship=$all[5];
-        $routes=$all[6];
-        $route_comments=$all[7];
+        //$chekins=$all[2];
+        //$comments=$all[3];
+        //$poi=$all[4];
+        //$relationship=$all[5];
+        //$routes=$all[6];
+        //$route_comments=$all[7];
         $tags=$all[8];
         $users=$all[9];
         unset($all);
 
-        // dd($users->data);
-
+      
         foreach ($users->data as $value) {
           if ($value->publications>0 and strlen($value->email)>0)
           $poi=User::firstOrCreate([
@@ -137,18 +136,22 @@ class PoisController extends Controller
             'publications' => $value->publications,
           ]);
         }
+
         unset($users);
-        $echo.='User ok<br>';
-        /*
-        foreach ($poi->data as $value) {
-          $poi=Pois::create([
-            'old_id' => $value->id,
-            'user_id' => 0,
-            'name' => $value->name,
-            'url' => Str::slug($value->name, '_'),
+        $echo.='User ok';
+
+        foreach ($tags->data as $value) {
+
+          if ( $value->TYPE==0) $poi=Tags::create([
+            'name' => $value->NAME,
+            'url' => Str::slug($value->NAME, '_'),
+            'name_rod' =>$value->NAME_ROD,
+            'old_id'=>$value->ID,
+            'count'=>$value->COUNT,
           ]);
         }
-        */
+        $echo.='Tags ok';
+
 
         //dd($all);
         return view('import',compact('echo'));

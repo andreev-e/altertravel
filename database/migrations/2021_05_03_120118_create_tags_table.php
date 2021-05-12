@@ -17,10 +17,9 @@ class CreateTagsTable extends Migration
           $table->id();
           $table->string('name');
           $table->string('url');
-          $table->string('name_dat')->default('');
           $table->string('name_rod')->default('');
-          $table->string('name_pred')->default('');
           $table->integer('count')->default(0);
+          $table->integer('old_id')->default(0);
           $table->timestamps();
         });
     }
