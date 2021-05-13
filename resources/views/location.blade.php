@@ -1,7 +1,7 @@
 @push('scripts')
 
 <script type="text/javascript">
-//var icon = "http://path/to/icon.png";
+var icon = "/i/map_marker.png";
 var json_url = "{{ route('poi_json') }}";
 var infowindow = new google.maps.InfoWindow();
 var markersArray = [];
@@ -47,12 +47,13 @@ var latLng = new google.maps.LatLng(data.lat, data.lng);
 var marker = new google.maps.Marker({
     position: latLng,
     map: map,
-    //icon: icon,
+    icon: icon,
     title: data.name
 });
 markersArray.push(marker);
 var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
 bindInfoWindow(marker, map, infowindow, details);
+
 
 });
 });

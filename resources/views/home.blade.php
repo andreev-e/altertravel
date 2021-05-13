@@ -1,6 +1,6 @@
 @push('scripts')
     <script type="text/javascript">
-    //var icon = "http://path/to/icon.png";
+    var icon = "/i/map_marker.png";
     var json_url = "{{ route('poi_json') }}";
     var infowindow = new google.maps.InfoWindow();
     var markersArray = [];
@@ -46,18 +46,19 @@ function loadPointsfomJSON() {
     var marker = new google.maps.Marker({
         position: latLng,
         map: map,
-        //icon: icon,
+        icon: icon,
         title: data.name
     });
     markersArray.push(marker);
     var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
     bindInfoWindow(marker, map, infowindow, details);
-    /// carousel
     i=i+1;
-    if (i<=6) $('#shown_on_map ').append('<div class="col-sm-2"><div class="card"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div>  <a href="{{ route('pois') }}/'+data.url+'" class="btn btn-primary">Смотреть</a></div></div></div>');
-    });
+        if (i<=6) $('#shown_on_map ').append('<div class="col-sm-2"><div class="card"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div>  <a href="{{ route('pois') }}/'+data.url+'" class="btn btn-primary">Смотреть</a></div></div></div>');
+     
+  });
 });
 }
+
 
 
 google.maps.event.addListener(map, 'dragend', function() {
