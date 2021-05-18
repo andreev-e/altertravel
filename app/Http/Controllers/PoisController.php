@@ -81,7 +81,7 @@ class PoisController extends Controller
     {
       $tag=Tags::where('url', $url)->firstOrFail();;
         $pois=$tag->pois()->where('status','=',1)->get();
-        return view('tag', compact('pois'));
+        return view('tag', compact('pois','tag'));
     }
     public function user($url)
     {
