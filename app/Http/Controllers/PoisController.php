@@ -45,7 +45,7 @@ class PoisController extends Controller
     }
     public function single($url)
     {
-        $poi=Pois::firstWhere('url', $url);
+        $poi=Pois::where('url', $url)->firstOrFail();
         $poi->increment('views');
         if (count($poi->locations)==0) { $this->make_pois_geocodes($poi);$poi=Pois::firstWhere('url', $url);}
         $poi->photos=explode(",",$poi->photos);
@@ -79,13 +79,13 @@ class PoisController extends Controller
 
     public function tag($url)
     {
-      $tag=Tags::firstWhere('url', $url);
+      $tag=Tags::where('url', $url)->firstOrFail();;
         $pois=$tag->pois()->where('status','=',1)->get();
         return view('tag', compact('pois'));
     }
     public function user($url)
     {
-        $user=User::firstWhere('login', $url);
+        $user=User::where('login', $url)->firstOrFail();
         $pois=$user->pois()->where('status','=',1)->get();
         return view('user', compact('pois'));
     }
