@@ -10,6 +10,7 @@ use App\Models\Locations;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use Image;
 use Storage;
 use Auth;
@@ -45,10 +46,16 @@ class PoisController extends Controller
     }
     public function single($url)
     {
+
+        $poi = Cache::remember('url_'.$url, 20, function () use ($url) {
+
         $poi=Pois::where('url', $url)->firstOrFail();
-        $poi->increment('views');
         if (count($poi->locations)==0) { $this->make_pois_geocodes($poi);$poi=Pois::firstWhere('url', $url);}
         $poi->photos=explode(",",$poi->photos);
+        return $poi;
+        //remember
+        });
+        $poi->increment('views');
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));
     }
