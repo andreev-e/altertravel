@@ -113,7 +113,9 @@ google.maps.event.addListener(map, 'idle', function() {
     @foreach ($poi->locations as $location)<li><a href="{{ route ('location',$location->url) }}">{{ $location->name }}</a></li>@endforeach
   </ul>
   <h1>{{$poi->name}}</h1>
-  <p class="small">Автор публикации <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a> / @isset($poi->copyright) Автор фото {{$poi->copyright}}@endisset</p>
+  <p class="small">Автор публикации <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a>
+     / @isset($poi->copyright) Автор фото {{$poi->copyright}}@endisset
+   / {{$poi->views}} просмотров</p>
 <nav>
 <ul class="fastnav">
   <li>Как добраться
