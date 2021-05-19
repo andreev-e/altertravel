@@ -3,7 +3,7 @@
 
 
 window.onload = function() {
-  
+
    map = new google.maps.Map(document.getElementById('map_guide'), {
    zoom: 6,
    center: new google.maps.LatLng(55.7499172, 37.6199341),
@@ -56,6 +56,7 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
     <p>Вы не авторизованы
     @else
     <div class="row">
+      <div class="col-12">
       <table class="table table-stried">
       @if (count($pois)>0)
       @foreach ($pois as $poi)
@@ -102,6 +103,8 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
       </div>
       @endforeach
       </table>
+      {{$pois->render()}}
+    </div>
       @else
       <div class="col-12">
         <div class="alert alert-danger">
