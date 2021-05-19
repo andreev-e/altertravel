@@ -62,7 +62,7 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
       @foreach ($pois as $poi)
         <tr>
         <td>
-          <a href="{{ route('single-poi-edit', $poi->url) }}"><b>{{ $poi->name }}</b></a>
+          <a href="{{ route('single-poi', $poi->url) }}"><b>{{ $poi->name }}</b></a>
           <a  target="_blank" href="{{ route('single-poi', $poi->url) }}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
         </td>
         <td>
@@ -79,26 +79,33 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
           @endforeach
         </td>
       @if ($poi->status==1)
-      <td><span class="text-success">опубликовано</span>
         <td>
           <form id="hide{{$poi->id}}" action="{{ route('poi-hide', $poi->id) }}" method="post">
           @csrf
-          <button type="submit" class="btn btn-outline-secondary">Скрыть</button></td>
+          <button type="submit" class="btn btn-outline-success" title="Скрыть публикацию">
+            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+          </button>
           </form>
+        </td>
       @endif
       @if ($poi->status==0)
-      <td><span class="text-danger">скрыто</span>
         <td>
           <form id="show{{$poi->id}}" action="{{ route('poi-show', $poi->id) }}" method="post">
             @csrf
-          <button type="submit" class="btn btn-success">Опубликовать</button></td>
+          <button type="submit" class="btn btn-outline-secondary" title="Опубликовать на сайте">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </button>
           </form>
+        </td>
       @endif
       <td>
+        <a href="{{ route('single-poi-edit', $poi->id) }}" class="btn btn-warning" title="Отредактировать">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </a>
       <td>
         <form id="delete{{$poi->id}}" action="{{ route('poi-delete', $poi->id) }}" method="post">
         @csrf
-        <button type="submit" class="btn btn-outline-danger">Удалить</button></td>
+        <button type="submit" class="btn btn-outline-danger" title="Удалить"><i class="fa fa-times" aria-hidden="true"></i></button></td>
         </form>
       </div>
       @endforeach
@@ -128,8 +135,8 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
     <form method="POST" action="{{route('add')}}" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-          <label for="title">Название объекта</label>
-          <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}">
+          <label for="name">Название объекта</label>
+          <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}">
           <small class="form-text text-muted">Местоположение будет определено по координатам, пожалуйста не указывайте его в названии</small>
         </div>
         <p>Укажите точку на карте
@@ -172,7 +179,7 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
         <div class="form-group">
           @foreach (App\Models\Tags::get() as $tag)
           <label class="col-md-2 checkbox-inline" for="tag{{$tag->id}}">
-          <input type="checkbox" name="checkboxes" id="tag{{$tag->id}}" value="{{$tag->id}}">
+          <input type="checkbox" name="tags[]" id="tag{{$tag->id}}" value="{{$tag->id}}">
           {{$tag->name}}
           </label>
 

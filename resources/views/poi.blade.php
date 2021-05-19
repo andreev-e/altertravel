@@ -114,7 +114,7 @@ google.maps.event.addListener(map, 'idle', function() {
   </ul>
   <h1>{{$poi->name}}</h1>
   <p class="small">Автор публикации <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a>
-     / @isset($poi->copyright) Автор фото {{$poi->copyright}}@endisset
+     @isset($poi->copyright) / Автор фото {{$poi->copyright}}@endisset
    / {{$poi->views}} просмотров</p>
 <nav>
 <ul class="fastnav">

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tags extends Model
 {
 use HasFactory;
+
   public function pois()
   {
      return $this->belongsToMany(Pois::class, 'pois_tags');

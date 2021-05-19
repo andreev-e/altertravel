@@ -41,16 +41,18 @@ class PoisController extends Controller
     public function secure_index()
     {
         $pois=array();
-        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->simplePaginate(15);
-        return view('catalog_secure', compact('pois'));
+        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->orderbyDESC('updated_at')->simplePaginate(15);
+        return view('secure', compact('pois'));
     }
     public function single($url)
     {
 
-        $poi = Cache::remember('url_'.$url, 20, function () use ($url) {
-
+        $poi = Cache::remember('single_poi_'.$url, 20, function () use ($url) {
         $poi=Pois::where('url', $url)->firstOrFail();
-        if (count($poi->locations)==0) { $this->make_pois_geocodes($poi);$poi=Pois::firstWhere('url', $url);}
+        if (count($poi->locations)==0) {
+          $this->make_pois_geocodes($poi);
+          $poi=Pois::firstWhere('url', $url);
+        }
         $poi->photos=explode(",",$poi->photos);
         return $poi;
         //remember
@@ -59,10 +61,72 @@ class PoisController extends Controller
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));
     }
-    public function single_edit($url)
+    public function single_edit($id,Request $request)
     {
-        $poi=Pois::firstWhere('url', $url);
-        if (auth()->user()!==null and auth()->user()->id==$poi->owner) return view('poi_secure', compact('poi'));
+        $poi=Pois::find($id);
+        if (auth()->user()!==null and auth()->user()->id==$poi->user_id) {
+
+            if ($request->isMethod('post')) {
+            $validated = $request->validate([
+                'name'  => 'required|min:5|max:255|unique:pois',
+                'lat'  => 'required',
+                'lng'  => 'required',
+                'description'  => '',
+            ]);
+            $images = $request->file('photos');
+            if ($request->hasFile('photos')) :
+            foreach ($images as $file):
+            $arr[] =$file->store('public');
+            endforeach;
+            $image = implode(",", $arr);
+            else:
+                    $image = '';
+            endif;
+            if ($validated and Auth::check()) {
+
+                $poi->name=$request->get('title');
+
+                $poi->url=Str::slug($request->get('title'), '_');
+
+                $poi->description=$request->get('description');
+                $poi->category=$request->get('category');
+                $poi->prim=$request->get('prim');
+                $poi->route=$request->get('route');
+                $poi->route_o=$request->get('route_o');
+                $poi->video=$request->get('video');
+                $poi->lat=$request->get('lat');
+                $poi->lng=$request->get('lng');
+                $poi->photos=$image;
+                $poi->save();
+
+                $poi->locations()->detach();
+                $poi->tags()->detach();
+                if (is_array($request->tags)) foreach ($request->tags as $tag) {
+                  $tag=Tags::find($tag);
+                  $poi->tags()->save($tag);
+                }
+
+                Cache::forget('single_poi_'.$poi->url);
+                return redirect()->route('secure');
+            }
+
+        }
+        else {
+          //not post - edit form
+
+          $poi=Pois::find($id);
+          $checked_tags=array();
+          foreach ($poi->tags as $tag) {
+            $checked_tags[]=$tag->id;
+          }
+
+
+          return view('poi_edit', compact('poi','checked_tags'));
+        }
+
+
+
+      }
         else return redirect()->route('single-poi', $poi->url);
     }
 
@@ -271,7 +335,7 @@ public function store(Request $request)
 
     // валидация формы
     $validated = $request->validate([
-        'title'  => 'required|min:5|max:255',
+        'name'  => 'required|min:5|max:255|unique:pois',
         'lat'  => 'required',
         'lng'  => 'required',
         'description'  => '',
@@ -287,6 +351,7 @@ public function store(Request $request)
             $image = '';
     endif;
     if ($validated and Auth::check()) {
+
       $new_poi=Pois::create([
         'name' => $request->get('title'),
         'url'=> Str::slug($request->get('title'), '_'),
@@ -301,9 +366,13 @@ public function store(Request $request)
         'lat'=>$request->get('lat'),
         'lng'=>$request->get('lng'),
         'photos'=>$image,
-
-
       ]);
+
+      if (is_array($request->tags)) foreach ($request->tags as $tag) {
+        $tag=Tags::find($tag);
+        $new_poi->tags()->save($tag);
+      }
+
     }
 
 

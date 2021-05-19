@@ -23,7 +23,10 @@ Route::get('/tag/{url}', 'App\Http\Controllers\PoisController@tag')->name('tag')
 Route::get('/user/{url}', 'App\Http\Controllers\PoisController@user')->name('user');
 Route::get('/place/{url}', 'App\Http\Controllers\PoisController@single')->name('single-poi');
 Route::get('/place/', 'App\Http\Controllers\PoisController@single')->name('pois');
-Route::get('/edit/{url}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit');
+
+Route::get('/edit/{id}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit');
+Route::post('/edit/{id}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit-post');
+
 Route::post('/hide/{url}', 'App\Http\Controllers\PoisController@hide')->name('poi-hide');
 Route::post('/show/{url}', 'App\Http\Controllers\PoisController@show')->name('poi-show');
 Route::post('/delete/{url}', 'App\Http\Controllers\PoisController@delete')->name('poi-delete');
