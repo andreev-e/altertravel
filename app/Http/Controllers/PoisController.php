@@ -193,7 +193,7 @@ class PoisController extends Controller
         $users=$all[10];
         unset($all);
 
-        /*
+
         foreach ($users->data as $value) {
           if ($value->publications>0 and strlen($value->email)>0)
           $tmp=User::firstOrCreate([
@@ -224,9 +224,7 @@ class PoisController extends Controller
           unset($tags);
         $echo.='Tags ok';
 
-
         foreach ($poi->data as $value) {
-          //dd($value);
           $user=User::where('login','=',$value->author)->first();
           if (isset($user)) $user_id=$user->id; else $user_id=8;
           if ($value->lat!=0 and $value->lng!=0) $tmp=Pois::create([
@@ -251,10 +249,9 @@ class PoisController extends Controller
         }
           unset($poi);
         $echo.='Poi ok';
-        */
+
 
         foreach ($relationship->data as $value) {
-          //dd($value);
           $poi=Pois::where('old_id','=',$value->POSTID)->first();
           $tag=Tags::where('old_id','=',$value->TAGID)->first();
           if (isset($tag) and isset($poi)) $tag->pois()->save($poi);
@@ -264,8 +261,6 @@ class PoisController extends Controller
           unset($relationship);
         $echo.='Relationship ok';
 
-
-        //dd($all);
         return view('import',compact('echo'));
       }
 ////////////////actions////////////////////////
