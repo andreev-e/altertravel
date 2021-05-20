@@ -380,7 +380,7 @@ public function store(Request $request)
 
     return redirect()->route('secure');
 
-} else return view('add');
+} else return view('poi_add');
 }
 
 
