@@ -51,6 +51,9 @@
             </li>
         @endif
         @if (Route::has('users'))
+            <li class="nav-item d-none d-md-block">
+                <span class="nav-link">|</span>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('users')}}">Авторы</a>
             </li>
@@ -62,7 +65,8 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('izbrannoye') }}"><i class="fa fa-star-o" aria-hidden="true"></i> {{ __('Избранное') }}</a>
             </li>
-            <li><span class="nav-link">|</span>
+            <li class="nav-item d-none d-md-block">
+              <span class="nav-link">|</span>
             </li>
         @endif
 
