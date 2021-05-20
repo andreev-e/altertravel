@@ -85,7 +85,7 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
         <td>
           <form id="hide{{$poi->id}}" action="{{ route('poi-hide', $poi->id) }}" method="post">
           @csrf
-          <button type="submit" class="btn btn-outline-success" title="Скрыть публикацию">
+          <button type="submit" class="btn btn-outline-secondary" title="Скрыть публикацию">
             <i class="fa fa-eye-slash" aria-hidden="true"></i>
           </button>
           </form>
@@ -95,7 +95,7 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
         <td>
           <form id="show{{$poi->id}}" action="{{ route('poi-show', $poi->id) }}" method="post">
             @csrf
-          <button type="submit" class="btn btn-outline-secondary" title="Опубликовать на сайте">
+          <button type="submit" class="btn btn-outline-success" title="Опубликовать на сайте">
             <i class="fa fa-eye" aria-hidden="true"></i>
           </button>
           </form>
@@ -113,7 +113,8 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
       </div>
       @endforeach
       </table>
-      {{$pois->render()}}
+      {{$pois->links()}}
+
     </div>
       @else
       <div class="col-12">

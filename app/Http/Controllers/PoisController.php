@@ -25,12 +25,12 @@ class PoisController extends Controller
 
   public function new()
   {
-      $pois=Pois::where('status','=',1)->orderby('created_at','desc')->simplePaginate(15);
+      $pois=Pois::where('status','=',1)->orderby('created_at','desc')->Paginate(15);
       return view('catalog', compact('pois'));
   }
   public function popular()
   {
-      $pois=Pois::where('status','=',1)->orderby('views','desc')->simplePaginate(15);
+      $pois=Pois::where('status','=',1)->orderby('views','desc')->Paginate(15);
       return view('catalog', compact('pois'));
   }
     public function catalog()
@@ -41,7 +41,7 @@ class PoisController extends Controller
     public function secure_index()
     {
         $pois=array();
-        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->orderbyDESC('updated_at')->simplePaginate(5);
+        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->orderbyDESC('updated_at')->Paginate(10);
         return view('secure', compact('pois'));
     }
     public function single($url)
@@ -84,7 +84,7 @@ class PoisController extends Controller
             endif;
 
             if ($validated and Auth::check()) {
-                
+
                 $poi->name=$request->get('name');
                 $poi->url=Str::slug($request->get('name'), '_');
                 $poi->description=$request->get('description');
