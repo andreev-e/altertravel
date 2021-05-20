@@ -13,6 +13,8 @@ window.onload = function() {
    });
    var marker_count=0;
 
+   placeMarker(new google.maps.LatLng(55.7499172, 37.6199341));
+
        function populateInputs(pos) {
            document.getElementById("currentmarkerlat").value=pos.lat()
            document.getElementById("currentmarkerlng").value=pos.lng();
