@@ -31,7 +31,10 @@ Route::post('/hide/{url}', 'App\Http\Controllers\PoisController@hide')->name('po
 Route::post('/show/{url}', 'App\Http\Controllers\PoisController@show')->name('poi-show');
 Route::post('/delete/{url}', 'App\Http\Controllers\PoisController@delete')->name('poi-delete');
 Route::get('/secure', 'App\Http\Controllers\PoisController@secure_index')->name('secure');
-Route::post('/secure/add', 'App\Http\Controllers\PoisController@store')->name('add');
+
+Route::get('/secure/add', 'App\Http\Controllers\PoisController@store')->name('add');
+Route::post('/secure/add', 'App\Http\Controllers\PoisController@store');
+
 Route::get('/json/poi.json', 'App\Http\Controllers\PoisController@poi_json')->name('poi_json');
 
 Route::get('/users', 'App\Http\Controllers\UsersController@list')->name('users');

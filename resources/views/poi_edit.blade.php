@@ -13,6 +13,8 @@ window.onload = function() {
    });
    var marker_count=0;
 
+   placeMarker(new google.maps.LatLng({{$poi->lat}}, {{$poi->lng}}));
+
        function populateInputs(pos) {
            document.getElementById("currentmarkerlat").value=pos.lat()
            document.getElementById("currentmarkerlng").value=pos.lng();
@@ -54,7 +56,7 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
   @guest
   <p>Вы не авторизованы
   @else
-  <h1>Страница редактирования объекта &laquo;{{$poi->name}}&raquo;</h1>
+  <h1>Страница редактирования объекта</h1>
   @if ($errors->any())
   <div class="alert alert-danger">
       <ul>
@@ -65,7 +67,7 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
   </div>
   @endif
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12">
           <form method="POST" action="{{route('single-poi-edit-post', $poi->id)}}" enctype="multipart/form-data">
               @csrf
               <div class="form-group">

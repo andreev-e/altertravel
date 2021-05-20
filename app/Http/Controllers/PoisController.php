@@ -41,7 +41,7 @@ class PoisController extends Controller
     public function secure_index()
     {
         $pois=array();
-        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->orderbyDESC('updated_at')->simplePaginate(15);
+        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->orderbyDESC('updated_at')->simplePaginate(5);
         return view('secure', compact('pois'));
     }
     public function single($url)
@@ -68,7 +68,7 @@ class PoisController extends Controller
 
             if ($request->isMethod('post')) {
             $validated = $request->validate([
-                'name'  => 'required|min:5|max:255|unique:pois',
+                'name'  => 'required|min:5|max:255|unique:pois,name,'.$poi->id,
                 'lat'  => 'required',
                 'lng'  => 'required',
                 'description'  => '',
@@ -82,12 +82,11 @@ class PoisController extends Controller
             else:
                     $image = '';
             endif;
+
             if ($validated and Auth::check()) {
-
-                $poi->name=$request->get('title');
-
-                $poi->url=Str::slug($request->get('title'), '_');
-
+                
+                $poi->name=$request->get('name');
+                $poi->url=Str::slug($request->get('name'), '_');
                 $poi->description=$request->get('description');
                 $poi->category=$request->get('category');
                 $poi->prim=$request->get('prim');
@@ -330,7 +329,7 @@ foreach ($file as $location) {
 
 public function store(Request $request)
 {
-  // выполнять код, если есть POST-запрос
+    // выполнять код, если есть POST-запрос
     if ($request->isMethod('post')) {
 
     // валидация формы
@@ -352,9 +351,10 @@ public function store(Request $request)
     endif;
     if ($validated and Auth::check()) {
 
+
       $new_poi=Pois::create([
-        'name' => $request->get('title'),
-        'url'=> Str::slug($request->get('title'), '_'),
+        'name' => $request->get('name'),
+        'url'=> Str::slug($request->get('name'), '_'),
         'user_id'=>auth()->user()->id,
         'status'=>1,
         'description'=>$request->get('description'),
@@ -380,7 +380,7 @@ public function store(Request $request)
 
     return redirect()->route('secure');
 
-}
+} else return view('add');
 }
 
 
