@@ -25,7 +25,6 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        @if (Route::has('catalog'))
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Страны
@@ -36,7 +35,6 @@
             @endforeach
           </ul>
         </li>
-        @endif
         @if (Route::has('new'))
             <li class="nav-item">
                 <a class="nav-link" href="{{route('new')}}">Новое</a>
@@ -47,6 +45,11 @@
                 <a class="nav-link" href="{{route('popular')}}">Популярное</a>
             </li>
         @endif
+        @if (Route::has('routes'))
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('routes')}}">Маршруты</a>
+            </li>
+        @endif
         @if (Route::has('users'))
             <li class="nav-item">
                 <a class="nav-link" href="{{route('users')}}">Авторы</a>
@@ -54,6 +57,15 @@
         @endif
       </ul>
       <ul class="navbar-nav d-flex">
+
+        @if (Route::has('izbrannoye'))
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('izbrannoye') }}"><i class="fa fa-star-o" aria-hidden="true"></i> {{ __('Избранное') }}</a>
+            </li>
+            <li><span class="nav-link">|</span>
+            </li>
+        @endif
+
         @guest
             @if (Route::has('login'))
                 <li class="nav-item">

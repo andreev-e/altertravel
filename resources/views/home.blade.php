@@ -53,8 +53,8 @@ function loadPointsfomJSON() {
     var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
     bindInfoWindow(marker, map, infowindow, details);
     i=i+1;
-        if (i<=6) $('#shown_on_map ').append('<div class="col-sm-2"><div class="card"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div>  <a href="{{ route('pois') }}/'+data.url+'" class="btn btn-primary">Смотреть</a></div></div></div>');
-     
+        if (i<=6) $('#shown_on_map ').append('<div class="col-sm-2"><div class="card"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div>  <a href="{{ route('poi') }}/'+data.url+'" class="btn btn-primary">Смотреть</a></div></div></div>');
+
   });
 });
 }

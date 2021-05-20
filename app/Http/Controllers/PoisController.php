@@ -28,25 +28,26 @@ class PoisController extends Controller
       $pois=Pois::where('status','=',1)->orderby('created_at','desc')->Paginate(15);
       return view('catalog', compact('pois'));
   }
+
   public function popular()
   {
       $pois=Pois::where('status','=',1)->orderby('views','desc')->Paginate(15);
       return view('catalog', compact('pois'));
   }
-    public function catalog()
-    {
-        $pois=Pois::where('status','=',1)->get();
-        return view('catalog', compact('pois'));
-    }
+
+  public function izbrannoye()
+  {
+      return view('izbrannoye');
+  }
+
     public function secure_index()
     {
         $pois=array();
         if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->orderbyDESC('updated_at')->Paginate(10);
         return view('secure', compact('pois'));
     }
-    public function single($url)
+    public function single_place($url)
     {
-
         $poi = Cache::remember('single_poi_'.$url, 20, function () use ($url) {
         $poi=Pois::where('url', $url)->firstOrFail();
         if (count($poi->locations)==0) {
@@ -55,7 +56,6 @@ class PoisController extends Controller
         }
         $poi->photos=explode(",",$poi->photos);
         return $poi;
-        //remember
         });
         $poi->increment('views');
         if (auth()->user()!==null) return view('poi', compact('poi'));
