@@ -9,7 +9,7 @@ window.onload = function()
 {
     map = new google.maps.Map(document.getElementById("map"),
     {
-      center: new google.maps.LatLng(﻿54.96667, 73.38333), zoom: 4
+      center: new google.maps.LatLng(﻿54.96667, 73.38333), zoom: 4, gestureHandling: 'greedy'
     });
 
 function bindInfoWindow(marker, map, infowindow, strDescription) {
@@ -36,6 +36,7 @@ function clearOverlays() {
 function loadPointsfomJSON() {
   var i=0;
   clearOverlays();
+  $("#tags").children().hide();
   var bounds = map.getBounds();
   var url=json_url+'?mne=' + bounds.getNorthEast().toUrlValue() + '&msw=' + bounds.getSouthWest().toUrlValue();
 
@@ -54,6 +55,11 @@ function loadPointsfomJSON() {
     bindInfoWindow(marker, map, infowindow, details);
     i=i+1;
         if (i<=6) $('#shown_on_map ').append('<div class="col-sm-2"><div class="card"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div>  <a href="{{ route('poi') }}/'+data.url+'" class="btn btn-primary">Смотреть</a></div></div></div>');
+
+        data.tags.forEach(function(item, i, arr) {
+          $('[data-tag_id="'+item.id+'"]').show();
+        });
+
 
   });
 });
@@ -84,7 +90,7 @@ google.maps.event.addListener(map, 'idle', function() {
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container text-center">
   <h1>Карта достопримечательностей</h1>
 </div>
 <div class="container-fluid">
@@ -92,9 +98,17 @@ google.maps.event.addListener(map, 'idle', function() {
   <div class="map" id="map"></div>
   </div>
 </div>
+<div class="container-fluid mt-3 text-center">
+  <h2>Метки</h2>
+  <div class="col-12 " id="tags">
+    @foreach ($tags as $tag)
+    <a href="{{route('tag',$tag->url)}}" data-tag_id="{{$tag->id}}">{{$tag->name}}</a>
+    @endforeach
+  </div>
+</div>
 <div class="container-fluid mt-3">
          <div  class="row" id="shown_on_map" >
-  @foreach ($pois as $key => $poi)
+  @foreach ($pois as $poi)
     <div class="col-sm-2">
       <div class="card">
          <img class="card-img-top" src="{{ $poi->photo }}" alt="{{ $poi->name }}">

@@ -10,7 +10,7 @@ window.onload = function()
 {
     map = new google.maps.Map(document.getElementById("map"),
     {
-      center: new google.maps.LatLng(﻿{{$poi->lat}}, {{$poi->lng}}), zoom: 10
+      center: new google.maps.LatLng(﻿{{$poi->lat}}, {{$poi->lng}}), zoom: 10, gestureHandling: 'greedy'
     });
 
 function bindInfoWindow(marker, map, infowindow, strDescription) {

@@ -1,50 +1,5 @@
 @push('scripts')
-<script type="text/javascript">
 
-
-window.onload = function() {
-
-   map = new google.maps.Map(document.getElementById('map_guide'), {
-   zoom: 6,
-   center: new google.maps.LatLng(55.7499172, 37.6199341),
-   mapTypeId: google.maps.MapTypeId.ROADMAP,
-   draggingCursor: 'crosshair',
-   draggableCursor: 'pointer',
-   });
-   var marker_count=0;
-
-       function populateInputs(pos) {
-           document.getElementById("currentmarkerlat").value=pos.lat()
-           document.getElementById("currentmarkerlng").value=pos.lng();
-       }
-
-myListener = google.maps.event.addListener(map, 'click', function(event) {
-
-           if (marker_count<1) { placeMarker(event.latLng);
-             marker_count++;
-             google.maps.event.removeListener(myListener);
-           }
-       });
-
-
-       function placeMarker(location) {
-         var marker = new google.maps.Marker({
-             position: new google.maps.LatLng(55.7499172, 37.6199341),
-             map: map,
-             draggable: true
-         });
-           map.setCenter(location);
-           var markerPosition = marker.getPosition();
-           populateInputs(markerPosition);
-           google.maps.event.addListener(marker, "drag", function (mEvent) {
-               populateInputs(mEvent.latLng);
-           });
-       }
-
-
-
-     }
-</script>
 @endpush
 
 @extends('layouts.app')

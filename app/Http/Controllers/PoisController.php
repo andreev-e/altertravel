@@ -20,7 +20,8 @@ class PoisController extends Controller
   public function index()
   {
       $pois=Pois::where('status','=',1)->limit(6)->get();
-      return view('home', compact('pois'));
+      $tags=Tags::orderby('name','ASC')->get();
+      return view('home', compact('pois','tags'));
   }
 
   public function new()
@@ -171,9 +172,9 @@ class PoisController extends Controller
            ['lat', '<=', $nelat-$latreduce],
            ['lng', '<=', $nelng-$lngreduce],
            ['lng', '>=', $swlng+$lngreduce]
-         ])->orderby('views','DESC')->limit(100)->get();
+         ])->with('tags')->orderby('views','DESC')->limit(100)->get();
       }
-        else $pois=Pois::where('status','=',1)->orderby('views','DESC')->limit(100)->get();
+        else $pois=null;
         return json_encode($pois);
       }
 
