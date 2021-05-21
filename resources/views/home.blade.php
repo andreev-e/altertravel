@@ -86,6 +86,7 @@ google.maps.event.addListener(map, 'idle', function() {
 
     </script>
 @endpush
+@section('title')Альтернативный путеводитель @endsection
 
 @extends('layouts.app')
 

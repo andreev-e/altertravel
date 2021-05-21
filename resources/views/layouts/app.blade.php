@@ -18,7 +18,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
   <div class="container">
     <a class="navbar-brand" href="{{ url('/') }}">
-        <img src="{{ route('/') }}/i/l.png" alt="Альтернативный путеводитель">Альтернативный путеводитель
+        <img src="{{ route('/') }}/i/l.png" alt="Альтернативный путеводитель">
+        Altertravel.ru
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -51,12 +52,13 @@
             </li>
         @endif
         @if (Route::has('users'))
-            <li class="nav-item d-none d-md-block">
+            <li class="nav-item d-none d-xl-block">
                 <span class="nav-link">|</span>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('users')}}">Авторы</a>
             </li>
+            <hr>
         @endif
       </ul>
       <ul class="navbar-nav d-flex">
@@ -65,7 +67,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('izbrannoye') }}"><i class="fa fa-star-o" aria-hidden="true"></i> {{ __('Избранное') }}</a>
             </li>
-            <li class="nav-item d-none d-md-block">
+            <li class="nav-item d-none d-xl-block">
               <span class="nav-link">|</span>
             </li>
         @endif

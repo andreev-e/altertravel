@@ -73,7 +73,7 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 @endpush
 @extends('layouts.app')
 
-@section('title'){!!$poi->name!!}@endsection
+@section('title'){!!$poi->name!!}, {{$poi->locations[count($poi->locations)-1]->name}}@endsection
 
 @section('content')
 

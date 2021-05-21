@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title')Каталог - Альтернативный путеводитель @endsection
 @section('content')
 <div class="container">
   <h1>Каталог</h1>
@@ -8,7 +8,7 @@
     <div class="col-sm-4"><a href="{{ route('single-poi', $poi->url) }}">{{ $poi->name }}</a></div>
 @endforeach
 </div>
-{{$pois->render()}}
+{{$pois->links()}}
 </div>
 
 @endsection
