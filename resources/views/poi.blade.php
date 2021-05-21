@@ -26,24 +26,24 @@
       var url=json_url+'?mne=' + bounds.getNorthEast().toUrlValue() + '&msw=' + bounds.getSouthWest().toUrlValue();
 
       $.getJSON(url, function(json) {
-      $.each(json, function (key, data) {
-        var latLng = new google.maps.LatLng(data.lat, data.lng);
-        var details = "<p>"+data.name+"<br><a target='_blank' href='{{route('poi')}}/"+data.url+"'>подробнее</a>";
-        var marker = new google.maps.Marker({
-            position: latLng, map: map, icon: icon,
-            title: data.name
-        });
+        $.each(json, function (key, data) {
+          var latLng = new google.maps.LatLng(data.lat, data.lng);
+          var details = "<p>"+data.name+"<br><a target='_blank' href='{{route('poi')}}/"+data.url+"'>подробнее</a>";
+          var marker = new google.maps.Marker({
+              position: latLng, map: map, icon: icon,
+              title: data.name
+          });
 
-        if (data.lat==﻿'{{$poi->lat}}' && data.lng=='{{$poi->lng}}') {
-        marker.icon=icon_this;
-        marker.title=data.name;
-        bindInfoWindow(marker, map, infowindow, data.name, true);
+          if (data.lat==﻿'{{$poi->lat}}' && data.lng=='{{$poi->lng}}') {
+          marker.icon=icon_this;
+          marker.title=data.name;
+          bindInfoWindow(marker, map, infowindow, data.name, true);
 
-      } else bindInfoWindow(marker, map, infowindow, details, false);
+        } else bindInfoWindow(marker, map, infowindow, details, false);
 
-        markersArray.push(marker);
-        });
-    });
+          markersArray.push(marker);
+          });
+      });
     }
 
     function clearOverlays() {
