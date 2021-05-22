@@ -170,7 +170,7 @@ class PoisController extends Controller
            ['lat', '<=', $nelat],
            ['lng', '<=', $nelng],
            ['lng', '>=', $swlng]
-         ])->with('tags')->orderby('views','DESC')->limit(500)->get();
+         ])->with('tags')->orderby('views','DESC')->limit(300)->get();
       }
         else $pois=null;
         return json_encode($pois);
