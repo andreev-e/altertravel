@@ -47,4 +47,7 @@ Route::get('/json/poi.json', 'App\Http\Controllers\PoisController@poi_json')->na
 
 Route::get('/users', 'App\Http\Controllers\UsersController@list')->name('users');
 
-Route::get('/import', 'App\Http\Controllers\PoisController@import')->name('import');
+
+//service tools
+Route::get('/service/import', 'App\Http\Controllers\ServiceController@import')->name('import');
+Route::get('/service/clusterize', 'App\Http\Controllers\ServiceController@clusterize')->name('clusterize');

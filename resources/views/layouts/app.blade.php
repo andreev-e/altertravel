@@ -90,11 +90,22 @@
                     Мои публикации
                 </a>
                 </li>
-                <li class="nav-item">
+            @if (Auth::user()->id==28)
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="servicemenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Сервис
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="servicemenu">
+                  <li><a class="dropdown-item" href="{{route('import')}}">Импорт</a></li>
+                  <li><a class="dropdown-item" href="{{route('clusterize')}}">Построение кластеров</a></li>
+              </ul>
+            </li>
+            @endif
+            <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}"
                        onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();">
-                        {{ __('(Выход)') }}
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf

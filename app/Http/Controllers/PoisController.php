@@ -172,98 +172,14 @@ class PoisController extends Controller
            ['lat', '<=', $nelat-$latreduce],
            ['lng', '<=', $nelng-$lngreduce],
            ['lng', '>=', $swlng+$lngreduce]
-         ])->with('tags')->orderby('views','DESC')->limit(100)->get();
+         ])->with('tags')->orderby('views','DESC')->limit(500)->get();
       }
         else $pois=null;
         return json_encode($pois);
       }
 
 
-      public function import() {
-        $echo='';
-
-        $all=json_decode(file_get_contents (__DIR__.'/import/all.json'));
-        $chekins=$all[2];
-        $comments=$all[3];
-        $edits=$all[4];
-        $poi=$all[5];
-        $relationship=$all[6];
-        $routes=$all[7];
-        $route_comments=$all[8];
-        $tags=$all[9];
-        $users=$all[10];
-        unset($all);
-
-
-        foreach ($users->data as $value) {
-          if ($value->publications>0 and strlen($value->email)>0)
-          $tmp=User::firstOrCreate([
-            'name' => $value->firstname." ".$value->lastname,
-            'email' => $value->email,
-            'login' => $value->username,
-            'site' => $value->homepage,
-            'about' => $value->about,
-            'old_password' => $value->password,
-            'password' => Hash::make($value->password),
-            'publications' => $value->publications,
-          ]);
-        }
-
-        unset($users);
-        $echo.='User ok';
-
-        foreach ($tags->data as $value) {
-
-          if ( $value->TYPE==0) $tmp=Tags::firstOrCreate([
-            'name' => $value->NAME,
-            'url' => Str::slug($value->NAME, '_'),
-            'name_rod' =>$value->NAME_ROD,
-            'old_id'=>$value->ID,
-            'count'=>$value->COUNT,
-          ]);
-        }
-          unset($tags);
-        $echo.='Tags ok';
-
-        foreach ($poi->data as $value) {
-          $user=User::where('login','=',$value->author)->first();
-          if (isset($user)) $user_id=$user->id; else $user_id=8;
-          if ($value->lat!=0 and $value->lng!=0) $tmp=Pois::create([
-            'old_id'=>$value->id,
-            'name' => $value->name,
-            'user_id' => $user_id,
-            'url' => Str::slug($value->name, '_'),
-            'lat' =>$value->lat,
-            'lng' =>$value->lng,
-            'category'=>$value->type,
-            'description'=>$value->description,
-            'route'=>$value->route,
-            'category'=>$value->type,
-            'views'=>$value->views,
-            'status'=>$value->show,
-            'prim'=>$value->addon,
-            'video'=>$value->ytb,
-            'links'=>$value->links,
-            'copyright'=>$value->copyright,
-            'dominatecolor'=>$value->dominatecolor,
-          ]);
-        }
-          unset($poi);
-        $echo.='Poi ok';
-
-
-        foreach ($relationship->data as $value) {
-          $poi=Pois::where('old_id','=',$value->POSTID)->first();
-          $tag=Tags::where('old_id','=',$value->TAGID)->first();
-          if (isset($tag) and isset($poi)) $tag->pois()->save($poi);
-
-
-        }
-          unset($relationship);
-        $echo.='Relationship ok';
-
-        return view('import',compact('echo'));
-      }
+    
 ////////////////actions////////////////////////
 
 
@@ -277,15 +193,14 @@ if ($curl = curl_init()) {
     curl_setopt($curl, CURLOPT_TIMEOUT, 10);
     curl_setopt($curl, CURLOPT_HEADER, false);
     curl_setopt($curl, CURLOPT_FRESH_CONNECT, FALSE);
-	//curl_setopt($curl, CURLOPT_COOKIE, "z=s:l:35.233:1364481482299; yandexuid=2371188181351687295; fuid01=50911c7f2786d98d.SDYHoFkoH5ZTRw0tjuM36403JpKEEfLpKLXPX3WW8cC7GsNOhJ_Ee7zP1Q1nQRehrlwPp-FTMoIN7QWgMgJY39eeV7QbZIfTbaROTwXI-PtE4WQlrzMrD6x8qBpwPoZ0; yabs-frequency=/4/U04F091RNL6O94nH/_R016fSI9m000R1z1Y-N4Zm0004F_08xbn8d0001u6uB3fGIGO9S03YN4YS0006aVGPFan8y0001Ci886vCI9m000LTV0YwF4Zm0007-xmCpZn8d0001Qr025umI9vlN21UC4ZnjAGiLYn8d0001Fiy6DdyIF0000P7N1Iry4cSydGGjV19d2G0897SIF0000QtM1L5t4Zm00073omeJTn9S0002gza2Hd0IRWIG1Zbl4Zm0004GL0GpRn8y00015OiB1MCIF0000MT31JvV4bm000AWZWiLMn8y00019KaB4biIF0000HE42n1R4Zm0005YEmOyLn9S0002Wo851LSIF0000Sm_1ZLN4bm0009eAGLFLn9S0002Oyi6C5CIF0000LZ922TJ4dm000C01PG0Fn9y0003IT882piIF0000LY002ax4dm000CRemP1En9y0003/; my=YycCAAEoBIDV4ABOkuAAUJXgAYzrNgEBAA==; L=bUApUVdLdFhFYENeUEJnYVcNW2BBRWB+fEoXNRReWBoEPwsFUjVRIE4DADlbOhAcXggsJA0gUQ0cRCMuUR5cdQ==.1365083248.9679.218643.dcccda9a0c27c562ee59a2af1cfcc2a8; yp=1680447863.sp.nd%3A50%3And%3A50%3And%3A50%3And%3A50%3And%3A50%3Alang%3A%21%3Aisnp%3A0%3Aprs%3A0; spravka=dD0xMzY0OTc2NDYxO2k9ODcuMjM4LjEwMC40NDt1PTEzNjQ5NzY0NjEzMDY3Njk1NDQ7aD1iMTU2NjdhOWRjZDI4N2MyODc0Y2RmM2Q5OTY1NTExZA==; ys=; Cookie_check=1; balance_cookie=eJwtyr0KwjAQAOA8jZsJCFYQihRdugluLiUk1^Ygf9xdWvv2Orh9w0ewYMmKmmICqVaCCiKVr8Z4JHCid5s9fDQ1Q7/LAgTeJItZd6dxfr2H4bFj9zxL1TXeXPI9h7Ldbap8aLEsmPsW5chAKzpQBPP094ReXb71lC8W"); // куки
     $file = curl_exec($curl);
 }
 $file=json_decode($file);
 $file=array_reverse($file->response->GeoObjectCollection->featureMember);
 $prev_loc=0;
-$exclude_kinds = array('street','house');
+$exclude_kinds = array('street','house','area','district');
 $prev_loc_name="";
-//dd($file);
+
 foreach ($file as $location) {
 
    if ($location->GeoObject->name==$prev_loc_name) continue;
