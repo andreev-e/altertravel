@@ -12,8 +12,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-
-
     public function pois()
     {
        return $this->hasMany(Pois::class);

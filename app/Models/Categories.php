@@ -14,4 +14,9 @@ class Categories extends Model
        return $this->hasMany(Pois::class);
     }
 
+    protected $fillable = [
+        'name',
+        'url',
+    ];
+
 }

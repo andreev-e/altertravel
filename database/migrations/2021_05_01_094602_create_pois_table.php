@@ -16,14 +16,15 @@ class CreatePoisTable extends Migration
         Schema::create('pois', function (Blueprint $table) {
             $table->id();
             $table->string('old_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->string('name');
             $table->string('url');
             $table->double('lat')->default('0');
             $table->double('lng')->default('0');
             $table->text('description')->nullable();
-            $table->string('category')->nullable();
             $table->text('prim')->nullable();
             $table->text('route')->nullable();
             $table->text('route_o')->nullable();

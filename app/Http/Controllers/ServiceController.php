@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Pois;
-use App\Models\Clusters;
+use App\Models\User;
+use App\Models\Locations;
+use App\Models\Tags;
+use App\Models\Categories;
+
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 
 class ServiceController extends Controller
 {
 
-  public function clusterize() {
-    $echo='<h2>Построение кластеров</h2>';
 
-    return view('service',compact('echo'));
-  }
   public function import() {
     $echo='<h2>Импорт</h2>';
 
@@ -31,10 +33,11 @@ class ServiceController extends Controller
     $users=$all[10];
     unset($all);
 
-
+    
     foreach ($users->data as $value) {
+
       if ($value->publications>0 and strlen($value->email)>0)
-      $tmp=User::firstOrCreate([
+        $tmp=User::firstOrCreate([
         'name' => $value->firstname." ".$value->lastname,
         'email' => $value->email,
         'login' => $value->username,
@@ -48,6 +51,7 @@ class ServiceController extends Controller
 
     unset($users);
     $echo.='User ok';
+
 
     foreach ($tags->data as $value) {
 
@@ -63,27 +67,29 @@ class ServiceController extends Controller
     $echo.='Tags ok';
 
     foreach ($poi->data as $value) {
-      $user=User::where('login','=',$value->author)->first();
-      if (isset($user)) $user_id=$user->id; else $user_id=8;
-      if ($value->lat!=0 and $value->lng!=0) $tmp=Pois::create([
-        'old_id'=>$value->id,
-        'name' => $value->name,
-        'user_id' => $user_id,
-        'url' => Str::slug($value->name, '_'),
-        'lat' =>$value->lat,
-        'lng' =>$value->lng,
-        'category'=>$value->type,
-        'description'=>$value->description,
-        'route'=>$value->route,
-        'category'=>$value->type,
-        'views'=>$value->views,
-        'status'=>$value->show,
-        'prim'=>$value->addon,
-        'video'=>$value->ytb,
-        'links'=>$value->links,
-        'copyright'=>$value->copyright,
-        'dominatecolor'=>$value->dominatecolor,
-      ]);
+
+      if ($value->lat!=0 and $value->lng!=0) {
+        $category=Categories::firstWhere('name','=',$value->type);
+        $user=User::firstWhere('login','=',$value->author);
+        $tmp=Pois::create([
+          'old_id'=>$value->id,
+          'name' => $value->name,
+          'user_id' => (is_object($user)?$user->id:8),
+          'category_id'=>(is_object($category)?$category->id:null),
+          'url' => Str::slug($value->name, '_'),
+          'lat' =>$value->lat,
+          'lng' =>$value->lng,
+          'description'=>$value->description,
+          'route'=>$value->route,
+          'views'=>$value->views,
+          'status'=>$value->show,
+          'prim'=>$value->addon,
+          'video'=>$value->ytb,
+          'links'=>$value->links,
+          'copyright'=>$value->copyright,
+          'dominatecolor'=>$value->dominatecolor,
+        ]);
+      }
     }
       unset($poi);
     $echo.='Poi ok';

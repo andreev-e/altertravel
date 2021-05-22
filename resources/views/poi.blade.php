@@ -81,6 +81,7 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
   <ul class="breadcrumbs">
     <li><a href="{{ route ('/') }}"><i class="fa fa-home" aria-hidden="true"></i></a>
     @foreach ($poi->locations as $location)<li><a href="{{ route ('location',$location->url) }}">{{ $location->name }}</a></li>@endforeach
+    <li>{{$poi->category->name}}</li>
   </ul>
   <h1>{!!$poi->name!!}</h1>
   <p class="small">Автор публикации <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a>

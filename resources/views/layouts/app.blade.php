@@ -97,7 +97,6 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="servicemenu">
                   <li><a class="dropdown-item" href="{{route('import')}}">Импорт</a></li>
-                  <li><a class="dropdown-item" href="{{route('clusterize')}}">Построение кластеров</a></li>
               </ul>
             </li>
             @endif

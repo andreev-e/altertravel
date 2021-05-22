@@ -22,15 +22,19 @@ class Pois extends Model
        return $this->belongsTo(User::class);
     }
 
+    public function category()
+    {
+       return $this->belongsTo(Categories::class);
+    }
 
     protected $fillable = [
         'name',
         'url',
         'user_id',
+        'category_id',
         'old_id',
         'status',
         'description',
-        'category',
         'route',
         'route_o',
         'prim',

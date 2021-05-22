@@ -98,16 +98,9 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
               <div class="form-group">
                   <label for="category">Категория {{old('category')}}</label>
                   <select class="form-control @error('category') is-invalid @enderror" name="category">
-                      <option value="Архитектура" @if ($poi->category=='Архитектура' or old('category')=='Архитектура') selected @endif>Архитектура</option>
-                      <option value="Природа" @if ($poi->category=='Природа' or old('category')=='Природа') selected @endif>Природа</option>
-                      <option value="История/Культура"  @if ($poi->category=='История/Культура' or old('category')=='История/Культура') selected @endif>История/Культура</option>
-                      <option value="Техноген"  @if ($poi->category=='Техноген' or old('category')=='Техноген') selected @endif>Техноген</option>
-                      <option value="Музей"  @if ($poi->category=='Музей' or old('category')=='Музей') selected @endif>Музей</option>
-                      <option value="Памятник"  @if ($poi->category=='Памятник' or old('category')=='Памятник') selected @endif>Памятник</option>
-                      <option value="Ночлег"  @if ($poi->category=='Ночлег' or old('category')=='Ночлег') selected @endif>Ночлег</option>
-                      <option value="Еда"  @if ($poi->category=='Еда' or old('category')=='Еда') selected @endif>Еда</option>
-                      <option value="Покупки"  @if ($poi->category=='Покупки' or old('category')=='Покупки') selected @endif>Покупки</option>
-                      <option value="Развлечения"  @if ($poi->category=='Развлечения' or old('category')=='Развлечения') selected @endif>Развлечения</option>
+                    @foreach (App\Models\Categories::get() as $category)
+                    <option value="{{$category->url}}" @if (old('category')==$category->url or $poi->category->url==$category->url) selected @endif>{{$category->name}}</option>
+                    @endforeach
                   </select>
               </div>
               <div class="form-group">

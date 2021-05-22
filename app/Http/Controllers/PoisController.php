@@ -7,6 +7,7 @@ use App\Models\Pois;
 use App\Models\Tags;
 use App\Models\User;
 use App\Models\Locations;
+use App\Models\Categories;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
@@ -44,9 +45,10 @@ class PoisController extends Controller
     public function secure_index()
     {
         $pois=array();
-        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->orderbyDESC('updated_at')->Paginate(10);
+        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->with('tags')->orderbyDESC('updated_at')->Paginate(10);
         return view('secure', compact('pois'));
     }
+    
     public function single_place($url)
     {
         $poi = Cache::remember('single_poi_'.$url, 20, function () use ($url) {
@@ -170,10 +172,22 @@ class PoisController extends Controller
            ['lat', '<=', $nelat],
            ['lng', '<=', $nelng],
            ['lng', '>=', $swlng]
-         ])->with('tags')->orderby('views','DESC')->limit(300)->get();
+         ])->with('tags')->orderby('views','DESC')->limit(500)->get();
       }
         else $pois=null;
-        return json_encode($pois);
+
+        $responce=[];
+        foreach ($pois as $poi) {
+          $point['lat']=$poi->lat;
+          $point['lng']=$poi->lng;
+          $point['name']=$poi->name;
+          $point['tags']=$poi->tags;
+          $point['url']=$poi->url;
+          $point['icon']='marker1_5.png';
+          $point['photo']=$poi->photo;
+          $responce[]=$point;
+        }
+        return json_encode($responce);
       }
 
 

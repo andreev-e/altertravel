@@ -29,7 +29,7 @@
           <a  target="_blank" href="{{ route('single-poi', $poi->url) }}"><i class="fa fa-external-link" aria-hidden="true"></i></a>
         </td>
         <td>
-          {{ $poi->category }}
+          {{ ($poi->category->name) }}
         </td>
         <td>
           @foreach ($poi->tags as $tag)

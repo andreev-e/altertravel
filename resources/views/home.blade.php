@@ -42,7 +42,7 @@
         var marker = new google.maps.Marker({
             position: latLng,
             map: map,
-            icon: icon,
+            icon: '/i/markers/'+data.icon,
             title: data.name
         });
         markersArray.push(marker);

@@ -99,16 +99,9 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
                 <div class="form-group">
                     <label for="category">Категория</label>
                     <select class="form-control @error('category') is-invalid @enderror" name="category">
-                        <option value="Архитектура">Архитектура</option>
-                        <option value="Природа">Природа</option>
-                        <option value="История/Культура">История/Культура</option>
-                        <option value="Техноген">Техноген</option>
-                        <option value="Музей">Музей</option>
-                        <option value="Памятник">Памятник</option>
-                        <option value="Ночлег">Ночлег</option>
-                        <option value="Еда">Еда</option>
-                        <option value="Покупки">Покупки</option>
-                        <option value="Развлечения">Развлечения</option>
+                        @foreach (App\Models\Categories::get() as $category)
+                        <option value="{{$category->url}}" @if (old('category')==$category->url) selected @endif>{{$category->name}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group">
