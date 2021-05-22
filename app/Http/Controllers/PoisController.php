@@ -48,7 +48,7 @@ class PoisController extends Controller
         if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->with('tags')->orderbyDESC('updated_at')->Paginate(10);
         return view('secure', compact('pois'));
     }
-    
+
     public function single_place($url)
     {
         $poi = Cache::remember('single_poi_'.$url, 20, function () use ($url) {
@@ -172,18 +172,21 @@ class PoisController extends Controller
            ['lat', '<=', $nelat],
            ['lng', '<=', $nelng],
            ['lng', '>=', $swlng]
-         ])->with('tags')->orderby('views','DESC')->limit(500)->get();
+         ])->with('tags')->with('user')->with('category')->orderby('views','DESC')->limit(200)->get();
+
       }
         else $pois=null;
 
         $responce=[];
         foreach ($pois as $poi) {
+          $marker='marker_1_.png';
+          if (is_object($poi->category)) $marker='marker_'.$poi->category->id.'_.png';
           $point['lat']=$poi->lat;
           $point['lng']=$poi->lng;
           $point['name']=$poi->name;
           $point['tags']=$poi->tags;
           $point['url']=$poi->url;
-          $point['icon']='marker1_5.png';
+          $point['icon']=$marker;
           $point['photo']=$poi->photo;
           $responce[]=$point;
         }

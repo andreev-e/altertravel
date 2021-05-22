@@ -3,6 +3,7 @@
 <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <script type="text/javascript">
     var icon = "/i/map_marker.png";
+    var shadow = "/i/new/marker_shadow.png";
     var json_url = "{{ route('poi_json') }}";
     var infowindow = new google.maps.InfoWindow();
     var markersArray = [];
@@ -43,6 +44,7 @@
             position: latLng,
             map: map,
             icon: '/i/markers/'+data.icon,
+            shadow: shadow,
             title: data.name
         });
         markersArray.push(marker);
@@ -61,10 +63,9 @@
 
 
       markerClusterer= new MarkerClusterer(map, markersArray, {
-          imagePath: "i/markers/pie",
+          imagePath: "/i/markers/pie",
       });
 
-      //console.log(markerClusterer);
 
     });
 

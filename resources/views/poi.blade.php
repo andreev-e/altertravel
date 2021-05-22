@@ -1,10 +1,13 @@
 @push('scripts')
+  <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <script type="text/javascript">
     var icon = "/i/map_marker.png";
+    var shadow = "/i/new/marker_shadow.png";
     var icon_this = "/i/map_marker_this.png";
     var json_url = "{{ route('poi_json') }}";
     var infowindow = new google.maps.InfoWindow();
     var markersArray = [];
+    var markerClusterer = null;
     var first=true; //
 
     function bindInfoWindow(marker, map, infowindow, strDescription, open) {
@@ -30,7 +33,10 @@
           var latLng = new google.maps.LatLng(data.lat, data.lng);
           var details = "<p>"+data.name+"<br><a target='_blank' href='{{route('poi')}}/"+data.url+"'>подробнее</a>";
           var marker = new google.maps.Marker({
-              position: latLng, map: map, icon: icon,
+              position: latLng,
+              map: map,
+              icon: '/i/markers/'+data.icon,
+              shadow: shadow,
               title: data.name
           });
 
@@ -43,12 +49,20 @@
 
           markersArray.push(marker);
           });
+
+          markerClusterer= new MarkerClusterer(map, markersArray, {
+              imagePath: "/i/markers/pie",
+          });
+
       });
     }
 
     function clearOverlays() {
-      for (var i = 0; i < markersArray.length; i++ ) {
-        markersArray[i].setMap(null);
+      markerClusterer = null;
+      if (markersArray) {
+        for (i in markersArray) {
+          markersArray[i].setMap(null);
+        }
       }
       markersArray.length = 0;
     }
@@ -60,7 +74,7 @@ window.onload = function()
 
     map = new google.maps.Map(document.getElementById("map"),
     {
-      center: new google.maps.LatLng(﻿{{$poi->lat}}, {{$poi->lng}}), zoom: 13, gestureHandling: 'greedy'
+      center: new google.maps.LatLng(﻿{{$poi->lat}}, {{$poi->lng}}), zoom: 16, gestureHandling: 'greedy'
     });
 
 google.maps.event.addListener(map, 'dragend', function() { loadPointsfomJSON(); });
