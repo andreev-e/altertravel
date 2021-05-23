@@ -7,7 +7,6 @@
     var json_url = "{{ route('poi_json') }}";
     var infowindow = new google.maps.InfoWindow();
     var markersArray = [];
-    var markerClusterer = null;
     var first=true; //
 
     function bindInfoWindow(marker, map, infowindow, strDescription) {
@@ -18,10 +17,10 @@
     }
 
     function clearOverlays() {
-      markerClusterer = null;
       if (markersArray) {
         for (i in markersArray) {
           markersArray[i].setMap(null);
+
         }
       }
       markersArray.length = 0;
@@ -60,12 +59,8 @@
 
       });
 
-
-
-      markerClusterer= new MarkerClusterer(map, markersArray, {
-          imagePath: "/i/markers/pie",
-      });
-
+      markerClusterer.clearMarkers();
+      markerClusterer.addMarkers(markersArray);
 
     });
 
@@ -75,7 +70,12 @@ window.onload = function()
 {
     map = new google.maps.Map(document.getElementById("map"),
     {
-      center: new google.maps.LatLng(﻿54.96667, 73.38333), zoom: 4, gestureHandling: 'greedy'
+      center: new google.maps.LatLng(55.7499172, 37.6199341), zoom: 9, gestureHandling: 'greedy'
+    });
+
+    markerClusterer= new MarkerClusterer(map, markersArray, {
+        imagePath: "/i/markers/pie",
+        zoomOnClick: false,
     });
 
 

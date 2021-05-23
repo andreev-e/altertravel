@@ -50,15 +50,13 @@
           markersArray.push(marker);
           });
 
-          markerClusterer= new MarkerClusterer(map, markersArray, {
-              imagePath: "/i/markers/pie",
-          });
+          markerClusterer.clearMarkers();
+          markerClusterer.addMarkers(markersArray);
 
       });
     }
 
     function clearOverlays() {
-      markerClusterer = null;
       if (markersArray) {
         for (i in markersArray) {
           markersArray[i].setMap(null);
@@ -75,6 +73,10 @@ window.onload = function()
     map = new google.maps.Map(document.getElementById("map"),
     {
       center: new google.maps.LatLng(﻿{{$poi->lat}}, {{$poi->lng}}), zoom: 16, gestureHandling: 'greedy'
+    });
+    markerClusterer= new MarkerClusterer(map, markersArray, {
+        imagePath: "/i/markers/pie",
+        zoomOnClick: false,
     });
 
 google.maps.event.addListener(map, 'dragend', function() { loadPointsfomJSON(); });
