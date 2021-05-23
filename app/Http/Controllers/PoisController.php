@@ -172,7 +172,7 @@ class PoisController extends Controller
            ['lat', '<=', $nelat],
            ['lng', '<=', $nelng],
            ['lng', '>=', $swlng]
-         ])->with('tags')->with('user')->with('category')->orderby('views','DESC')->limit(200)->get();
+         ])->with('tags')->with('user')->with('category')->orderby('views','DESC')->limit(500)->get();
 
       }
         else $pois=null;
