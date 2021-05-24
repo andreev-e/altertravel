@@ -69,10 +69,13 @@
                               <p class="h4">Вход через социальные сети</p>
                               @if (Route::has('oauth'))
                                 <a href="{{route('oauth','google')}}" class="btn btn-primary">
-                                    {{ __('Войти через Google') }}
+                                    <i class="fa fa-google" aria-hidden="true"></i>
                                 </a>
                                 <a href="{{route('oauth','facebook')}}" class="btn btn-primary">
-                                    {{ __('Войти через Facebook') }}
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                </a>
+                                <a href="{{route('oauth','yandex')}}" class="btn btn-primary">
+                                    Yandex
                                 </a>
                               @endif
                             </div>

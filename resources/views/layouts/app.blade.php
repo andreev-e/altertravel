@@ -65,10 +65,7 @@
 
         @if (Route::has('izbrannoye'))
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('izbrannoye') }}"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-            </li>
-            <li class="nav-item d-none d-xl-block">
-              <span class="nav-link">|</span>
+                <a class="nav-link" href="{{ route('izbrannoye') }}" title="Избранное"><i class="fa fa-star-o" aria-hidden="true"></i></a>
             </li>
         @endif
 
@@ -88,7 +85,7 @@
 
             <li class="nav-item">
                 <a  class="nav-link" href="{{ Route('secure') }}"  >
-                  <img width="20px" class="rounded  " src="{{Auth::user()->avatar}}" alt="ava"> <b>{{Auth::user()->name}}</b>: мои публикации
+                  <img width="20px" class="rounded  " src="{{Auth::user()->avatar}}" alt="ava"> <b>{{Auth::user()->name}}</b>: публикации
                 </a>
                 </li>
             @if (Auth::user()->email=='andreev-e@mail.ru')
@@ -97,7 +94,9 @@
                 Сервис
               </a>
               <ul class="dropdown-menu" aria-labelledby="servicemenu">
-                  <li><a class="dropdown-item" href="{{route('import')}}">Импорт</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','users')}}">Импорт пользователей</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','tags')}}">Импорт меток</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','poi')}}">Импорт точек</a></li>
               </ul>
             </li>
             @endif

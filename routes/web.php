@@ -52,5 +52,5 @@ Route::get('/auth/{provider}', 'App\Http\Controllers\Auth\LoginController@redire
 Route::get('/callback/{provider}', 'App\Http\Controllers\Auth\LoginController@handleProviderCallback');
 
 //service tools
-Route::get('/service/import', 'App\Http\Controllers\ServiceController@import')->name('import');
+Route::get('/service/import/{what}', 'App\Http\Controllers\ServiceController@import')->name('import');
 Route::get('/service/clusterize', 'App\Http\Controllers\ServiceController@clusterize')->name('clusterize');

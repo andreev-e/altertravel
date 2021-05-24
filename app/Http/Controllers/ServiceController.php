@@ -12,13 +12,15 @@ use App\Models\Categories;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 
 class ServiceController extends Controller
 {
 
 
-  public function import() {
+  public function import($what) {
     $echo='<h2>Импорт</h2>';
 
     $all=json_decode(file_get_contents (__DIR__.'/import/all.json'));
@@ -32,9 +34,12 @@ class ServiceController extends Controller
     $tags=$all[9];
     $users=$all[10];
     unset($all);
+    Schema::disableForeignKeyConstraints();
 
-    
-    foreach ($users->data as $value) {
+    if ($what=='users') {
+      User::query()->truncate();
+      Schema::enableForeignKeyConstraints();
+      foreach ($users->data as $value) {
 
       if ($value->publications>0 and strlen($value->email)>0)
         $tmp=User::firstOrCreate([
@@ -50,9 +55,12 @@ class ServiceController extends Controller
     }
 
     unset($users);
-    $echo.='User ok';
+    $echo.='Users ok';
+    }
 
-
+    if ($what=='tags') {
+    Tags::query()->truncate();
+    Schema::enableForeignKeyConstraints();
     foreach ($tags->data as $value) {
 
       if ( $value->TYPE==0) $tmp=Tags::firstOrCreate([
@@ -65,8 +73,12 @@ class ServiceController extends Controller
     }
       unset($tags);
     $echo.='Tags ok';
+    }
 
-    foreach ($poi->data as $value) {
+    if ($what=='poi') {
+      Pois::query()->truncate();
+      Schema::enableForeignKeyConstraints();
+      foreach ($poi->data as $value) {
 
       if ($value->lat!=0 and $value->lng!=0) {
         $category=Categories::firstWhere('name','=',$value->type);
@@ -93,6 +105,7 @@ class ServiceController extends Controller
     }
       unset($poi);
     $echo.='Poi ok';
+    }
 
 
     foreach ($relationship->data as $value) {
