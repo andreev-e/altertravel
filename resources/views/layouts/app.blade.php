@@ -65,7 +65,7 @@
 
         @if (Route::has('izbrannoye'))
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('izbrannoye') }}"><i class="fa fa-star-o" aria-hidden="true"></i> {{ __('Избранное') }}</a>
+                <a class="nav-link" href="{{ route('izbrannoye') }}"><i class="fa fa-star-o" aria-hidden="true"></i></a>
             </li>
             <li class="nav-item d-none d-xl-block">
               <span class="nav-link">|</span>
@@ -85,12 +85,13 @@
                 </li>
             @endif
         @else
+
             <li class="nav-item">
                 <a  class="nav-link" href="{{ Route('secure') }}"  >
-                    Мои публикации
+                  <img width="20px" class="rounded  " src="{{Auth::user()->avatar}}" alt="ava"> <b>{{Auth::user()->name}}</b>: мои публикации
                 </a>
                 </li>
-            @if (Auth::user()->id==28)
+            @if (Auth::user()->email=='andreev-e@mail.ru')
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="servicemenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Сервис

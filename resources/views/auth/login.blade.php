@@ -64,6 +64,19 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                              <p class="h4">Вход через социальные сети</p>
+                              @if (Route::has('oauth'))
+                                <a href="{{route('oauth','google')}}" class="btn btn-primary">
+                                    {{ __('Войти через Google') }}
+                                </a>
+                                <a href="{{route('oauth','facebook')}}" class="btn btn-primary">
+                                    {{ __('Войти через Facebook') }}
+                                </a>
+                              @endif
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

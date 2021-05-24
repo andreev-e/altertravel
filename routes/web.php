@@ -47,6 +47,9 @@ Route::get('/json/poi.json', 'App\Http\Controllers\PoisController@poi_json')->na
 
 Route::get('/users', 'App\Http\Controllers\UsersController@list')->name('users');
 
+///socualite
+Route::get('/auth/{provider}', 'App\Http\Controllers\Auth\LoginController@redirectToProvider')->name('oauth');
+Route::get('/callback/{provider}', 'App\Http\Controllers\Auth\LoginController@handleProviderCallback');
 
 //service tools
 Route::get('/service/import', 'App\Http\Controllers\ServiceController@import')->name('import');
