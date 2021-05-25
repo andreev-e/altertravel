@@ -129,9 +129,7 @@ class ServiceController extends Controller
       Schema::enableForeignKeyConstraints();
       foreach ($routes->data as $value) {
         $relationship=explode("|",$value->POINTS);
-        $relationshiparray_unique($relationship);
-        dump($relationship);
-        //$relationship = array_diff($relationship, array(''));
+        $relationship=array_unique($relationship);
         $user=User::firstWhere('login','=',$value->author);
         $name=trim(str_replace(array("'",'"',"&quot;","&laquo;","&raquo;"),'',$value->name));
       if (strlen($name)>0) {

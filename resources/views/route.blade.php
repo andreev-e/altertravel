@@ -39,6 +39,11 @@
 {{$route->links}}
 <h2>Комментари</h2>
 {{$route->comments}}
-</div>
 
+<h2>Точки</h2>
+@foreach ($route->pois as $poi)
+<a href="{{route('single-poi',$poi->url)}}">{{$poi->name}}</a><br>
+@endforeach
+</div>
+</div>
 @endsection

@@ -20,7 +20,7 @@ class Pois extends Model
 
     public function routes()
     {
-       return $this->belongsToMany(Routes::class);
+       return $this->belongsToMany(Routes::class, 'routes_pois');
     }
 
     public function user()
