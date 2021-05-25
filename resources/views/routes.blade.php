@@ -5,7 +5,7 @@
   <h1>Путешествия и маршруты</h1>
   <div class="row">
   @foreach ($routes as $route)
-    <div class="col-sm-4"><a href="{{ route('single-poi', $route->url) }}">{{ $route->name }}</a></div>
+    <div class="col-sm-4"><a href="{{ route('single-route', $route->url) }}">{{ $route->name }}</a></div>
 @endforeach
 </div>
 {{$routes->links()}}

@@ -17,6 +17,12 @@ class Pois extends Model
     {
        return $this->belongsToMany(Tags::class);
     }
+
+    public function routes()
+    {
+       return $this->belongsToMany(Routes::class);
+    }
+
     public function user()
     {
        return $this->belongsTo(User::class);

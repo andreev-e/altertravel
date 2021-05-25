@@ -41,11 +41,6 @@
                 <a class="nav-link" href="{{route('new')}}">Новое</a>
             </li>
         @endif
-        @if (Route::has('popular'))
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('popular')}}">Популярное</a>
-            </li>
-        @endif
         @if (Route::has('routes'))
             <li class="nav-item">
                 <a class="nav-link" href="{{route('routes')}}">Маршруты</a>
@@ -97,6 +92,8 @@
                   <li><a class="dropdown-item" href="{{route('import','users')}}">Импорт пользователей</a></li>
                   <li><a class="dropdown-item" href="{{route('import','tags')}}">Импорт меток</a></li>
                   <li><a class="dropdown-item" href="{{route('import','poi')}}">Импорт точек</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','routes')}}">Импорт маршрутов</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','rel')}}">Отношения точка тег</a></li>
               </ul>
             </li>
             @endif

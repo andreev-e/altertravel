@@ -31,12 +31,6 @@ class PoisController extends Controller
       return view('catalog', compact('pois'));
   }
 
-  public function popular()
-  {
-      $pois=Pois::where('status','=',1)->orderby('views','desc')->Paginate(15);
-      return view('catalog', compact('pois'));
-  }
-
   public function izbrannoye()
   {
       return view('izbrannoye');

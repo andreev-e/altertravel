@@ -17,7 +17,6 @@ Route::get('/', 'App\Http\Controllers\PoisController@index')->name('/');
 
 
 Route::get('/new', 'App\Http\Controllers\PoisController@new')->name('new');
-Route::get('/popular', 'App\Http\Controllers\PoisController@popular')->name('popular');
 Route::get('/izbrannoye', 'App\Http\Controllers\PoisController@izbrannoye')->name('izbrannoye');
 
 
@@ -27,7 +26,7 @@ Route::get('/user/{url}', 'App\Http\Controllers\PoisController@user')->name('use
 Route::get('/place/', 'App\Http\Controllers\PoisController@single_place')->name('poi');
 Route::get('/place/{url}', 'App\Http\Controllers\PoisController@single_place')->name('single-poi');
 
-Route::get('/route/{url}', 'App\Http\Controllers\PoisController@single_route')->name('single-route');
+Route::get('/route/{url}', 'App\Http\Controllers\RoutesController@single_route')->name('single-route');
 Route::get('/routes', 'App\Http\Controllers\RoutesController@routes')->name('routes');
 
 
