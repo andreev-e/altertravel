@@ -87,10 +87,19 @@ google.maps.event.addListener(map, 'idle', function() {
 <div class="container">
   <ul class="breadcrumbs">
   <li><a href="{{ route ('/') }}"><i class="fa fa-home" aria-hidden="true"></i></a>
-  @foreach ($breadcrumbs as $breadcrumb)<li><a href="{{ route('location', $breadcrumb['url']) }}">{{$breadcrumb['name']}}</a></li>@endforeach
-<li>{{$location->name}}</li>
+  @foreach ($breadcrumbs as $breadcrumb)<li><a href="{{ route('location', [$breadcrumb['url'],'']) }}">{{$breadcrumb['name']}}</a></li>@endforeach
+  @if (isset($category))
+  <li><a href="{{ route('location', [$location->url,'']) }}">{{$location->name}}</a></li>
+  <li>{{$category->name}}</li>
+  @else <li>{{$location->name}}</li>
+  @endif
+
 </ul>
   <h1>Достопримечательности {{$location->name}}</h1>
+
+  @foreach (App\Models\Categories::get() as $category)
+  <a href="{{ route('location',[$location->url,$category->url ]) }}">{{$category->name}}</a>
+  @endforeach
 </div>
 <div class="container-fluid">
   <div class="row">
@@ -104,6 +113,7 @@ google.maps.event.addListener(map, 'idle', function() {
     <div class="col-sm-4"><a href="{{ route('single-poi', $poi->url) }}">{{ $poi->name }}</a></div>
 @endforeach
 </div>
+{{$pois->links()}}
 </div>
 
 @endsection

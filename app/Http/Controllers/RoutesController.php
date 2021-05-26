@@ -11,13 +11,13 @@ class RoutesController extends Controller
 {
   public function routes()
   {
-      $routes=Routes::where('status','=',1)->orderby('created_at','desc')->Paginate(15);
+      $routes=Routes::where('status','=',1)->orderby('created_at','desc')->Paginate(env('OBJECTS_ON_PAGE',15));
       return view('routes', compact('routes'));
   }
 
   public function single_route($url)
   {
-      $route = Cache::remember('single_route_'.$url, 20, function () use ($url) {
+      $route = Cache::remember('single_route_'.$url, env('CACHE_TIME',60), function () use ($url) {
       $route=Routes::where('url', $url)->firstOrFail();
       $route->photos=explode(",",$route->photos);
       return $route;

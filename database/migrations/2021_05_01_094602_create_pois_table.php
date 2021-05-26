@@ -34,7 +34,7 @@ class CreatePoisTable extends Migration
             $table->string('photos')->nullable();
             $table->string('copyright')->nullable();
             $table->text('links')->nullable();;
-            $table->string('views')->default('0');
+            $table->unsignedBigInteger('views')->default('0');
             $table->string('dominatecolor')->default('#ffffff');
             $table->timestamps();
         });

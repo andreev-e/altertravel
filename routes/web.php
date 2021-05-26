@@ -16,11 +16,15 @@ Auth::routes();
 Route::get('/', 'App\Http\Controllers\PoisController@index')->name('/');
 
 
-Route::get('/new', 'App\Http\Controllers\PoisController@new')->name('new');
+Route::get('/catalog', 'App\Http\Controllers\PoisController@catalog')->name('catalog');
 Route::get('/izbrannoye', 'App\Http\Controllers\PoisController@izbrannoye')->name('izbrannoye');
 
 
-Route::get('/location/{url}', 'App\Http\Controllers\PoisController@location')->name('location');
+Route::get('/location/{url}/', 'App\Http\Controllers\PoisController@location_category')->name('location');
+Route::get('/location/{url}/{category}', 'App\Http\Controllers\PoisController@location_category')->name('location');
+Route::get('/category/{category}', 'App\Http\Controllers\PoisController@category')->name('category');
+
+
 Route::get('/tag/{url}', 'App\Http\Controllers\PoisController@tag')->name('tag');
 Route::get('/user/{url}', 'App\Http\Controllers\PoisController@user')->name('user');
 Route::get('/place/', 'App\Http\Controllers\PoisController@single_place')->name('poi');

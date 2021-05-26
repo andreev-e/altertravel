@@ -20,15 +20,27 @@ class PoisController extends Controller
 {
   public function index()
   {
-      $pois=Pois::where('status','=',1)->limit(6)->get();
+      $pois=Pois::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
       $tags=Tags::orderby('name','ASC')->get();
       return view('home', compact('pois','tags'));
   }
 
-  public function new()
+  public function catalog(Request $request)
   {
-      $pois=Pois::where('status','=',1)->orderby('created_at','desc')->Paginate(15);
-      return view('catalog', compact('pois'));
+      $sorts= array(
+        array('sort'=>'id.desc', 'name'=> 'Самые новые'),
+        array('sort'=>'id.asc', 'name'=> 'Самые старые'),
+        array('sort'=>'views.desc', 'name'=>'Самые популярные')
+      );
+      $table='id';
+      $direction='desc';
+      if (isset($request->sort))  {
+        $sort=explode('.',$request->sort);
+        $table=$sort[0];
+        $direction=$sort[1];
+      }
+      $pois=Pois::where('status','=',1)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+      return view('catalog', compact('pois','sorts','request'));
   }
 
   public function izbrannoye()
@@ -39,13 +51,13 @@ class PoisController extends Controller
     public function secure_index()
     {
         $pois=array();
-        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->with('tags')->orderbyDESC('updated_at')->Paginate(10);
+        if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->with('tags')->orderbyDESC('updated_at')->Paginate(env('OBJECTS_ON_PAGE',15));
         return view('secure', compact('pois'));
     }
 
     public function single_place($url)
     {
-        $poi = Cache::remember('single_poi_'.$url, 20, function () use ($url) {
+        $poi = Cache::remember('single_poi_'.$url, env('CACHE_TIME',60), function () use ($url) {
         $poi=Pois::where('url', $url)->firstOrFail();
         if (count($poi->locations)==0) {
           $this->make_pois_geocodes($poi);
@@ -126,14 +138,25 @@ class PoisController extends Controller
         else return redirect()->route('single-poi', $poi->url);
     }
 
-    public function location($url)
+
+    public function category($url)
     {
-        $location=Locations::firstWhere('url', $url);
-        $breadcrumbs=$this->get_parent_location($location->parent);
-        $pois=$location->pois()->where('status','=',1)->get();
+      dd('category');
+        $category=Categories::firstWhere('url', $url);
+        $breadcrumbs=null;
+        $pois=$category->pois()->where('status','=',1)->paginate(env('OBJECTS_ON_PAGE',15));
         return view('location', compact('pois','location','breadcrumbs'));
     }
 
+    public function location_category($url,$category=null)
+    {
+
+        $location=Locations::firstWhere('url', $url);
+        $category=Categories::firstWhere('url', $category);
+        $breadcrumbs=$this->get_parent_location($location->parent);
+        $pois=$location->pois()->where('status','=',1)->paginate(env('OBJECTS_ON_PAGE',15));
+        return view('location', compact('pois','location','category','breadcrumbs'));
+    }
 
     private function get_parent_location($parent) {
       static $out = [];
@@ -207,7 +230,7 @@ if ($curl = curl_init()) {
 $file=json_decode($file);
 $file=array_reverse($file->response->GeoObjectCollection->featureMember);
 $prev_loc=0;
-$exclude_kinds = array('street','house','area','district');
+$exclude_kinds = array('street','house','area','district','vegetation');
 $prev_loc_name="";
 
 foreach ($file as $location) {

@@ -32,13 +32,13 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             @foreach (App\Models\Locations::where('type','=','country')->get() as $locaton)
-              <li><a class="dropdown-item" href="{{route('location',$locaton->url)}}">{{$locaton->name}}</a></li>
+              <li><a class="dropdown-item" href="{{route('location',[$locaton->url,''])}}">{{$locaton->name}}</a></li>
             @endforeach
           </ul>
         </li>
-        @if (Route::has('new'))
+        @if (Route::has('catalog'))
             <li class="nav-item">
-                <a class="nav-link" href="{{route('new')}}">Новое</a>
+                <a class="nav-link" href="{{route('catalog')}}">Каталог</a>
             </li>
         @endif
         @if (Route::has('routes'))
