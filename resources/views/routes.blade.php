@@ -8,7 +8,7 @@
     <div class="col-sm-4"><a href="{{ route('single-route', $route->url) }}">{{ $route->name }}</a></div>
 @endforeach
 </div>
-{{$routes->links()}}
+{{$routes->appends(Request::query())->links()}}
 </div>
 
 @endsection

@@ -107,13 +107,21 @@ google.maps.event.addListener(map, 'idle', function() {
   </div>
 </div>
 <div class="container">
+  Показать сначала:
+  @foreach ($sorts as $sort)
+  @if ($request->sort==$sort['sort'] or ($request->sort=='' and $sort['sort']=='id.desc'))
+  <b>{{$sort['name']}}</b>
+  @else
+  <a href="?sort={{$sort['sort']}}">{{$sort['name']}}</a>
+  @endif
+  @endforeach
   <div class="row">
 
   @foreach ($pois as $poi)
     <div class="col-sm-4"><a href="{{ route('single-poi', $poi->url) }}">{{ $poi->name }}</a></div>
 @endforeach
 </div>
-{{$pois->links()}}
+{{$pois->appends(Request::query())->links()}}
 </div>
 
 @endsection

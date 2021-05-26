@@ -18,6 +18,16 @@ use Auth;
 
 class PoisController extends Controller
 {
+
+  protected $sorts= array(
+    array('sort'=>'id.desc', 'name'=> 'Самые новые'),
+    array('sort'=>'id.asc', 'name'=> 'Самые старые'),
+    array('sort'=>'views.desc', 'name'=>'Самые популярные')
+  );
+  //default sort
+  protected $default_table='id';
+  protected $default_direction='desc';
+
   public function index()
   {
       $pois=Pois::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
@@ -27,13 +37,9 @@ class PoisController extends Controller
 
   public function catalog(Request $request)
   {
-      $sorts= array(
-        array('sort'=>'id.desc', 'name'=> 'Самые новые'),
-        array('sort'=>'id.asc', 'name'=> 'Самые старые'),
-        array('sort'=>'views.desc', 'name'=>'Самые популярные')
-      );
-      $table='id';
-      $direction='desc';
+      $sorts=$this->sorts;
+      $table=$this->default_table;
+      $direction=$this->default_direction;
       if (isset($request->sort))  {
         $sort=explode('.',$request->sort);
         $table=$sort[0];
@@ -141,21 +147,27 @@ class PoisController extends Controller
 
     public function category($url)
     {
-      dd('category');
         $category=Categories::firstWhere('url', $url);
         $breadcrumbs=null;
         $pois=$category->pois()->where('status','=',1)->paginate(env('OBJECTS_ON_PAGE',15));
         return view('location', compact('pois','location','breadcrumbs'));
     }
 
-    public function location_category($url,$category=null)
+    public function location_category($url,$category=null, Request $request)
     {
-
+      $sorts=$this->sorts;
+      $table=$this->default_table;
+      $direction=$this->default_direction;
+      if (isset($request->sort))  {
+        $sort=explode('.',$request->sort);
+        $table=$sort[0];
+        $direction=$sort[1];
+      }
         $location=Locations::firstWhere('url', $url);
         $category=Categories::firstWhere('url', $category);
         $breadcrumbs=$this->get_parent_location($location->parent);
-        $pois=$location->pois()->where('status','=',1)->paginate(env('OBJECTS_ON_PAGE',15));
-        return view('location', compact('pois','location','category','breadcrumbs'));
+        $pois=$location->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
+        return view('location', compact('pois','location','category','breadcrumbs','sorts', 'request'));
     }
 
     private function get_parent_location($parent) {
