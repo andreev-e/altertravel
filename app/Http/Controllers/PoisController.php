@@ -99,11 +99,10 @@ class PoisController extends Controller
             endif;
 
             if ($validated and Auth::check()) {
-
                 $poi->name=$request->get('name');
                 $poi->url=Str::slug($request->get('name'), '_');
                 $poi->description=$request->get('description');
-                $poi->category=$request->get('category');
+                $poi->category_id=$request->get('category');
                 $poi->prim=$request->get('prim');
                 $poi->route=$request->get('route');
                 $poi->route_o=$request->get('route_o');

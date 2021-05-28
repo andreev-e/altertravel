@@ -92,15 +92,15 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
                   <textarea  class="form-control @error('description') is-invalid @enderror" name="description">{{ old('description') }}</textarea>
                 </div>
                 <div class="form-group">
-                  <label for="photos">Загрузите фотографии</label>
-                  <input multiple="multiple" class="form-control-file @error('photos') is-invalid @enderror" name="photos[]" type="file">
+                  <label for="formFile" class="form-label">Загрузите фотографии</label>
+                  <input multiple="multiple" class="form-control @error('photos') is-invalid @enderror" name="photos[]" type="file" id="formFile">
                   <small class="form-text text-muted">Хотя бы одно фото</small>
                 </div>
                 <div class="form-group">
                     <label for="category">Категория</label>
-                    <select class="form-control @error('category') is-invalid @enderror" name="category">
+                    <select class="form-select" @error('category') is-invalid @enderror" name="category">
                         @foreach (App\Models\Categories::get() as $category)
-                        <option value="{{$category->url}}" @if (old('category')==$category->url) selected @endif>{{$category->name}}</option>
+                        <option value="{{$category->id}}" @if (old('category')==$category->id) selected @endif>{{$category->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -108,8 +108,8 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
                   <label for="checkboxes">Метки</label>
                 <div class="form-group">
                   @foreach (App\Models\Tags::get() as $tag)
-                  <label class="col-md-2 checkbox-inline" for="tag{{$tag->id}}">
-                  <input type="checkbox" name="tags[]" id="tag{{$tag->id}}" value="{{$tag->id}}">
+                  <label class="col-md-2 form-check-label for="tag{{$tag->id}}">
+                  <input class="form-check-input" type="checkbox" name="tags[]" id="tag{{$tag->id}}" value="{{$tag->id}}">
                   {{$tag->name}}
                   </label>
 

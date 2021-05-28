@@ -13,7 +13,7 @@
     @elseif ($loop->iteration==2)<tr class="table-secondary">
     @elseif ($loop->iteration==3)<tr class="table-danger">
     @endif
-      <td><img src="/i/authors/{{$user->login}}.jpg" width="200px" alt="{{$user->login}}" class="img-fluid rounded ">
+      <td><img src="{{$user->avatar}}" width="200px" alt="{{$user->login}}" class="img-fluid rounded ">
       <td><a href="{{ route('user', $user->login) }}">{{ $user->name }}</a>
       <td>{{$user->about}}
       <td><a href="//{{$user->site}}" target="_blank">{{$user->site}}</a>

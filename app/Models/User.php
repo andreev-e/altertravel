@@ -32,6 +32,8 @@ class User extends Authenticatable
         'password',
         'login',
         'site',
+        'avatar',
+        'avatar_original',
         'about' ,
         'old_password' ,
         'publications',

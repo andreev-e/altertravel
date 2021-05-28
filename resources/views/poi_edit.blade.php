@@ -91,15 +91,15 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
                 <textarea  class="form-control @error('description') is-invalid @enderror" name="description">@if (strlen(old('description'))){{old('description')}}@else{{ $poi->description }}@endif</textarea>
               </div>
               <div class="form-group">
-                <label for="photos">Загрузите фотографии</label>
-                <input multiple="multiple" class="form-control-file @error('photos') is-invalid @enderror" name="photos[]" type="file">
+                <label for="photos" class="form-label">Загрузите фотографии</label>
+                <input multiple="multiple" class="form-control @error('photos') is-invalid @enderror" name="photos[]" type="file">
                 <small class="form-text text-muted">Хотя бы одно фото</small>
               </div>
               <div class="form-group">
                   <label for="category">Категория {{old('category')}}</label>
-                  <select class="form-control @error('category') is-invalid @enderror" name="category">
+                  <select class="form-select @error('category') is-invalid @enderror" name="category">
                     @foreach (App\Models\Categories::get() as $category)
-                    <option value="{{$category->url}}" @if (old('category')==$category->url or $poi->category->url==$category->url) selected @endif>{{$category->name}}</option>
+                    <option value="{{$category->id}}" @if (old('category')==$category->id or $poi->category->id==$category->id) selected @endif>{{$category->name}}</option>
                     @endforeach
                   </select>
               </div>
@@ -107,8 +107,8 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
                 <label for="checkboxes">Метки</label>
               <div class="form-group">
                 @foreach (App\Models\Tags::get() as $tag)
-                <label class="col-md-2 checkbox-inline" for="tag{{$tag->id}}">
-                <input type="checkbox" name="tags[]" id="tag{{$tag->id}}" value="{{$tag->id}}" @if (in_array($tag->id,$checked_tags)) checked @endif>
+                <label class="col-md-2 form-check-label" for="tag{{$tag->id}}">
+                <input class="form-check-input" type="checkbox" name="tags[]" id="tag{{$tag->id}}" value="{{$tag->id}}" @if (in_array($tag->id,$checked_tags)) checked @endif>
                 {{$tag->name}}
                 </label>
 

@@ -46,6 +46,8 @@ class ServiceController extends Controller
         $tmp=User::firstOrCreate([
         'name' => $value->firstname." ".$value->lastname,
         'email' => $value->email,
+        'avatar'=>  'https://altertravel.ru/authors/'.$value->username.'.jpg',
+        'avatar_original'=>  'https://altertravel.ru/authors/'.$value->username.'_full.jpg',
         'login' => $value->username,
         'site' => $value->homepage,
         'about' => $value->about,
