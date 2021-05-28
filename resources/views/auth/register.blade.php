@@ -88,9 +88,6 @@
                           <a href="{{route('oauth','facebook')}}" class="btn btn-primary">
                               <i class="fa fa-facebook" aria-hidden="true"></i>
                           </a>
-                          <a href="{{route('oauth','yandex')}}" class="btn btn-primary">
-                              Yandex
-                          </a>
                           @endif
                         </div>
                     </div>

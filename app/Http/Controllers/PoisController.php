@@ -188,7 +188,7 @@ class PoisController extends Controller
     {
         $user=User::where('login', $url)->firstOrFail();
         $pois=$user->pois()->where('status','=',1)->get();
-        return view('user', compact('pois'));
+        return view('user', compact('pois','user'));
     }
     public function poi_json(Request $request) {
         if ($request->get('mne')!==NULL and $request->get('msw')!==NULL) {

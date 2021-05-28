@@ -99,7 +99,12 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
     @foreach ($poi->locations as $location)<li><a href="{{ route ('location',[$location->url,'']) }}">{{ $location->name }}</a></li>@endforeach
     <li>{{$poi->category->name}}</li>
   </ul>
-  <h1>{!!$poi->name!!}</h1>
+  <h1>{!!$poi->name!!}
+    @if ($poi->user_id==Auth::user()->id)
+    <a href="{{ route('single-poi-edit', $poi->id) }}" title="Отредактировать">
+    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    @endif
+  </a></h1>
   <p class="small">Автор публикации <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a>
      @isset($poi->copyright) / Автор фото {{$poi->copyright}}@endisset
    / {{$poi->views}} просмотров</p>
