@@ -80,7 +80,7 @@
 
             <li class="nav-item">
                 <a  class="nav-link" href="{{ Route('secure') }}"  >
-                  <img width="20px" class="rounded  " src="{{Auth::user()->avatar}}" alt="ava"> <b>{{Auth::user()->name}}</b>: публикации
+                  <img width="20px" class="avatar" src="{{Auth::user()->avatar}}" alt="ava"> <b>{{Auth::user()->name}}</b>: публикации
                 </a>
                 </li>
             @if (Auth::user()->email=='andreev-e@mail.ru')

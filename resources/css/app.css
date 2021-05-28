@@ -31,3 +31,6 @@ ul.breadcrumbs {
 h1 {
   letter-spacing: -1.9px;
 }
+.avatar {
+  border-radius: 50%;
+}
