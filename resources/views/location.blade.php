@@ -10,7 +10,7 @@ window.onload = function()
 {
 map = new google.maps.Map(document.getElementById("map"),
 {
-  center: new google.maps.LatLng({{$location->lat}}, {{$location->lng}}), zoom: 6, gestureHandling: 'greedy'
+  center: new google.maps.LatLng({{$location->lat}}, {{$location->lng}}), zoom: {{$location->scale}}, gestureHandling: 'greedy'
 });
 
 function bindInfoWindow(marker, map, infowindow, strDescription) {
@@ -82,7 +82,7 @@ google.maps.event.addListener(map, 'idle', function() {
 
 @endpush
 @extends('layouts.app')
-@section('title')Достопримечательности {{$location->name}} @endsection
+@section('title'){{$location->name}}: @if (isset($category)) {{$category->name}} @else достопримечательности @endif @endsection
 @section('content')
 <div class="container">
   <ul class="breadcrumbs">
@@ -95,7 +95,7 @@ google.maps.event.addListener(map, 'idle', function() {
   @endif
 
 </ul>
-  <h1>Достопримечательности {{$location->name}}</h1>
+  <h1>@if (isset($category)) {{$category->name}} @else Достопримечательности @endif {{$location->name_rod}}</h1>
 
   @foreach (App\Models\Categories::get() as $category)
   <a href="{{ route('location',[$location->url,$category->url ]) }}">{{$category->name}}</a>

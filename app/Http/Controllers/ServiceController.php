@@ -169,14 +169,22 @@ class ServiceController extends Controller
     if ($what=='slovar') {
 
       foreach ($tags->data as $value) {
-        //dd($value);
+        //if ($value->TYPE==1) dd($value);
+        $location=Locations::where('name','=',$value->NAME)->first();
+        if(is_object($location)) {
 
-        if ($value->flag) {
-          $location=Locations::where('name','=',$value->NAME)->first();
-          if(is_object($location)) {
-            $location->flag=$value->flag;
-            $location->save();
-          }
+        if ($value->flag and empty($location->flag)) $location->flag=$value->flag;
+        if ($value->scale and empty($location->scale)) $location->scale=$value->scale;
+        if ($value->lng and empty($location->lng)) $location->lng=$value->lng;
+        if ($value->lat and empty($location->lat)) $location->lat=$value->lat;
+        if ($value->COUNT and empty($location->count)) $location->count=$value->COUNT;
+
+        if ($value->NAME_DAT_ED and empty($location->flag)) $location->name_dat=$value->NAME_DAT_ED;
+        if ($value->NAME_ROD_ED and empty($location->name_rod)) $location->name_rod=$value->NAME_ROD_ED;
+        if ($value->NAME_PREDLOZH_ED and empty($location->name_pred)) $location->name_pred=$value->NAME_PREDLOZH_ED;
+
+
+        $location->save();
         }
 
 
