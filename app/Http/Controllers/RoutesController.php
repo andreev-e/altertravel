@@ -15,6 +15,12 @@ class RoutesController extends Controller
       return view('routes', compact('routes'));
   }
 
+  public function old_redirect(Request $request)
+  {
+      $route=Routes::where('old_id','=',$request->id)->first();
+      return redirect()->route('single-route',$route->url);
+  }
+
   public function single_route($url)
   {
       $route = Cache::remember('single_route_'.$url, env('CACHE_TIME',60), function () use ($url) {

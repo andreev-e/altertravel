@@ -35,6 +35,12 @@ class PoisController extends Controller
       return view('home', compact('pois','tags'));
   }
 
+  public function old_redirect(Request $request)
+  {
+      $poi=Pois::where('old_id','=',$request->id)->first();
+      return redirect()->route('single-poi',$poi->url);
+  }
+
   public function catalog(Request $request)
   {
       $sorts=$this->sorts;

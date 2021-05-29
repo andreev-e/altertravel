@@ -61,3 +61,9 @@ Route::get('/callback/{provider}', 'App\Http\Controllers\Auth\LoginController@ha
 //service tools
 Route::get('/service/import/{what}', 'App\Http\Controllers\ServiceController@import')->name('import');
 Route::get('/service/clusterize', 'App\Http\Controllers\ServiceController@clusterize')->name('clusterize');
+
+
+//redirects from old pages
+Route::get('view.php', 'App\Http\Controllers\PoisController@old_redirect');
+Route::get('view_route.php', 'App\Http\Controllers\RoutesController@old_redirect');
+Route::get('/catalog/{url}', 'App\Http\Controllers\LocationsController@old_redirect');
