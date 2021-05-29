@@ -9,10 +9,28 @@ use Illuminate\Support\Facades\Cache;
 
 class RoutesController extends Controller
 {
-  public function routes()
+
+  protected $sorts= array(
+    array('sort'=>'id.desc', 'name'=> 'Самые новые'),
+    array('sort'=>'id.asc', 'name'=> 'Самые старые'),
+    array('sort'=>'views.desc', 'name'=>'Самые популярные')
+  );
+  //default sort
+  protected $default_table='id';
+  protected $default_direction='desc';
+
+  public function routes(Request $request)
   {
-      $routes=Routes::where('status','=',1)->orderby('created_at','desc')->Paginate(env('OBJECTS_ON_PAGE',15));
-      return view('routes', compact('routes'));
+    $sorts=$this->sorts;
+    $table=$this->default_table;
+    $direction=$this->default_direction;
+    if (isset($request->sort))  {
+      $sort=explode('.',$request->sort);
+      $table=$sort[0];
+      $direction=$sort[1];
+    }
+      $routes=Routes::where('status','=',1)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+      return view('routes', compact('routes','sorts','request'));
   }
 
   public function old_redirect(Request $request)

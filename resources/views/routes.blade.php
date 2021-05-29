@@ -3,9 +3,18 @@
 @section('content')
 <div class="container">
   <h1>Путешествия и маршруты</h1>
-  <div class="row">
+  Показать сначала:
+  @foreach ($sorts as $sort)
+  @if ($request->sort==$sort['sort'] or ($request->sort=='' and $sort['sort']=='id.desc'))
+  <b>{{$sort['name']}}</b>
+  @else
+  <a href="?sort={{$sort['sort']}}">{{$sort['name']}}</a>
+  @endif
+  @endforeach
+
+  <div class="d-flex flex-wrap align-items-stretch">
   @foreach ($routes as $route)
-    <div class="col-sm-4"><a href="{{ route('single-route', $route->url) }}">{{ $route->name }}</a></div>
+    @include('blocks.route_card')
 @endforeach
 </div>
 {{$routes->appends(Request::query())->links()}}

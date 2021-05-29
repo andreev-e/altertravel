@@ -24,6 +24,16 @@ class ServiceController extends Controller
   public function import($what) {
     $echo='Импорт: ';
 
+    if ($what=='locating') {
+
+      foreach (Pois::lazy() as $poi) {
+        if ($poi->locations()->count()==0) (new PoisController)::make_pois_geocodes($poi);
+      }
+
+    exit();
+    }
+
+
     $all=json_decode(file_get_contents (__DIR__.'/import/all.json'));
     $chekins=$all[2];
     $comments=$all[3];
@@ -178,6 +188,14 @@ class ServiceController extends Controller
       }
       $echo.='Slovar ok';
     }
+
+    if ($what=='comments') {
+        dd($comments->data);
+    }
+
+
+
+
     return view('service',compact('echo'));
   }
 }

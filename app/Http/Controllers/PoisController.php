@@ -7,6 +7,7 @@ use App\Models\Pois;
 use App\Models\Tags;
 use App\Models\User;
 use App\Models\Locations;
+use App\Models\Routes;
 use App\Models\Categories;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
@@ -31,8 +32,9 @@ class PoisController extends Controller
   public function index()
   {
       $pois=Pois::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
+      $routes=Routes::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
       $tags=Tags::orderby('name','ASC')->get();
-      return view('home', compact('pois','tags'));
+      return view('home', compact('pois','tags','routes'));
   }
 
   public function old_redirect(Request $request)
@@ -55,20 +57,17 @@ class PoisController extends Controller
       return view('catalog', compact('pois','sorts','request'));
   }
 
-  public function izbrannoye()
-  {
+  public function izbrannoye()   {
       return view('izbrannoye');
   }
 
-    public function secure_index()
-    {
+  public function secure_index()    {
         $pois=array();
         if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->with('tags')->orderbyDESC('updated_at')->Paginate(env('OBJECTS_ON_PAGE',15));
         return view('secure', compact('pois'));
     }
 
-    public function single_place($url)
-    {
+  public function single_place($url)    {
         $poi = Cache::remember('single_poi_'.$url, env('CACHE_TIME',60), function () use ($url) {
         $poi=Pois::where('url', $url)->firstOrFail();
         if (count($poi->locations)==0) {
@@ -82,8 +81,7 @@ class PoisController extends Controller
         if (auth()->user()!==null) return view('poi', compact('poi'));
         else return view('poi', compact('poi'));
     }
-    public function single_edit($id,Request $request)
-    {
+  public function single_edit($id,Request $request)    {
         $poi=Pois::find($id);
         if (auth()->user()!==null and auth()->user()->id==$poi->user_id) {
 
@@ -227,12 +225,11 @@ class PoisController extends Controller
         return json_encode($responce);
       }
 
-
-
 ////////////////actions////////////////////////
 
+public static function make_pois_geocodes($poi) {
 
-private function make_pois_geocodes($poi){
+//if (!is_object($poi)) $poi=Pois::find($poi);
 
 $url="https://geocode-maps.yandex.ru/1.x/?format=json&geocode=$poi->lng,$poi->lat&apikey=7483ad1f-f61c-489b-a4e5-815eb06d5961" ;
 if ($curl = curl_init()) {

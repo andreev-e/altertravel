@@ -104,7 +104,9 @@
                   <li><a class="dropdown-item" href="{{route('import','poi')}}">3 Импорт точек</a></li>
                   <li><a class="dropdown-item" href="{{route('import','routes')}}">4 Импорт маршрутов</a></li>
                   <li><a class="dropdown-item" href="{{route('import','rel')}}">5 Отношения точка тег</a></li>
-                  <li><a class="dropdown-item" href="{{route('import','slovar')}}">6 Справочник</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','locating')}}">6 Парсинг локаций</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','slovar')}}">7 Справочник</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','comments')}}">8 Комменарии</a></li>
 
               </ul>
             </li>

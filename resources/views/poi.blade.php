@@ -138,10 +138,12 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 <h2>Ссылки</h2>
 {{$poi->links}}
 <h2>Маршруты</h2>
+  <div class="d-flex flex-wrap align-items-stretch">
 @foreach ($poi->routes as $route)
-<a href="{{route('single-route',$route->url)}}">{{$route->name}}</a><br>
+@include('blocks.route_card')
 @endforeach
-<h2>Комментари</h2>
+  </div>
+<h2>Комментарии</h2>
 {{$poi->comments}}
 Теги @foreach ($poi->tags as $tag) <a href="{{ Route('tag',$tag->url) }}" class="btn btn-primary btn-sm">{{ $tag->name }}</a> @endforeach
     <div class="row justify-content-center">

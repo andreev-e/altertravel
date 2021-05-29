@@ -128,6 +128,20 @@ google.maps.event.addListener(map, 'idle', function() {
   @include('blocks.poi_card')
   @endforeach
   </div>
-<div>
+</div>
+<div class="container text-center">
+  <p class="h1" >Популярные маршруты</p>
+  <div class="d-flex flex-wrap align-items-stretch">
+    @foreach ($routes as $route)
+  @include('blocks.route_card')
+  @endforeach
+  </div>
+</div>
+<div class="container text-center">
+  <p class="h1" >Последние комментарии</p>
+  <div class="d-flex flex-wrap align-items-stretch">
+
+  </div>
+</div>
 
 @endsection

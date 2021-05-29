@@ -41,9 +41,11 @@
 {{$route->comments}}
 
 <h2>Точки</h2>
+  <div class="d-flex flex-wrap align-items-stretch">
 @foreach ($route->pois as $poi)
-<a href="{{route('single-poi',$poi->url)}}">{{$poi->name}}</a><br>
+  @include('blocks.poi_card')
 @endforeach
+</div>
 </div>
 </div>
 @endsection
