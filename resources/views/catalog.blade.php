@@ -11,9 +11,9 @@
   <a href="?sort={{$sort['sort']}}">{{$sort['name']}}</a>
   @endif
   @endforeach
-  <div class="row">
+  <div class="d-flex flex-wrap align-items-stretch">
   @foreach ($pois as $poi)
-    <div class="col-sm-4"><a href="{{ route('single-poi', $poi->url) }}">{{ $poi->name }}</a></div>
+  @include('blocks.poi_card')
 @endforeach
 </div>
 {{$pois->appends(Request::query())->links()}}

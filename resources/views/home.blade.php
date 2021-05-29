@@ -51,7 +51,7 @@
         var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
         bindInfoWindow(marker, map, infowindow, details);
         i=i+1;
-            if (i<=6) $('#shown_on_map ').append('<div class="col-sm-2"><div class="card"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div>  <a href="{{ route('poi') }}/'+data.url+'" class="btn btn-primary">Смотреть</a></div></div></div>');
+            if (i<=5) $('#shown_on_map ').append('<div class="poi p-3"><div class="card"><a href="{{ route('poi') }}/'+data.url+'" target="_blank"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div></a> </div></div></div>');
 
             data.tags.forEach(function(item, i, arr) {
               $('[data-tag_id="'+item.id+'"]').show();
@@ -121,21 +121,13 @@ google.maps.event.addListener(map, 'idle', function() {
   </div>
   </div>
 </div>
-
-<div class="container-fluid mt-3">
-         <div  class="row" id="shown_on_map" >
-  @foreach ($pois as $poi)
-    <div class="col-sm-2">
-      <div class="card">
-         <img class="card-img-top" src="{{ $poi->photo }}" alt="{{ $poi->name }}">
-         <div class="card-body">
-      <div class="h5 card-title">{{ $poi->name }}</div>
-      <a href="{{ route('single-poi', $poi->url) }}" class="btn btn-primary">Смотреть</a>
-      </div>
-      </div>
-    </div>
-@endforeach
-</div>
-</div>
+<div class="container text-center">
+  <p class="h1" >Популярные места</p>
+  <div class="d-flex flex-wrap align-items-stretch" id="shown_on_map">
+    @foreach ($pois as $poi)
+  @include('blocks.poi_card')
+  @endforeach
+  </div>
+<div>
 
 @endsection

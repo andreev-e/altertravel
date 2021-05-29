@@ -245,7 +245,8 @@ if ($curl = curl_init()) {
     $file = curl_exec($curl);
 }
 $file=json_decode($file);
-$file=array_reverse($file->response->GeoObjectCollection->featureMember);
+//dd($file);
+if (is_object($file)) $file=array_reverse($file->response->GeoObjectCollection->featureMember); else $file=array();
 $prev_loc=0;
 $exclude_kinds = array('street','house','area','district','vegetation');
 $prev_loc_name="";

@@ -107,8 +107,16 @@ google.maps.event.addListener(map, 'idle', function() {
     @endif
   </h1>
 
-  @foreach (App\Models\Categories::get() as $category)
-  <a href="{{ route('location',[$location->url,$category->url ]) }}">{{$category->name}}</a>
+  @foreach (App\Models\Categories::get() as $loc_category)
+  @if (isset($category))
+  @if ($category->id!=$loc_category->id)
+  <a href="{{ route('location',[$location->url,$loc_category->url ]) }}">{{$loc_category->name}}</a>
+  @else
+  <span>{{$loc_category->name}}</span>
+  @endif
+  @else
+  <a href="{{ route('location',[$location->url,$loc_category->url ]) }}">{{$loc_category->name}}</a>
+  @endif
   @endforeach
 </div>
 <div class="container-fluid">
@@ -128,8 +136,8 @@ google.maps.event.addListener(map, 'idle', function() {
   <div class="row">
 
   @foreach ($pois as $poi)
-    <div class="col-sm-4"><a href="{{ route('single-poi', $poi->url) }}">{{ $poi->name }}</a></div>
-@endforeach
+  @include('blocks.poi_card')
+  @endforeach
 </div>
 {{$pois->appends(Request::query())->links()}}
 </div>
