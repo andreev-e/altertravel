@@ -99,12 +99,12 @@
                 Сервис
               </a>
               <ul class="dropdown-menu" aria-labelledby="servicemenu">
-                  <li><a class="dropdown-item" href="{{route('import','users')}}">Импорт пользователей</a></li>
-                  <li><a class="dropdown-item" href="{{route('import','tags')}}">Импорт меток</a></li>
-                  <li><a class="dropdown-item" href="{{route('import','poi')}}">Импорт точек</a></li>
-                  <li><a class="dropdown-item" href="{{route('import','routes')}}">Импорт маршрутов</a></li>
-                  <li><a class="dropdown-item" href="{{route('import','rel')}}">Отношения точка тег</a></li>
-                  <li><a class="dropdown-item" href="{{route('import','slovar')}}">Словарь с падежами</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','users')}}">1 Импорт пользователей</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','tags')}}">2 Импорт меток</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','poi')}}">3 Импорт точек</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','routes')}}">4 Импорт маршрутов</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','rel')}}">5 Отношения точка тег</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','slovar')}}">6 Справочник</a></li>
 
               </ul>
             </li>

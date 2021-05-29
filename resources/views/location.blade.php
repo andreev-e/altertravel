@@ -95,7 +95,17 @@ google.maps.event.addListener(map, 'idle', function() {
   @endif
 
 </ul>
-  <h1>@if (isset($category)) {{$category->name}} @else Достопримечательности @endif {{$location->name_rod}}</h1>
+  <h1>
+    @if (isset($category))
+    {{$category->name}}
+    @else Достопримечательности
+    @endif
+    @if (isset($location->name_rod))
+    {{$location->name_rod}}
+    @else
+    {{$location->name}}: достопримечательности
+    @endif
+  </h1>
 
   @foreach (App\Models\Categories::get() as $category)
   <a href="{{ route('location',[$location->url,$category->url ]) }}">{{$category->name}}</a>

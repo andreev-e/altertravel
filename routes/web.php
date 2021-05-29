@@ -67,3 +67,4 @@ Route::get('/service/clusterize', 'App\Http\Controllers\ServiceController@cluste
 Route::get('view.php', 'App\Http\Controllers\PoisController@old_redirect');
 Route::get('view_route.php', 'App\Http\Controllers\RoutesController@old_redirect');
 Route::get('/catalog/{url}', 'App\Http\Controllers\LocationsController@old_redirect');
+Route::get('/catalog/{url}/{category}', 'App\Http\Controllers\LocationsController@old_redirect');
