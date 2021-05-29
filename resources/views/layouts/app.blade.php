@@ -32,7 +32,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             @foreach (App\Models\Locations::where('type','=','country')->get() as $locaton)
-              <li><a class="dropdown-item" href="{{route('location',[$locaton->url,''])}}">{{$locaton->name}}</a></li>
+              <li><a class="dropdown-item" href="{{route('location',[$locaton->url,''])}}"><img src="/i/flags/{{$locaton->flag}}" alt="flag"> {{$locaton->name}}</a></li>
             @endforeach
           </ul>
         </li>
@@ -104,6 +104,8 @@
                   <li><a class="dropdown-item" href="{{route('import','poi')}}">Импорт точек</a></li>
                   <li><a class="dropdown-item" href="{{route('import','routes')}}">Импорт маршрутов</a></li>
                   <li><a class="dropdown-item" href="{{route('import','rel')}}">Отношения точка тег</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','slovar')}}">Словарь с падежами</a></li>
+
               </ul>
             </li>
             @endif

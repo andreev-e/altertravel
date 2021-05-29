@@ -166,6 +166,25 @@ class ServiceController extends Controller
 
     }
 
+    if ($what=='slovar') {
+
+      foreach ($tags->data as $value) {
+        //dd($value);
+
+        if ($value->flag) {
+          $location=Locations::where('name','=',$value->NAME)->first();
+          if(is_object($location)) {
+            $location->flag=$value->flag;
+            $location->save();
+          }
+        }
+
+
+
+      }
+
+    }
+
     return view('service',compact('echo'));
   }
 }
