@@ -13923,12 +13923,16 @@ border-radius: 0;
 .poi {
   flex: 0 0 20%;
 }
-.poi a {
+.poi a, .comment a {
   text-decoration: none;
   color:inherit;
 }
 .poi .card-title {
   height: 42px;
   overflow: hidden;
+}
+
+.comment {
+  max-width:100%;
 }
 

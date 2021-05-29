@@ -18,6 +18,11 @@ class Pois extends Model
        return $this->belongsToMany(Tags::class);
     }
 
+    public function comments()
+    {
+       return $this->hasMany(PoisComments::class);
+    }
+
     public function routes()
     {
        return $this->belongsToMany(Routes::class, 'routes_pois');

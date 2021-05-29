@@ -140,7 +140,9 @@ google.maps.event.addListener(map, 'idle', function() {
 <div class="container text-center">
   <p class="h1" >Последние комментарии</p>
   <div class="d-flex flex-wrap align-items-stretch">
-
+    @foreach ($comments as $comment)
+  @include('blocks.comment_card')
+  @endforeach
   </div>
 </div>
 

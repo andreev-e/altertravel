@@ -14,14 +14,16 @@ class CreateRoutesCommentsTable extends Migration
     public function up()
     {
         Schema::create('routes_comments', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('poi_id');
-            $table->foreign('poi_id')->references('id')->on('pois');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->text('comment');
-            $table->unsignedBigInteger('parent')->default(0);
-            $table->timestamps();
+          $table->id();
+          $table->unsignedBigInteger('routes_id');
+          $table->foreign('routes_id')->references('id')->on('pois');
+          $table->unsignedBigInteger('users_id')->nullable();
+          $table->foreign('users_id')->references('id')->on('users');
+          $table->text('comment');
+          $table->string('email')->default('');
+          $table->unsignedBigInteger('parent')->default(0);
+          $table->integer('status')->default(1);
+          $table->timestamps();
         });
     }
 

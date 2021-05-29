@@ -10,6 +10,8 @@ use App\Models\Locations;
 use App\Models\Tags;
 use App\Models\Categories;
 use App\Models\Routes;
+use App\Models\PoisComments;
+
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -25,13 +27,32 @@ class ServiceController extends Controller
     $echo='Импорт: ';
 
     if ($what=='locating') {
-
+      $i=0;
       foreach (Pois::lazy() as $poi) {
+        $i++;
         if ($poi->locations()->count()==0) (new PoisController)::make_pois_geocodes($poi);
+        if ($i>3) dd('Хватит, Забанят ключ!');
       }
 
     exit();
     }
+
+      if ($what=='comments_fix') {
+
+
+        foreach (PoisComments::where('user_id','=',null)->lazy() as $comment) {
+          $user=User::firstWhere('email','=',$comment->email);
+          if (is_object($user)) {
+                      $comment->user_id=$user->id;
+                      $comment->save();
+          }
+
+        }
+
+
+        return view('service',compact('echo'));
+      }
+
 
 
     $all=json_decode(file_get_contents (__DIR__.'/import/all.json'));
@@ -190,7 +211,34 @@ class ServiceController extends Controller
     }
 
     if ($what=='comments') {
-        dd($comments->data);
+      PoisComments::query()->truncate();
+      Schema::enableForeignKeyConstraints();
+      foreach ($comments->data as $value) {
+
+        $poi=Pois::where('old_id','=',$value->backlink)->first();
+        $user=User::where('login','=',$value->name)->first();
+
+        if ($value->time>0) $time=date('Y-m-d H:i:s',$value->time); else $time=time();
+
+        if (is_object($user)) $user=$user->id; else $user=null;
+
+        //if (is_object($poi) and $value->approved==1)
+        if (is_object($poi))
+
+        $tmp=PoisComments::create([
+            'poi_id'=>$poi->id,
+            'email'=>$value->email,
+            'user_id'=>$user,
+            'comment'=>$value->comment,
+            'created_at'=>$time,
+            'updated_at'=>$time,
+            'status'=>$value->approved,
+          ]);
+
+
+
+
+      }
     }
 
 

@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Locations;
 use App\Models\Routes;
 use App\Models\Categories;
+use App\Models\PoisComments;
+
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
@@ -34,7 +36,8 @@ class PoisController extends Controller
       $pois=Pois::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
       $routes=Routes::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
       $tags=Tags::orderby('name','ASC')->get();
-      return view('home', compact('pois','tags','routes'));
+      $comments=PoisComments::where('status','=',1)->orderby('updated_at','DESC')->limit(env('OBJECTS_ON_PAGE',15))->get();
+      return view('home', compact('pois','tags','routes','comments'));
   }
 
   public function old_redirect(Request $request)
@@ -78,8 +81,14 @@ class PoisController extends Controller
         return $poi;
         });
         $poi->increment('views');
-        if (auth()->user()!==null) return view('poi', compact('poi'));
-        else return view('poi', compact('poi'));
+        $comments=$poi->comments();
+
+        //$comments=PoisComments::where('status','=',1)->where('poi_id','=',$poi->id)->orderby('updated_at','ASC')->limit(env('OBJECTS_ON_PAGE',15))->get();
+        $comments=PoisComments::where('status','=',1)->where('poi_id','=',$poi->id)->orderby('updated_at','ASC')->get();
+        //dd($comments);
+
+        if (auth()->user()!==null) return view('poi', compact('poi','comments'));
+        else return view('poi', compact('poi','comments'));
     }
   public function single_edit($id,Request $request)    {
         $poi=Pois::find($id);
@@ -188,11 +197,22 @@ class PoisController extends Controller
         $pois=$tag->pois()->where('status','=',1)->get();
         return view('tag', compact('pois','tag'));
     }
-    public function user($url)
+    public function user($url, Request $request)
     {
+
+        $sorts=$this->sorts;
+        $table=$this->default_table;
+        $direction=$this->default_direction;
+        if (isset($request->sort))  {
+          $sort=explode('.',$request->sort);
+          $table=$sort[0];
+          $direction=$sort[1];
+        }
+
         $user=User::where('login', $url)->firstOrFail();
-        $pois=$user->pois()->where('status','=',1)->get();
-        return view('user', compact('pois','user'));
+        $pois=$user->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
+
+        return view('user', compact('pois','user','sorts','request'));
     }
     public function poi_json(Request $request) {
         if ($request->get('mne')!==NULL and $request->get('msw')!==NULL) {
@@ -227,9 +247,8 @@ class PoisController extends Controller
 
 ////////////////actions////////////////////////
 
-public static function make_pois_geocodes($poi) {
-
-//if (!is_object($poi)) $poi=Pois::find($poi);
+public static function make_pois_geocodes($poi)
+{
 
 $url="https://geocode-maps.yandex.ru/1.x/?format=json&geocode=$poi->lng,$poi->lat&apikey=7483ad1f-f61c-489b-a4e5-815eb06d5961" ;
 if ($curl = curl_init()) {
@@ -242,7 +261,9 @@ if ($curl = curl_init()) {
     $file = curl_exec($curl);
 }
 $file=json_decode($file);
-//dd($file);
+
+
+if ($file->statusCode=="403") return;
 if (is_object($file)) $file=array_reverse($file->response->GeoObjectCollection->featureMember); else $file=array();
 $prev_loc=0;
 $exclude_kinds = array('street','house','area','district','vegetation');
@@ -278,7 +299,7 @@ foreach ($file as $location) {
          $prev_loc=$new_loc->id;
          $prev_loc_name=$new_loc->name;
        }
-}
+     }
    }
 
 

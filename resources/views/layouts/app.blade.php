@@ -107,6 +107,7 @@
                   <li><a class="dropdown-item" href="{{route('import','locating')}}">6 Парсинг локаций</a></li>
                   <li><a class="dropdown-item" href="{{route('import','slovar')}}">7 Справочник</a></li>
                   <li><a class="dropdown-item" href="{{route('import','comments')}}">8 Комменарии</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','comments_fix')}}">9 Привязать комменты к юзерам</a></li>
 
               </ul>
             </li>

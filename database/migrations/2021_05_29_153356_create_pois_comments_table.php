@@ -14,10 +14,16 @@ class CreatePoisCommentsTable extends Migration
     public function up()
     {
         Schema::create('pois_comments', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('poi_id');
-            $table->foreign('poi_id')->references('id')->on('pois');
-            $table->timestamps();
+          $table->id();
+          $table->unsignedBigInteger('poi_id');
+          $table->foreign('poi_id')->references('id')->on('pois');
+          $table->unsignedBigInteger('user_id')->nullable();
+          $table->foreign('user_id')->references('id')->on('users');
+          $table->text('comment');
+          $table->string('email')->default('');
+          $table->unsignedBigInteger('parent')->default(0);
+          $table->integer('status')->default(1);
+          $table->timestamps();
         });
     }
 

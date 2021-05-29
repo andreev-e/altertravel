@@ -89,16 +89,18 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 @endpush
 @extends('layouts.app')
 
-@section('title'){!!$poi->name!!}, {{$poi->locations[count($poi->locations)-1]->name}}@endsection
+@section('title'){!!$poi->name!!}, @if (count($poi->locations)>0) {{$poi->locations[count($poi->locations)-1]->name}} @endif @endsection
 
 @section('content')
 
 <div class="container">
+   @if (count($poi->locations)>0)
   <ul class="breadcrumbs">
     <li><a href="{{ route ('/') }}"><i class="fa fa-home" aria-hidden="true"></i></a>
     @foreach ($poi->locations as $location)<li><a href="{{ route ('location',[$location->url,'']) }}">{{ $location->name }}</a></li>@endforeach
     <li>@if (isset($poi->category)) <a href="{{ route ('location',[$location->url,$poi->category->url]) }}">{{$poi->category->name}}</a> @endif</li>
   </ul>
+  @endif
   <h1>{!!$poi->name!!}
     @if ($poi->user_id==Auth::user()->id)
     <a href="{{ route('single-poi-edit', $poi->id) }}" title="Отредактировать">
@@ -144,8 +146,13 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 @endforeach
   </div>
 <h2>Комментарии</h2>
-{{$poi->comments}}
-Теги @foreach ($poi->tags as $tag) <a href="{{ Route('tag',$tag->url) }}" class="btn btn-primary btn-sm">{{ $tag->name }}</a> @endforeach
+<div class="d-flex flex-wrap align-items-stretch">
+  @foreach ($comments as $comment)
+@include('blocks.comment_card')
+@endforeach
+</div>
+<h2>Метки</h2>
+@foreach ($poi->tags as $tag) <a href="{{ Route('tag',$tag->url) }}" class="btn btn-primary btn-sm">{{ $tag->name }}</a> @endforeach
     <div class="row justify-content-center">
         <div class="col-md-8">
 
