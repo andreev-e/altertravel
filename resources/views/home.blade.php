@@ -51,7 +51,7 @@
         var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
         bindInfoWindow(marker, map, infowindow, details);
         i=i+1;
-            if (i<=5) $('#shown_on_map ').append('<div class="poi p-3"><div class="card"><a href="{{ route('poi') }}/'+data.url+'" target="_blank"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div></a> </div></div></div>');
+            if (i<={{ env('OBJECTS_ON_MAIN_PAGE',6) }}) $('#shown_on_map ').append('<div class="poi p-3"><div class="card"><a href="{{ route('poi') }}/'+data.url+'" target="_blank"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div></a> </div></div></div>');
 
             data.tags.forEach(function(item, i, arr) {
               $('[data-tag_id="'+item.id+'"]').show();

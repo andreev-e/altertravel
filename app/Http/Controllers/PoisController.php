@@ -33,7 +33,7 @@ class PoisController extends Controller
 
   public function index()
   {
-      $pois=Pois::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
+      $pois=Pois::where('status','=',1)->orderby('created_at','DESC')->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
       $routes=Routes::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
       $tags=Tags::orderby('name','ASC')->get();
       $comments=PoisComments::where('status','=',1)->orderby('updated_at','DESC')->limit(env('OBJECTS_ON_PAGE',15))->get();

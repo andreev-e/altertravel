@@ -13921,7 +13921,7 @@ border-radius: 0;
 }
 
 .poi {
-  flex: 0 0 20%;
+  flex: 1 1 25%;
 }
 .poi a, .comment a {
   text-decoration: none;
@@ -13933,6 +13933,6 @@ border-radius: 0;
 }
 
 .comment {
-  max-width:100%;
+  width:100%;
 }
 

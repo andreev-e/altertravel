@@ -15,7 +15,11 @@
       <a href="{{ route('user',$comment->user->login)}}"> {{ $comment->user->name}} </a>
       @endif
     </p>
-    <p class="card-text card-subtitle mb-2 text-muted">{{ $comment->created_at}}, отредактировано {{ $comment->updated_at}}</p>
+    <p class="card-text card-subtitle mb-2 text-muted">{{ $comment->created_at}}
+      @if ($comment->created_at!=$comment->updated_at)
+      , отредактировано {{ $comment->updated_at}}
+      @endif
+    </p>
 
     <p class="card-text">{{ $comment->comment }}</p>
     </div>

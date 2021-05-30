@@ -20,7 +20,7 @@ class Pois extends Model
 
     public function comments()
     {
-       return $this->hasMany(PoisComments::class);
+       return $this->hasMany(PoisComments::class, 'poi_id');
     }
 
     public function routes()
