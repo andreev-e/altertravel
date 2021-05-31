@@ -58,7 +58,7 @@ class Pois extends Model
       foreach ($this->photos as $key => $value) {
         $this->photos[$key]=asset("/storage/pois/".$value);
       }
-      return
+      return $this->photos;
     }
 
     protected $fillable = [
