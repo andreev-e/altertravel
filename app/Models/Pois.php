@@ -49,7 +49,7 @@ class Pois extends Model
          $filename=$this->photo;
 
          $image_resize = Image::make(storage_path().'/app/public/pois/'.$filename);
-         if (!file_exists(storage_path().'/app/public/pois/'.$this->id)) { mkdir(storage_path().'/app/public/pois/'.$this->id, 0755, true);
+         if (!file_exists(storage_path().'/app/public/pois_thumbs/'.$this->id)) { mkdir(storage_path().'/app/public/pois_thumbs/'.$this->id, 0755, true);
  }
          $image_resize->resize(75, 75)->crop(75, 75)->save(storage_path().'/app/public/pois_thumbs/'.$filename);
 
