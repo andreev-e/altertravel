@@ -13925,7 +13925,7 @@ border-radius: 0;
 }
 
 .poi {
-  flex: 0 1 300px;
+  flex: 0.3 1 300px;
 }
 .poi a, .comment a {
   text-decoration: none;
