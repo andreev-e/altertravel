@@ -92,21 +92,12 @@ class ServiceController extends Controller
 
           } while ($image);
 
-          $filelist=Storage::files("/public/".$directory);
-          if (count($filelist)) {
-            $photos=array();
-            foreach ($filelist as $file) {
-              $file=explode("/",$file);
-              $name=array_pop($file);
-              $lastdir=array_pop($file);
-              $photos[]=$lastdir."/".$name;
-            }
-
-          $route->photos=implode(",",$photos);
-          $route->photo=array_pop($photos);
-          $route->save();
-          }
-
+        $filelist=Storage::files($directory);
+        if (count($filelist)) {
+        $route->photo=$filelist[0];
+        $filelist=implode(",",$filelist);
+        $route->photos=$filelist;
+        $route->save();
         }
 
 

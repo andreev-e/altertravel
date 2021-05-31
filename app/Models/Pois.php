@@ -54,9 +54,9 @@ class Pois extends Model
 
     public function gallery()
     {
-      $this->photos=explode(",",$this->photos);
-      foreach ($this->photos as $key => $value) {
-        $photos[]=asset("/storage/pois/".$value);
+        $photos=explode(",",$this->photos);
+        foreach ($photos as $key => $value) {
+        $photos[$key]=asset("/storage/pois/".$value);
       }
       return $photos;
     }
