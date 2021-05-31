@@ -31,8 +31,37 @@ class ServiceController extends Controller
       $echo='Импорт:<br>';
 
       if ($what=='photo_objects') {
-        foreach (Pois::lazy() as $poi) {
-          //dd($poi);
+        foreach (Pois::where('photo','=','')->limit(1000)->get() as $poi) {
+            $image=false;
+            $i=0;
+            $directory="/pois/".$poi->id."/";
+            $filename=$poi->old_id.".jpg";
+            $alter_old_url="https://altertravel.ru/images/".$filename;
+            $image=@file_get_contents ($alter_old_url);
+            if ($image)  Storage::put("/public/".$directory.'__'.$filename, $image);
+            do {
+              $i++;
+              $filename=$i.".jpg";
+              $alter_old_url="https://altertravel.ru/images/".$poi->old_id."/".$filename;
+              $image=@file_get_contents ($alter_old_url);
+              if ($image) Storage::put("/public/".$directory.$filename, $image);
+            } while ($image);
+
+        $filelist=Storage::files("/public/".$directory);
+        if (count($filelist)) {
+          $photos=array();
+          foreach ($filelist as $file) {
+            $file=explode("/",$file);
+            $name=array_pop($file);
+            $lastdir=array_pop($file);
+            $photos[]=$lastdir."/".$name;
+          }
+
+        $poi->photos=implode(",",$photos);
+        $poi->photo=array_pop($photos);
+        $poi->save();
+        }
+
         }
         $echo.="photo_objects import ok";
       }
@@ -40,7 +69,7 @@ class ServiceController extends Controller
 
       if ($what=='photo_avatars') {
 
-        foreach (User::where('avatar_original','=','')->get() as $user) {
+        foreach (User::where('avatar_original','=','')->limit(3)->get() as $user) {
             $image=false;
             $i=0;
             $directory="/avatars/";
@@ -87,9 +116,6 @@ class ServiceController extends Controller
             }
             else  $echo.="нет";
             $echo.=$alter_old_url."<br>";
-
-            $route->photo="-";
-            $route->save();
 
           } while ($image);
 

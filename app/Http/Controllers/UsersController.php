@@ -34,14 +34,15 @@ class UsersController extends Controller
 
           if($request->hasFile('avatar_full')) {
           $path = $request->file('avatar_full')->store('/public/avatars');
-          $user->avatar_original=$path;
+
           $filename=explode('/',$path);
           $filename=array_pop($filename);
-          //
+
           $image_resize = Image::make(storage_path().'/app/'.$path);
           $image_resize->resize(75, 75)->crop(75, 75)->save(storage_path().'/app/public/avatars/thumbs/'.$filename);
 
-          $user->avatar='avatars/'.$filename;
+          $user->avatar_original='avatars/'.$filename;
+          $user->avatar='avatars/thumbs/'.$filename;
           }
 
           $user->save();
