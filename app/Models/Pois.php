@@ -41,14 +41,14 @@ class Pois extends Model
     public function thumb()
     {
        if ($this->photo) $result=asset("/storage/pois/".$this->photo);
-       else $result="-----";
+       else $result="/i/empty.jpg";
        return $result;
     }
 
     public function main_image()
     {
        if ($this->photo) $result=asset("/storage/pois/".$this->photo);
-       else $result="------";
+       else $result="/i/empty.jpg";
        return $result;
     }
 
