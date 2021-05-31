@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
   <h1>Путешествия и маршруты</h1>
-  Показать сначала:
+  <div class="sort"><span>Показать сначала:</span>
   @foreach ($sorts as $sort)
   @if ($request->sort==$sort['sort'] or ($request->sort=='' and $sort['sort']=='id.desc'))
   <b>{{$sort['name']}}</b>
@@ -11,7 +11,7 @@
   <a href="?sort={{$sort['sort']}}">{{$sort['name']}}</a>
   @endif
   @endforeach
-
+  </div>
   <div class="gallery d-flex flex-wrap justify-content-between align-items-stretch">
   @foreach ($routes as $route)
     @include('blocks.route_card')

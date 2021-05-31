@@ -22,6 +22,7 @@ class UsersController extends Controller
       if ($request->isMethod('post')) {
         $validated = $request->validate([
             'name'  => 'required|string|min:3|max:255',
+            'login'  => 'string|min:3|max:20',
         ]);
 
         if ($validated) {
