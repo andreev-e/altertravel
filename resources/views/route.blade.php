@@ -19,7 +19,7 @@
   <li>Отзывы и комментарии
 </ul>
 </nav>
-<img src="https://altertravel.ru/images/{{ $route->old_id }}.jpg" class="img-fluid" alt="{{$route->name}}"/>
+<img src="{{$route->main_image()}}" class="card-img-top" alt="{{ $route->name }}">
 @foreach ($route->photos as $photo)
 <img src="{{ Storage::url($photo) }}" alt="{{$route->name}}"/>
 @endforeach
@@ -27,10 +27,6 @@
 <div class="map" id="map"></div>
 <h2>Описание</h2>
 {!!$route->description!!}
-@isset($route->route)
-<h2>Как добраться</h2>
-{!!$route->route!!}
-@endisset
 @isset($route->prim)
 <h2>Примечание</h2>
 {!!$route->prim!!}

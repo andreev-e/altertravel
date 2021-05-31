@@ -11,7 +11,7 @@
   <a href="?sort={{$sort['sort']}}">{{$sort['name']}}</a>
   @endif
   @endforeach
-  <div class="d-flex flex-wrap align-items-stretch">
+  <div class="gallery d-flex flex-wrap justify-content-between align-items-stretch">
   @foreach ($pois as $poi)
   @include('blocks.poi_card')
 @endforeach

@@ -117,7 +117,7 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
   <li>Отзывы и комментарии
 </ul>
 </nav>
-<img src="https://altertravel.ru/images/{{ $poi->old_id }}.jpg" class="img-fluid" alt="{{$poi->name}}"/>
+<img src="{{$poi->main_image()}}" alt="{{$poi->name}}"/>
 @foreach ($poi->photos as $photo)
 <img src="{{ Storage::url($photo) }}" alt="{{$poi->name}}"/>
 @endforeach

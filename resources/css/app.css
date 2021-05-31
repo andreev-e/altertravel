@@ -38,6 +38,10 @@ h1 {
   border-radius: 50%;
 }
 
+.gallery {
+  margin: 0 -15px;
+}
+
 .card {
   border-radius: 0;
   border: none;
@@ -53,7 +57,7 @@ border-radius: 0;
 }
 
 .poi {
-  flex: 1 1 25%;
+  flex: 1 1 300px;
 }
 .poi a, .comment a {
   text-decoration: none;

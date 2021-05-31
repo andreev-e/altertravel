@@ -3,7 +3,6 @@
 <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <script type="text/javascript">
     var icon = "/i/map_marker.png";
-    var shadow = "/i/new/marker_shadow.png";
     var json_url = "{{ route('poi_json') }}";
     var infowindow = new google.maps.InfoWindow();
     var markersArray = [];
@@ -36,26 +35,27 @@
       var url=json_url+'?mne=' + bounds.getNorthEast().toUrlValue() + '&msw=' + bounds.getSouthWest().toUrlValue();
 
       $.getJSON(url, function(json) {
-      $('#shown_on_map').empty();
+      /*$('#shown_on_map').empty();*/
       $.each(json, function (key, data) {
         var latLng = new google.maps.LatLng(data.lat, data.lng);
         var marker = new google.maps.Marker({
             position: latLng,
             map: map,
             icon: '/i/markers/'+data.icon,
-            shadow: shadow,
             title: data.name
         });
         markersArray.push(marker);
 
         var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
         bindInfoWindow(marker, map, infowindow, details);
+        /*
         i=i+1;
             if (i<={{ env('OBJECTS_ON_MAIN_PAGE',6) }}) $('#shown_on_map ').append('<div class="poi p-3"><div class="card"><a href="{{ route('poi') }}/'+data.url+'" target="_blank"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div></a> </div></div></div>');
-
+            */
             data.tags.forEach(function(item, i, arr) {
               $('[data-tag_id="'+item.id+'"]').show();
             });
+
 
       });
 
@@ -105,7 +105,7 @@ google.maps.event.addListener(map, 'idle', function() {
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
+<div class="container">
   <div class="row">
   <div class="col-sm-9 text-center">
     <h1>Карта достопримечательностей</h1>
@@ -122,8 +122,8 @@ google.maps.event.addListener(map, 'idle', function() {
   </div>
 </div>
 <div class="container text-center">
-  <p class="h1" >Популярные места</p>
-  <div class="d-flex flex-wrap align-items-stretch" id="shown_on_map">
+  <p class="h1" >Новые места</p>
+  <div class="gallery d-flex flex-wrap justify-content-between align-items-stretch">
     @foreach ($pois as $poi)
   @include('blocks.poi_card')
   @endforeach
@@ -131,7 +131,7 @@ google.maps.event.addListener(map, 'idle', function() {
 </div>
 <div class="container text-center">
   <p class="h1" >Популярные маршруты</p>
-  <div class="d-flex flex-wrap align-items-stretch">
+  <div class="gallery d-flex flex-wrap justify-content-between align-items-stretch">
     @foreach ($routes as $route)
   @include('blocks.route_card')
   @endforeach
@@ -139,7 +139,7 @@ google.maps.event.addListener(map, 'idle', function() {
 </div>
 <div class="container text-center">
   <p class="h1" >Последние комментарии</p>
-  <div class="d-flex flex-wrap align-items-stretch">
+  <div class="gallery d-flex flex-wrap justify-content-between align-items-stretch">
     @foreach ($comments as $comment)
   @include('blocks.comment_card')
   @endforeach

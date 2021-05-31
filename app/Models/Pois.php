@@ -38,6 +38,20 @@ class Pois extends Model
        return $this->belongsTo(Categories::class);
     }
 
+    public function thumb()
+    {
+       if ($this->photo) $result=$this->photo;
+       else $result="https://altertravel.ru/thumb.php?f=/images/".$this->old_id.".jpg";
+       return $result;
+    }
+
+    public function main_image()
+    {
+       if ($this->photo) $result=$this->photo;
+       else $result="https://altertravel.ru/images/".$this->old_id.".jpg";
+       return $result;
+    }
+
     protected $fillable = [
         'name',
         'url',

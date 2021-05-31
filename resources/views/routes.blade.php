@@ -12,7 +12,7 @@
   @endif
   @endforeach
 
-  <div class="d-flex flex-wrap align-items-stretch">
+  <div class="gallery d-flex flex-wrap justify-content-between align-items-stretch">
   @foreach ($routes as $route)
     @include('blocks.route_card')
 @endforeach

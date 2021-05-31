@@ -263,7 +263,6 @@ if ($curl = curl_init()) {
 $file=json_decode($file);
 
 
-if ($file->statusCode=="403") return;
 if (is_object($file)) $file=array_reverse($file->response->GeoObjectCollection->featureMember); else $file=array();
 $prev_loc=0;
 $exclude_kinds = array('street','house','area','district','vegetation');

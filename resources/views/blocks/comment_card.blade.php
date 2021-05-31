@@ -1,8 +1,5 @@
-<div class="comment p-3">
-  <div class="card" id="comment{{$comment->id}}">
-    @if (isset($pois))
-    <a href="{{ route('single-poi',$comment->poi->url) }}">
-    @endif
+<div class="comment p-3" @if (isset($pois)) style="cursor:pointer;" onclick="location.href='{{ route('single-poi',$comment->poi->url) }}'" @endif>
+  <div class="card flex-row" id="comment{{$comment->id}}">
     <div class="card-body text-start">
     <p class="h4 card-title ">
       @if ($comment->user_id==null)
@@ -24,7 +21,7 @@
     <p class="card-text">{{ $comment->comment }}</p>
     </div>
     @if (isset($pois))
-    </a>
+    <img class="flex-shrink-1" src="{{$comment->poi->thumb()}}"  alt="{{ $comment->poi->name }}">
     @endif
   </div>
 </div>
