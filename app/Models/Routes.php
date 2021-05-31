@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Support\Facades\Storage;
+
+use Intervention\Image\ImageManagerStatic as Image;
 
 class Routes extends Model
 {
@@ -28,9 +29,17 @@ class Routes extends Model
 
     public function thumb()
     {
-       if ($this->photo) $result=asset("/storage/".$this->photo);
-       elseif ($this->pois->count()>0) $result=$this->pois->first()->thumb();
-       else $result="https://altertravel.ru/thumb.php?f=/routes/".$this->old_id."/1.jpg";
+       if ($this->photo) {
+         if (!file_exists(storage_path().'/app/public/routes_thumbs/'.$this->photo)) {
+         $image_resize = Image::make(storage_path().'/app/public/routes/'.$this->photo);
+         if (!file_exists(storage_path().'/app/public/routes_thumbs/'.$this->id)) mkdir(storage_path().'/app/public/routes_thumbs/'.$this->id, 0755, true);
+         $image_resize->resize(300, null, function ($constraint) {$constraint->aspectRatio();})->crop(300, 200)->save(storage_path().'/app/public/routes_thumbs/'.$this->photo);
+          }
+         $result=asset("/storage/routes_thumbs/".$this->photo);
+
+       }
+       else $result="/i/empty.jpg";
+
        return $result;
     }
 
