@@ -52,7 +52,7 @@ class ServiceController extends Controller
 
             if ($image)  {
                 $echo.="есть картинка";
-                Storage::put($directory.$filename, $image);
+                Storage::put("/public/".$directory.$filename, $image);
 
             }
             else  $echo.="нет";
