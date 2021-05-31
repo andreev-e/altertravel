@@ -47,7 +47,7 @@ class Pois extends Model
 
          $image_resize = Image::make(storage_path().'/app/public/pois/'.$this->photo);
          if (!file_exists(storage_path().'/app/public/pois_thumbs/'.$this->id)) mkdir(storage_path().'/app/public/pois_thumbs/'.$this->id, 0755, true);
-         $image_resize->resize(260, null, function ($constraint) {$constraint->aspectRatio();})->crop(260, 170)->save(storage_path().'/app/public/pois_thumbs/'.$this->photo);
+         $image_resize->resize(300, null, function ($constraint) {$constraint->aspectRatio();})->crop(300, 225)->save(storage_path().'/app/public/pois_thumbs/'.$this->photo);
 
          $result=asset("/storage/pois_thumbs/".$this->photo);
 
