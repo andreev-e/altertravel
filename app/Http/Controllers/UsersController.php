@@ -29,6 +29,8 @@ class UsersController extends Controller
           $user->site=$request->site;
           $user->about=$request->about;
 
+          $user->login=$request->login;
+
           if($request->hasFile('avatar_full')) {
           $path = $request->file('avatar_full')->store('avatars_full');
           $user->avatar_original=$path;

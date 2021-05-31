@@ -35,6 +35,10 @@
                 <input type="text" class="form-control @error('site') is-invalid @enderror" name="site" value="@if (strlen(old('site'))){{old('site')}}@else{{ $user->site }}@endif">
               </div>
               <div class="form-group">
+                <label for="login">Логин (используется в адресе личной страницы)</label>
+                <input type="text" class="form-control @error('login') is-invalid @enderror" name="login" value="@if (strlen(old('login'))){{old('login')}}@else{{ $user->login }}@endif">
+              </div>
+              <div class="form-group">
                 <label for="about">Обо мне</label>
                 <textarea  class="form-control @error('about') is-invalid @enderror" name="about">@if (strlen(old('about'))){{old('about')}}@else{{ $user->about }}@endif</textarea>
               </div>
