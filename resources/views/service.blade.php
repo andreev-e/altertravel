@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
   <h1>Сервисные функции</h1>
-{{$echo}}
+{!! $echo !!}
 </div>
 
 @endsection

@@ -70,6 +70,7 @@ class LoginController extends Controller
             $newUser->provider       = $provider;
             $newUser->avatar          = $user->avatar;
             $newUser->avatar_original = $user->avatar_original;
+            $newUser->login           = '';
             $newUser->save();
             auth()->login($newUser, true);
         }

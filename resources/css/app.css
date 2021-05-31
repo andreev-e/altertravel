@@ -57,7 +57,7 @@ border-radius: 0;
 }
 
 .poi {
-  flex: 1 1 300px;
+  flex: 0.2 1 300px;
 }
 .poi a, .comment a {
   text-decoration: none;
@@ -70,4 +70,9 @@ border-radius: 0;
 
 .comment {
   width:100%;
+}
+
+
+.comment_card_thumb {
+  height:150px;
 }

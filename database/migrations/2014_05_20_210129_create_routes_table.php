@@ -25,9 +25,10 @@ class CreateRoutesTable extends Migration
             $table->text('prim')->nullable();
             $table->integer('status')->default(0);
             $table->string('photo')->default('');
+            $table->text('photos')->default('');
             $table->text('route')->nullable();
             $table->text('links')->nullable();
-            $table->string('views')->default('0');
+            $table->integer('views')->default('0');
             $table->timestamps();
         });
     }

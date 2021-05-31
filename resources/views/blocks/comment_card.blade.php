@@ -21,7 +21,7 @@
     <p class="card-text">{{ $comment->comment }}</p>
     </div>
     @if (isset($pois))
-    <img class="flex-shrink-1" src="{{$comment->poi->thumb()}}"  alt="{{ $comment->poi->name }}">
+    <img class="comment_card_thumb" src="{{$comment->poi->thumb()}}"  alt="{{ $comment->poi->name }}">
     @endif
   </div>
 </div>

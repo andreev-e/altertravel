@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Storage;
+
 class Routes extends Model
 {
     use HasFactory;
@@ -26,7 +28,7 @@ class Routes extends Model
 
     public function thumb()
     {
-       if ($this->photo) $result=$this->photo;
+       if ($this->photo) $result=asset("/storage/app/".$this->photo);
        elseif ($this->pois->count()>0) $result=$this->pois->first()->thumb();
        else $result="https://altertravel.ru/thumb.php?f=/routes/".$this->old_id."/1.jpg";
        return $result;
@@ -34,7 +36,7 @@ class Routes extends Model
 
     public function main_image()
     {
-      if ($this->photo) $result=$this->photo;
+      if ($this->photo) $result="/".$this->photo;
       else if ($this->pois->count()>0) $result=$result=$this->pois->first()->main_image();
       else  $result="https://altertravel.ru/routes/".$this->old_id."/1.jpg";
       return $result;
@@ -49,6 +51,8 @@ class Routes extends Model
         'status',
         'description',
         'route',
+        'photo',
+        'photos',
         'prim',
         'views',
         'duration',

@@ -31,7 +31,7 @@ class CreatePoisTable extends Migration
             $table->string('video')->nullable();
             $table->integer('status')->default(1);
             $table->string('photo')->default('');
-            $table->string('photos')->nullable();
+            $table->text('photos')->nullable();
             $table->string('copyright')->nullable();
             $table->text('links')->nullable();;
             $table->unsignedBigInteger('views')->default('0');

@@ -79,7 +79,7 @@
         @else
 
             <li class="nav-item">
-                <a  class="nav-link" href="{{ Route('user',Auth::user()->login) }}"  >
+                <a  class="nav-link" href="#"  >
                   <img height="20px" class="avatar" src="{{ ((strpos ( Auth::user()->avatar , '//')>0)?Auth::user()->avatar:Storage::url(Auth::user()->avatar))}}" alt="ava"> <b>{{Auth::user()->name}}</b>
                 </a>
               </li>
@@ -108,7 +108,8 @@
                   <li><a class="dropdown-item" href="{{route('import','slovar')}}">7 Справочник</a></li>
                   <li><a class="dropdown-item" href="{{route('import','comments')}}">8 Комменарии</a></li>
                   <li><a class="dropdown-item" href="{{route('import','comments_fix')}}">9 Привязать комменты к юзерам</a></li>
-
+                  <li><a class="dropdown-item" href="{{route('import','photo_objects')}}">10 Фото объектов в storage</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','photo_routes')}}">11 Фото маршрутов в storage</a></li>
               </ul>
             </li>
             @endif
