@@ -31,6 +31,8 @@ class ServiceController extends Controller
       $echo='Импорт:<br>';
 
       if ($what=='photo_objects') {
+
+        ///ok
         foreach (Pois::where('photo','=','')->limit(1000)->get() as $poi) {
             $image=false;
             $i=0;
@@ -67,35 +69,6 @@ class ServiceController extends Controller
       }
 
 
-      if ($what=='photo_avatars') {
-
-        foreach (User::where('avatar_original','=','')->limit(3)->get() as $user) {
-            $image=false;
-            $i=0;
-            $directory="/avatars/";
-
-
-            $filename=$user->login.".jpg";
-            $alter_old_url="https://altertravel.ru/authors/".$filename;
-            $image=@file_get_contents ($alter_old_url);
-
-            if ($image)  {
-                $echo.="есть картинка";
-                Storage::put("/public/".$directory.$filename, $image);
-                $user->avatar_original=$directory.$filename;
-                $user->avatar=$directory.$filename;
-
-            }
-            else  {
-              $user->avatar_original="-";
-              $user->avatar="-";
-            }
-            $user->save();
-
-        }
-        $echo.="photo_avatars import ok";
-      }
-
       if ($what=='photo_routes') {
 
         foreach (Routes::where('photo','=','')->get() as $route) {
@@ -119,12 +92,21 @@ class ServiceController extends Controller
 
           } while ($image);
 
-        $filelist=Storage::files($directory);
-        if (count($filelist)) {
-        $route->photo=$filelist[0];
-        $filelist=implode(",",$filelist);
-        $route->photos=$filelist;
-        $route->save();
+          $filelist=Storage::files("/public/".$directory);
+          if (count($filelist)) {
+            $photos=array();
+            foreach ($filelist as $file) {
+              $file=explode("/",$file);
+              $name=array_pop($file);
+              $lastdir=array_pop($file);
+              $photos[]=$lastdir."/".$name;
+            }
+
+          $route->photos=implode(",",$photos);
+          $route->photo=array_pop($photos);
+          $route->save();
+          }
+
         }
 
 
@@ -132,6 +114,36 @@ class ServiceController extends Controller
         }
         $echo.="photo_routes import ok";
       }
+
+
+            if ($what=='photo_avatars') {
+
+              foreach (User::where('avatar_original','=','')->limit(3)->get() as $user) {
+                  $image=false;
+                  $i=0;
+                  $directory="/avatars/";
+
+
+                  $filename=$user->login.".jpg";
+                  $alter_old_url="https://altertravel.ru/authors/".$filename;
+                  $image=@file_get_contents ($alter_old_url);
+
+                  if ($image)  {
+                      $echo.="есть картинка";
+                      Storage::put("/public/".$directory.$filename, $image);
+                      $user->avatar_original=$directory.$filename;
+                      $user->avatar=$directory.$filename;
+
+                  }
+                  else  {
+                    $user->avatar_original="-";
+                    $user->avatar="-";
+                  }
+                  $user->save();
+
+              }
+              $echo.="photo_avatars import ok";
+            }
 
 
       if ($what=='locating') {
