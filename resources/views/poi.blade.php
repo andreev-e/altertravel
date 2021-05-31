@@ -118,7 +118,7 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 </ul>
 </nav>
 <img src="{{$poi->main_image()}}" alt="{{$poi->name}}"/>
-@foreach ($poi->photos as $photo)
+@foreach ($poi->gallery() as $photo)
 <img src="{{ Storage::url($photo) }}" alt="{{$poi->name}}"/>
 @endforeach
 <h2>Карта</h2>
