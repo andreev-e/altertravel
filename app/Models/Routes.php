@@ -28,7 +28,7 @@ class Routes extends Model
 
     public function thumb()
     {
-       if ($this->photo) $result=asset("/storage/app/".$this->photo);
+       if ($this->photo) $result=asset("/storage/app/public/".$this->photo);
        elseif ($this->pois->count()>0) $result=$this->pois->first()->thumb();
        else $result="https://altertravel.ru/thumb.php?f=/routes/".$this->old_id."/1.jpg";
        return $result;
