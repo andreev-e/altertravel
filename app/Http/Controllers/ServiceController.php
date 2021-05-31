@@ -42,7 +42,7 @@ class ServiceController extends Controller
         foreach (Routes::where('photo','=','')->get() as $route) {
             $image=false;
             $i=0;
-            $directory="public/routes/".$route->id."/";
+            $directory="/routes/".$route->id."/";
             do {
               $i++;
 
