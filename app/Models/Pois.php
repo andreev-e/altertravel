@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Intervention\Image\ImageManagerStatic as Image;
+
 class Pois extends Model
 {
     use HasFactory;
@@ -40,8 +42,22 @@ class Pois extends Model
 
     public function thumb()
     {
-       if ($this->photo) $result=asset("/storage/pois/".$this->photo);
+       if ($this->photo) {
+         $result=asset("/storage/pois/".$this->photo);
+         ///
+
+         $filename=$this->photo;
+
+         $image_resize = Image::make(storage_path().'/app/public/pois/'.$filename);
+
+         $image_resize->resize(75, 75)->crop(75, 75)->save(storage_path().'/app/public/avatars/thumbs/'.$filename);
+
+         $user->avatar_original='avatars/'.$filename;
+         $user->avatar='avatars/thumbs/'.$filename;
+
+       }
        else $result="/i/empty.jpg";
+
        return $result;
     }
 
