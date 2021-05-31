@@ -49,7 +49,7 @@ class Pois extends Model
          $filename=$this->photo;
 
          $image_resize = Image::make(storage_path().'/app/public/pois/'.$filename);
-
+         dd(storage_path().'/app/public/pois/'.$filename);
          $image_resize->resize(75, 75)->crop(75, 75)->save(storage_path().'/app/public/avatars/thumbs/'.$filename);
 
          $user->avatar_original='avatars/'.$filename;
