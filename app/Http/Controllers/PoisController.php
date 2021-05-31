@@ -77,7 +77,6 @@ class PoisController extends Controller
           $this->make_pois_geocodes($poi);
           $poi=Pois::firstWhere('url', $url);
         }
-        $poi->photos=explode(",",$poi->photos);
         return $poi;
         });
         $poi->increment('views');
