@@ -37,6 +37,36 @@ class ServiceController extends Controller
         $echo.="photo_objects import ok";
       }
 
+
+      if ($what=='photo_avatars') {
+
+        foreach (User::where('avatar_original','=','')->get() as $user) {
+            $image=false;
+            $i=0;
+            $directory="/avatars/";
+
+
+            $filename=$user->login.".jpg";
+            $alter_old_url="https://altertravel.ru/authors/".$filename;
+            $image=@file_get_contents ($alter_old_url);
+
+            if ($image)  {
+                $echo.="есть картинка";
+                Storage::put("/public/".$directory.$filename, $image);
+                $user->avatar_original=$directory.$filename;
+                $user->avatar=$directory.$filename;
+
+            }
+            else  {
+              $user->avatar_original="-";
+              $user->avatar="-";
+            }
+            $user->save();
+
+        }
+        $echo.="photo_avatars import ok";
+      }
+
       if ($what=='photo_routes') {
 
         foreach (Routes::where('photo','=','')->get() as $route) {

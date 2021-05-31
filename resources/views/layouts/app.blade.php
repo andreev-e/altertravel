@@ -110,6 +110,8 @@
                   <li><a class="dropdown-item" href="{{route('import','comments_fix')}}">9 Привязать комменты к юзерам</a></li>
                   <li><a class="dropdown-item" href="{{route('import','photo_objects')}}">10 Фото объектов в storage</a></li>
                   <li><a class="dropdown-item" href="{{route('import','photo_routes')}}">11 Фото маршрутов в storage</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','photo_avatars')}}">12 Аватарки в storage</a></li>
+
               </ul>
             </li>
             @endif
@@ -133,7 +135,7 @@
         <main class="py-4">
             @yield('content')
         </main>
-        
+
         <!-- Yandex.Metrika counter -->
         <script type="text/javascript" >
            (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};

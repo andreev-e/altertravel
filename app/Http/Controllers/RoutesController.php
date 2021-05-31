@@ -43,7 +43,6 @@ class RoutesController extends Controller
   {
       $route = Cache::remember('single_route_'.$url, env('CACHE_TIME',60), function () use ($url) {
       $route=Routes::where('url', $url)->firstOrFail();
-      $route->photos=explode(",",$route->photos);
       return $route;
       });
       $route->increment('views');

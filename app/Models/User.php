@@ -17,7 +17,11 @@ class User extends Authenticatable
        return $this->hasMany(Pois::class);
     }
 
-
+    public function avatar()
+    {
+        if (!$this->avatar) return $this->avatar_original; else
+       return $this->avatar;
+    }
 
     /**
      * The attributes that are mass assignable.

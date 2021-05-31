@@ -40,16 +40,21 @@ class Pois extends Model
 
     public function thumb()
     {
-       if ($this->photo) $result=$this->photo;
+       if ($this->photo) $result=asset("/storage/".$this->photo);
        else $result="https://altertravel.ru/thumb.php?f=/images/".$this->old_id.".jpg";
        return $result;
     }
 
     public function main_image()
     {
-       if ($this->photo) $result=$this->photo;
+       if ($this->photo) $result="/storage/".$this->photo;
        else $result="https://altertravel.ru/images/".$this->old_id.".jpg";
        return $result;
+    }
+
+    public function gallery()
+    {
+      return explode(",",$this->photos);
     }
 
     protected $fillable = [

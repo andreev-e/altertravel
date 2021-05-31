@@ -20,7 +20,7 @@
 </ul>
 </nav>
 <img src="{{$route->main_image()}}" class="card-img-top" alt="{{ $route->name }}">
-@foreach ($route->photos as $photo)
+@foreach ($route->gallery() as $photo)
 <img src="{{ Storage::url($photo) }}" alt="{{$route->name}}"/>
 @endforeach
 <h2>Карта</h2>

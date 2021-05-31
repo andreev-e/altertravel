@@ -36,11 +36,17 @@ class Routes extends Model
 
     public function main_image()
     {
-      if ($this->photo) $result="/".$this->photo;
+      if ($this->photo) $result="/storage/".$this->photo;
       else if ($this->pois->count()>0) $result=$result=$this->pois->first()->main_image();
       else  $result="https://altertravel.ru/routes/".$this->old_id."/1.jpg";
       return $result;
     }
+
+    public function gallery()
+    {
+      return explode(",",$this->photos);
+    }
+
 
 
     protected $fillable = [
