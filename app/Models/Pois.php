@@ -44,15 +44,13 @@ class Pois extends Model
     {
        if ($this->photo) {
          $result=asset("/storage/pois/".$this->photo);
-         ///
 
-         $filename=$this->photo;
-
-         $image_resize = Image::make(storage_path().'/app/public/pois/'.$filename);
+         $image_resize = Image::make(storage_path().'/app/public/pois/'.$this->photo);
          if (!file_exists(storage_path().'/app/public/pois_thumbs/'.$this->id)) { mkdir(storage_path().'/app/public/pois_thumbs/'.$this->id, 0755, true);
  }
-         $image_resize->resize(260, 260)->crop(260, 200)->save(storage_path().'/app/public/pois_thumbs/'.$filename);
+         $image_resize->resize(260, 260)->crop(260, 200)->save(storage_path().'/app/public/pois_thumbs/'.$this->photo);
 
+         $result=asset("/storage/pois_thumbs/".$this->photo);
 
        }
        else $result="/i/empty.jpg";
