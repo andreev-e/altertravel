@@ -89,7 +89,7 @@ google.maps.event.addListener(map, 'idle', function() {
   <li><a href="{{ route ('/') }}"><i class="fa fa-home" aria-hidden="true"></i></a>
   @foreach ($breadcrumbs as $breadcrumb)<li><a href="{{ route('location', [$breadcrumb['url'],'']) }}">{{$breadcrumb['name']}}</a></li>@endforeach
   @if (isset($category))
-  <li><a href="{{ route('location', [$location->url,'']) }}">{{$location->name}}</a></li>
+  <li><a href="{{ route('location', [$location->url,'','']) }}">{{$location->name}}</a></li>
   <li>{{$category->name}}</li>
   @else <li>{{$location->name}}</li>
   @endif
@@ -110,12 +110,12 @@ google.maps.event.addListener(map, 'idle', function() {
   @foreach (App\Models\Categories::get() as $loc_category)
   @if (isset($category))
   @if ($category->id!=$loc_category->id)
-  <a href="{{ route('location',[$location->url,$loc_category->url ]) }}">{{$loc_category->name}}</a>
+  <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a>
   @else
   <span>{{$loc_category->name}}</span>
   @endif
   @else
-  <a href="{{ route('location',[$location->url,$loc_category->url ]) }}">{{$loc_category->name}}</a>
+  <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a>
   @endif
   @endforeach
 </div>

@@ -32,7 +32,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             @foreach (App\Models\Locations::where('type','=','country')->get() as $locaton)
-              <li><a class="dropdown-item" href="{{route('location',[$locaton->url,''])}}"><img src="/i/flags/{{$locaton->flag}}" alt="flag"> {{$locaton->name}}</a></li>
+              <li><a class="dropdown-item" href="{{route('location',[$locaton->url,'',''])}}"><img src="/i/flags/{{$locaton->flag}}" alt="flag"> {{$locaton->name}}</a></li>
             @endforeach
           </ul>
         </li>

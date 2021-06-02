@@ -22,6 +22,7 @@ Route::get('/izbrannoye', 'App\Http\Controllers\PoisController@izbrannoye')->nam
 
 Route::get('/location/{url}/', 'App\Http\Controllers\PoisController@location_category')->name('location');
 Route::get('/location/{url}/{category}', 'App\Http\Controllers\PoisController@location_category')->name('location');
+Route::get('/location/{url}/{category}/{tag}', 'App\Http\Controllers\PoisController@location_category')->name('location');
 Route::get('/category/{category}', 'App\Http\Controllers\PoisController@category')->name('category');
 
 

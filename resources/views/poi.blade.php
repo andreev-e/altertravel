@@ -97,8 +97,8 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
    @if (count($poi->locations)>0)
   <ul class="breadcrumbs">
     <li><a href="{{ route ('/') }}"><i class="fa fa-home" aria-hidden="true"></i></a>
-    @foreach ($poi->locations as $location)<li><a href="{{ route ('location',[$location->url,'']) }}">{{ $location->name }}</a></li>@endforeach
-    <li>@if (isset($poi->category)) <a href="{{ route ('location',[$location->url,$poi->category->url]) }}">{{$poi->category->name}}</a> @endif</li>
+    @foreach ($poi->locations as $location)<li><a href="{{ route ('location',[$location->url,'','']) }}">{{ $location->name }}</a></li>@endforeach
+    <li>@if (isset($poi->category)) <a href="{{ route ('location',[$location->url,$poi->category->url,'']) }}">{{$poi->category->name}}</a> @endif</li>
   </ul>
   @endif
   <h1>{!!$poi->name!!}

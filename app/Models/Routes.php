@@ -29,7 +29,7 @@ class Routes extends Model
 
     public function thumb()
     {
-       if ($this->photo) {
+       if ($this->photo and 0) {
          if (!file_exists(storage_path().'/app/public/routes_thumbs/'.$this->photo)) {
          $image_resize = Image::make(storage_path().'/app/public/routes/'.$this->photo);
          if (!file_exists(storage_path().'/app/public/routes_thumbs/'.$this->id)) mkdir(storage_path().'/app/public/routes_thumbs/'.$this->id, 0755, true);

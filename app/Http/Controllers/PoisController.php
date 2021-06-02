@@ -164,7 +164,7 @@ class PoisController extends Controller
         return view('location', compact('pois','location','breadcrumbs'));
     }
 
-    public function location_category($url,Request $request,$category=null )
+    public function location_category($url,Request $request,$category=null,$tag=null )
     {
       $sorts=$this->sorts;
       $table=$this->default_table;
