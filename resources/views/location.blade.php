@@ -83,7 +83,7 @@ google.maps.event.addListener(map, 'idle', function() {
 
 @endpush
 @extends('layouts.app')
-@section('title')@if (isset($location)) {{$location->name}} @endif: @if (isset($category)) {{$category->name}} @else достопримечательности @endif @endsection
+@section('title')@if (isset($location)) {{$location->name}}@else Весь мир@endif: @if (isset($category)) {{$category->name}} @else достопримечательности @endif @endsection
 @section('content')
 <div class="container">
   <ul class="breadcrumbs">
