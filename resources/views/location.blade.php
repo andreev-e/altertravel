@@ -10,8 +10,8 @@ window.onload = function()
 {
 map = new google.maps.Map(document.getElementById("map"),
 {
-@if (isset($location))
-center: new google.maps.LatLng({{$location->lat}}, {{$location->lng}}), zoom: {{$location->scale}},
+@if (isset($current_location))
+center: new google.maps.LatLng({{$current_location->lat}}, {{$current_location->lng}}), zoom: {{$current_location->scale}},
 @else
 center: new google.maps.LatLng(28.425261, 74.771668), zoom: 2,
 @endif
@@ -87,65 +87,96 @@ google.maps.event.addListener(map, 'idle', function() {
 
 @endpush
 @extends('layouts.app')
-@section('title')@if (isset($location)) {{$location->name}}@else Весь мир@endif: @if (isset($category)) {{$category->name}} @else достопримечательности @endif @endsection
+@section('title')@if (isset($current_location)) {{$current_location->name}}@else Весь мир@endif: @if (isset($current_category)) {{$current_category->name}} @else достопримечательности @endif @endsection
 @section('content')
 <div class="container">
   <ul class="breadcrumbs">
   <li><a href="{{ route ('/') }}"><i class="fa fa-home" aria-hidden="true"></i></a>
-  @if (!isset($location) )
+  @if (!isset($current_location) & !isset($current_category) & !isset($current_tag) )
   <li>Каталог
   @else
   <li><a href="{{ route('location', ['','','']) }}">Каталог</a>
   @endif
   @if (isset($breadcrumbs) )
-    @foreach ($breadcrumbs as $breadcrumb)<li><a href="{{ route('location', [$breadcrumb['url'],'','']) }}">{{$breadcrumb['name']}}</a></li>@endforeach
-  @endif
-  @if (isset($category))
-  @if (isset($location))<li><a href="{{ route('location', [$location->url,'','']) }}">{{$location->name}}</a></li>@endif
-  <li>{{$category->name}}</li>
-  @else @if (isset($location))<li>{{$location->name}}</li> @endif
+    @foreach ($breadcrumbs as $breadcrumb)
+      <li><a href="{{ route('location', [$breadcrumb['url'],'','']) }}">{{$breadcrumb['name']}}</a></li>
+    @endforeach
   @endif
 
+  @if (isset($current_category) or isset($current_tag))
+    @if (isset($current_location))
+      <li><a href="{{ route('location', [$current_location->url,'','']) }}">{{$current_location->name}}</a></li>
+    @endif
+  @else
+    @if (isset($current_location))
+    <li>{{$current_location->name}}</li>
+    @endif
+  @endif
+
+  @if (isset($current_category))
+  <li>{{$current_category->name}}</li>
+  @endif
+
+  @if (isset($current_tag))
+    <li>{{$current_tag->name}}</li>
+  @endif
 </ul>
   <h1>
-    @if (isset($category))
-    {{$category->name}}
-    @else Достопримечательности
-    @endif
-    @if (isset($location->name_rod))
-    {{$location->name_rod}}
+    @if (isset($current_category))
+      {{$current_category->name}}
+    @elseif (isset($current_tag))
+      {{$current_tag->name_rod}}
     @else
-    @if (isset($location)) {{$location->name}}: достопримечательности @endif
+      Достопримечательности
+    @endif
+    @if (isset($current_location->name_rod))
+      {{$current_location->name_rod}}
+    @else
+      @if (isset($current_location))
+        {{$current_location->name}}: достопримечательности
+      @endif
     @endif
   </h1>
 
-
   @if (isset($subregions))
     @if ($subregions->count()>0)
-    <h2>
+      <h2>
       Регионы
-      @if (isset($location->name_rod))
-      {{$location->name_rod}}
+      @if (isset($current_location->name_rod))
+        {{$current_location->name_rod}}
       @endif
-    </h2>
+      </h2>
+      @foreach ($subregions as $subregion)
+        @if (isset($current_tag))
+          <a href="{{route('tag',[$current_tag->url,$subregion->url])}}">{{$subregion->name}}</a></li>
+          @else
+          <a href="{{route('location',[$subregion->url,''])}}">{{$subregion->name}}</a></li>
+          @endif
+      @endforeach
+    @elseif (isset($locations) & !isset($current_location))
+      <h2>Страны</h2>
+      @foreach ($locations as $loc)
+        <a href="{{route('location',[$loc->url,''])}}"><img src="/i/flags/{{$loc->flag}}" alt="flag"> {{$loc->name}}</a></li>
+        @endforeach
     @endif
-    @foreach ($subregions as $locaton)
-      <a href="{{route('location',[$locaton->url,''])}}"> {{$locaton->name}}</a></li>
-    @endforeach
-  @else
+  @elseif (isset($locations) & !isset($current_location))
     <h2>Страны</h2>
-    @foreach (App\Models\Locations::where('type','=','country')->get() as $locaton)
-      <a href="{{route('location',[$locaton->url,''])}}"><img src="/i/flags/{{$locaton->flag}}" alt="flag"> {{$locaton->name}}</a></li>
+    @foreach ($locations as $loc)
+      @if (isset($current_tag))
+        <a href="{{route('tag',[$current_tag->url,$loc->url])}}"><img src="/i/flags/{{$loc->flag}}" alt="flag"> {{$loc->name}}</a></li>
+      @else
+        <a href="{{route('location',[$loc->url,''])}}"><img src="/i/flags/{{$loc->flag}}" alt="flag"> {{$loc->name}}</a></li>
+      @endif
     @endforeach
   @endif
 
-
+@if (isset($categories))
   <h2>Категории</h2>
-  @foreach (App\Models\Categories::get() as $loc_category)
-    @if (isset($category))
-      @if ($category->id!=$loc_category->id)
-        @if (isset($location))
-        <a href="{{ route('category',[$loc_category->url,$location->url]) }}">{{$loc_category->name}}</a>
+  @foreach ($categories as $loc_category)
+    @if (isset($current_category))
+      @if ($current_category->id!=$loc_category->id)
+        @if (isset($current_location))
+        <a href="{{ route('category',[$loc_category->url,$current_location->url]) }}">{{$loc_category->name}}</a>
         @else
         <a href="{{ route('category',[$loc_category->url,'']) }}">{{$loc_category->name}}</a>
         @endif
@@ -153,26 +184,25 @@ google.maps.event.addListener(map, 'idle', function() {
         <span>{{$loc_category->name}}</span>
       @endif
     @else
-      @if (isset($location))
-      <a href="{{ route('category',[$loc_category->url,$location->url]) }}">{{$loc_category->name}}</a>
+      @if (isset($current_location))
+      <a href="{{ route('category',[$loc_category->url,$current_location->url]) }}">{{$loc_category->name}}</a>
       @else
       <a href="{{ route('category',[$loc_category->url,'']) }}">{{$loc_category->name}}</a>
       @endif
     @endif
   @endforeach
+@endif
 
-  <h2>Метки</h2>
-  @foreach (App\Models\Tags::orderby('name','ASC')->get() as $tag)
-  @if (isset($location))
-  <a href="{{route('tag',[$tag->url,$location->url])}}">{{$tag->name}}</a>
-  @else
-  <a href="{{route('tag',[$tag->url,''])}}">{{$tag->name}}</a>
+  @if (isset($tags))
+    <h2>Метки</h2>
+    @foreach ($tags as $tag)
+      @if (isset($current_location))
+        <a href="{{route('tag',[$tag->url,$current_location->url])}}">{{$tag->name}}</a>
+      @else
+        <a href="{{route('tag',[$tag->url,''])}}">{{$tag->name}}</a>
+      @endif
+    @endforeach
   @endif
-
-
-
-  @endforeach
-
 </div>
 <div class="container">
   <div class="map" id="map"></div>
