@@ -11,7 +11,7 @@ class Categories extends Model
 
     public function pois()
     {
-       return $this->hasMany(Pois::class);
+       return $this->hasMany(Pois::class, 'category_id');
     }
 
     protected $fillable = [

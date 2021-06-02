@@ -26,6 +26,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+                <a class="nav-link" href="{{route('location',['','',''])}}">Каталог</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Страны
@@ -36,11 +39,29 @@
             @endforeach
           </ul>
         </li>
-        @if (Route::has('catalog'))
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('catalog')}}">Каталог</a>
-            </li>
-        @endif
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Категории
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            @foreach (App\Models\Categories::get() as $category)
+              <li><a class="dropdown-item" href="{{route('category',$category->url)}}">{{$category->name}}</a></li>
+            @endforeach
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Метки
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            @foreach (App\Models\Tags::orderby('name','ASC')->get() as $tag)
+              <li><a class="dropdown-item" href="{{route('tag',$tag->url)}}">{{$tag->name}}</a></li>
+            @endforeach
+          </ul>
+        </li>
+
         @if (Route::has('routes'))
             <li class="nav-item">
                 <a class="nav-link" href="{{route('routes')}}">Маршруты</a>

@@ -10,7 +10,11 @@ window.onload = function()
 {
 map = new google.maps.Map(document.getElementById("map"),
 {
-@if (isset($location))  center: new google.maps.LatLng({{$location->lat}}, {{$location->lng}}), zoom: {{$location->scale}},  @endif
+@if (isset($location))
+center: new google.maps.LatLng({{$location->lat}}, {{$location->lng}}), zoom: {{$location->scale}},
+@else
+center: new google.maps.LatLng(28.425261, 74.771668), zoom: 2,
+@endif
 gestureHandling: 'greedy',
 });
 
@@ -113,22 +117,53 @@ google.maps.event.addListener(map, 'idle', function() {
     @endif
   </h1>
 
+
+  @if (isset($subregions))
+    @if ($subregions->count()>0)
+    <h2>
+      Регионы
+      @if (isset($location->name_rod))
+      {{$location->name_rod}}
+      @endif
+    </h2>
+    @endif
+    @foreach ($subregions as $locaton)
+      <a href="{{route('location',[$locaton->url,'',''])}}"> {{$locaton->name}}</a></li>
+    @endforeach
+  @else
+    <h2>Страны</h2>
+    @foreach (App\Models\Locations::where('type','=','country')->get() as $locaton)
+      <a href="{{route('location',[$locaton->url,'',''])}}"><img src="/i/flags/{{$locaton->flag}}" alt="flag"> {{$locaton->name}}</a></li>
+    @endforeach
+  @endif
+
+
+  <h2>Категории</h2>
   @foreach (App\Models\Categories::get() as $loc_category)
-  @if (isset($category))
-  @if ($category->id!=$loc_category->id)
-  <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a>
-  @else
-  <span>{{$loc_category->name}}</span>
-  @endif
-  @else
-  @if (isset($location)) <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a> @endif
-  @endif
+    @if (isset($category))
+      @if ($category->id!=$loc_category->id)
+      <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a>
+      @else
+      <span>{{$loc_category->name}}</span>
+      @endif
+    @else
+      @if (isset($location)) <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a>
+      @else
+      <a href="{{ route('category',$loc_category->url) }}">{{$loc_category->name}}</a>
+      @endif
+    @endif
+
+
   @endforeach
+
+  <h2>Метки</h2>
+  @foreach (App\Models\Tags::orderby('name','ASC')->get() as $tag)
+    <a href="{{route('tag',[$tag->url,'',''])}}">{{$tag->name}}</a>
+  @endforeach
+
 </div>
-<div class="container-fluid">
-  <div class="row">
+<div class="container">
   <div class="map" id="map"></div>
-  </div>
 </div>
 <div class="container">
   Показать сначала:
