@@ -164,8 +164,9 @@ class PoisController extends Controller
         return view('location', compact('pois','location','breadcrumbs'));
     }
 
-    public function location_category($url,Request $request,$category=null,$tag=null )
+    public function location_category_tag(Request $request,$url='',$category='',$tag='' )
     {
+      //dd($url,$category,$tag);
       $sorts=$this->sorts;
       $table=$this->default_table;
       $direction=$this->default_direction;
@@ -174,11 +175,24 @@ class PoisController extends Controller
         $table=$sort[0];
         $direction=$sort[1];
       }
+
+      if ($url=='' and $category=='' and $tag=='') {
+        $breadcrumbs=array();
+        $location=null;
+        $category=null;
+        $pois=Pois::where('status','=',1)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+        return view('location', compact('pois','location','category','breadcrumbs','sorts', 'request'));
+
+      }
         $location=Locations::firstWhere('url', $url);
         $category=Categories::firstWhere('url', $category);
-        $breadcrumbs=$this->get_parent_location($location->parent);
-        $pois=$location->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
-        return view('location', compact('pois','location','category','breadcrumbs','sorts', 'request'));
+        if (is_object($location)) {
+          $breadcrumbs=$this->get_parent_location($location->parent);
+          $pois=$location->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
+          return view('location', compact('pois','location','category','breadcrumbs','sorts', 'request'));
+        }
+        else return redirect()->route('location',['','','']);
+
     }
 
     private function get_parent_location($parent) {

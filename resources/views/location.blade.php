@@ -10,7 +10,8 @@ window.onload = function()
 {
 map = new google.maps.Map(document.getElementById("map"),
 {
-  center: new google.maps.LatLng({{$location->lat}}, {{$location->lng}}), zoom: {{$location->scale}}, gestureHandling: 'greedy'
+@if (isset($location))  center: new google.maps.LatLng({{$location->lat}}, {{$location->lng}}), zoom: {{$location->scale}},  @endif
+gestureHandling: 'greedy',
 });
 
 function bindInfoWindow(marker, map, infowindow, strDescription) {
@@ -82,16 +83,21 @@ google.maps.event.addListener(map, 'idle', function() {
 
 @endpush
 @extends('layouts.app')
-@section('title'){{$location->name}}: @if (isset($category)) {{$category->name}} @else достопримечательности @endif @endsection
+@section('title')@if (isset($location)) {{$location->name}} @endif: @if (isset($category)) {{$category->name}} @else достопримечательности @endif @endsection
 @section('content')
 <div class="container">
   <ul class="breadcrumbs">
   <li><a href="{{ route ('/') }}"><i class="fa fa-home" aria-hidden="true"></i></a>
-  @foreach ($breadcrumbs as $breadcrumb)<li><a href="{{ route('location', [$breadcrumb['url'],'']) }}">{{$breadcrumb['name']}}</a></li>@endforeach
+  @if (!isset($location) )
+  <li>Каталог
+  @else
+  <li><a href="{{ route('location', ['','','']) }}">Каталог</a>
+  @endif
+  @foreach ($breadcrumbs as $breadcrumb)<li><a href="{{ route('location', [$breadcrumb['url'],'','']) }}">{{$breadcrumb['name']}}</a></li>@endforeach
   @if (isset($category))
   <li><a href="{{ route('location', [$location->url,'','']) }}">{{$location->name}}</a></li>
   <li>{{$category->name}}</li>
-  @else <li>{{$location->name}}</li>
+  @else @if (isset($location))<li>{{$location->name}}</li> @endif
   @endif
 
 </ul>
@@ -103,7 +109,7 @@ google.maps.event.addListener(map, 'idle', function() {
     @if (isset($location->name_rod))
     {{$location->name_rod}}
     @else
-    {{$location->name}}: достопримечательности
+    @if (isset($location)) {{$location->name}}: достопримечательности @endif
     @endif
   </h1>
 
@@ -115,7 +121,7 @@ google.maps.event.addListener(map, 'idle', function() {
   <span>{{$loc_category->name}}</span>
   @endif
   @else
-  <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a>
+  @if (isset($location)) <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a> @endif
   @endif
   @endforeach
 </div>
