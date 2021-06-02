@@ -97,9 +97,11 @@ google.maps.event.addListener(map, 'idle', function() {
   @else
   <li><a href="{{ route('location', ['','','']) }}">Каталог</a>
   @endif
-  @foreach ($breadcrumbs as $breadcrumb)<li><a href="{{ route('location', [$breadcrumb['url'],'','']) }}">{{$breadcrumb['name']}}</a></li>@endforeach
+  @if (isset($breadcrumbs) )
+    @foreach ($breadcrumbs as $breadcrumb)<li><a href="{{ route('location', [$breadcrumb['url'],'','']) }}">{{$breadcrumb['name']}}</a></li>@endforeach
+  @endif
   @if (isset($category))
-  <li><a href="{{ route('location', [$location->url,'','']) }}">{{$location->name}}</a></li>
+  @if (isset($location))<li><a href="{{ route('location', [$location->url,'','']) }}">{{$location->name}}</a></li>@endif
   <li>{{$category->name}}</li>
   @else @if (isset($location))<li>{{$location->name}}</li> @endif
   @endif
@@ -128,12 +130,12 @@ google.maps.event.addListener(map, 'idle', function() {
     </h2>
     @endif
     @foreach ($subregions as $locaton)
-      <a href="{{route('location',[$locaton->url,'',''])}}"> {{$locaton->name}}</a></li>
+      <a href="{{route('location',[$locaton->url,''])}}"> {{$locaton->name}}</a></li>
     @endforeach
   @else
     <h2>Страны</h2>
     @foreach (App\Models\Locations::where('type','=','country')->get() as $locaton)
-      <a href="{{route('location',[$locaton->url,'',''])}}"><img src="/i/flags/{{$locaton->flag}}" alt="flag"> {{$locaton->name}}</a></li>
+      <a href="{{route('location',[$locaton->url,''])}}"><img src="/i/flags/{{$locaton->flag}}" alt="flag"> {{$locaton->name}}</a></li>
     @endforeach
   @endif
 
@@ -142,23 +144,33 @@ google.maps.event.addListener(map, 'idle', function() {
   @foreach (App\Models\Categories::get() as $loc_category)
     @if (isset($category))
       @if ($category->id!=$loc_category->id)
-      <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a>
+        @if (isset($location))
+        <a href="{{ route('category',[$loc_category->url,$location->url]) }}">{{$loc_category->name}}</a>
+        @else
+        <a href="{{ route('category',[$loc_category->url,'']) }}">{{$loc_category->name}}</a>
+        @endif
       @else
-      <span>{{$loc_category->name}}</span>
+        <span>{{$loc_category->name}}</span>
       @endif
     @else
-      @if (isset($location)) <a href="{{ route('location',[$location->url,$loc_category->url,'' ]) }}">{{$loc_category->name}}</a>
+      @if (isset($location))
+      <a href="{{ route('category',[$loc_category->url,$location->url]) }}">{{$loc_category->name}}</a>
       @else
-      <a href="{{ route('category',$loc_category->url) }}">{{$loc_category->name}}</a>
+      <a href="{{ route('category',[$loc_category->url,'']) }}">{{$loc_category->name}}</a>
       @endif
     @endif
-
-
   @endforeach
 
   <h2>Метки</h2>
   @foreach (App\Models\Tags::orderby('name','ASC')->get() as $tag)
-    <a href="{{route('tag',[$tag->url,'',''])}}">{{$tag->name}}</a>
+  @if (isset($location))
+  <a href="{{route('tag',[$tag->url,$location->url])}}">{{$tag->name}}</a>
+  @else
+  <a href="{{route('tag',[$tag->url,''])}}">{{$tag->name}}</a>
+  @endif
+
+
+
   @endforeach
 
 </div>
@@ -167,20 +179,24 @@ google.maps.event.addListener(map, 'idle', function() {
 </div>
 <div class="container">
   Показать сначала:
-  @foreach ($sorts as $sort)
-  @if ($request->sort==$sort['sort'] or ($request->sort=='' and $sort['sort']=='id.desc'))
-  <b>{{$sort['name']}}</b>
-  @else
-  <a href="?sort={{$sort['sort']}}">{{$sort['name']}}</a>
+  @if (isset($sorts))
+    @foreach ($sorts as $sort)
+      @if ($request->sort==$sort['sort'] or ($request->sort=='' and $sort['sort']=='id.desc'))
+      <b>{{$sort['name']}}</b>
+      @else
+      <a href="?sort={{$sort['sort']}}">{{$sort['name']}}</a>
+      @endif
+    @endforeach
   @endif
-  @endforeach
-  <div class="row">
 
+@if (isset($pois))
+<div class="row">
   @foreach ($pois as $poi)
-  @include('blocks.poi_card')
+    @include('blocks.poi_card')
   @endforeach
 </div>
 {{$pois->appends(Request::query())->links()}}
+@endif
 </div>
 
 @endsection

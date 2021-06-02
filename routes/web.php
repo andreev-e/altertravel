@@ -18,14 +18,16 @@ Route::get('/', 'App\Http\Controllers\PoisController@index')->name('/');
 Route::get('/izbrannoye', 'App\Http\Controllers\PoisController@izbrannoye')->name('izbrannoye');
 
 
-Route::get('/locations', 'App\Http\Controllers\PoisController@location_category_tag')->name('catalog');
-Route::get('/locations/{url}/', 'App\Http\Controllers\PoisController@location_category_tag')->name('location');
-Route::get('/locations/{url}/{category}', 'App\Http\Controllers\PoisController@location_category_tag')->name('location');
-Route::get('/locations/{url}/{category}/{tag}', 'App\Http\Controllers\PoisController@location_category_tag')->name('location');
-Route::get('/category/{category}', 'App\Http\Controllers\PoisController@category')->name('category');
+Route::get('/locations', 'App\Http\Controllers\PoisController@location')->name('catalog');
+Route::get('/locations/{location_url}/', 'App\Http\Controllers\PoisController@location')->name('location');
+
+Route::get('/category/{category_url}', 'App\Http\Controllers\PoisController@category')->name('category');
+Route::get('/category/{category_url}/{location_url}', 'App\Http\Controllers\PoisController@category')->name('category');
+
+Route::get('/tag/{tag_url}', 'App\Http\Controllers\PoisController@tag')->name('tag');
+Route::get('/tag/{tag_url}/{location_url}', 'App\Http\Controllers\PoisController@tag')->name('tag');
 
 
-Route::get('/tag/{url}', 'App\Http\Controllers\PoisController@tag')->name('tag');
 Route::get('/user/{url}', 'App\Http\Controllers\PoisController@user')->name('user');
 Route::get('/place/', 'App\Http\Controllers\PoisController@single_place')->name('poi');
 Route::get('/place/{url}', 'App\Http\Controllers\PoisController@single_place')->name('single-poi');

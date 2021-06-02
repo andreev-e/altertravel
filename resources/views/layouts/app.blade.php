@@ -46,7 +46,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             @foreach (App\Models\Categories::get() as $category)
-              <li><a class="dropdown-item" href="{{route('category',$category->url)}}">{{$category->name}}</a></li>
+              <li><a class="dropdown-item" href="{{route('category',[$category->url,''])}}">{{$category->name}}</a></li>
             @endforeach
           </ul>
         </li>
@@ -57,7 +57,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             @foreach (App\Models\Tags::orderby('name','ASC')->get() as $tag)
-              <li><a class="dropdown-item" href="{{route('tag',$tag->url)}}">{{$tag->name}}</a></li>
+              <li><a class="dropdown-item" href="{{route('tag',[$tag->url,''])}}">{{$tag->name}}</a></li>
             @endforeach
           </ul>
         </li>

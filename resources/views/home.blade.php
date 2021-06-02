@@ -115,7 +115,7 @@ google.maps.event.addListener(map, 'idle', function() {
     <h2>Метки</h2>
     <div class="col-12 " id="tags">
       @foreach ($tags as $tag)
-      <a href="{{route('tag',$tag->url)}}" data-tag_id="{{$tag->id}}">{{$tag->name}}</a>
+      <a href="{{route('tag',[$tag->url,''])}}" data-tag_id="{{$tag->id}}">{{$tag->name}}</a>
       @endforeach
     </div>
   </div>
