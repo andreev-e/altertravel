@@ -69,7 +69,7 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
             </div>
             @endif
 
-            <form method="POST" action="{{route('add')}}" enctype="multipart/form-data">
+            <form method="POST" action="{{route('my_pois_add')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                   <label for="name">Название объекта</label>

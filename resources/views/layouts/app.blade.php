@@ -99,21 +99,20 @@
             @endif
         @else
 
-            <li class="nav-item">
-                <a  class="nav-link" href="#"  >
+            <li class="nav-item dropdown">
+                <a  class="nav-link dropdown-toggle" href="#"  id="usermenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <img height="20px" class="avatar" src="{{ ((strpos ( Auth::user()->avatar , '//')>0)?Auth::user()->avatar:Storage::url(Auth::user()->avatar))}}" alt="ava"> <b>{{Auth::user()->name}}</b>
                 </a>
+                <ul class="dropdown-menu" aria-labelledby="usermenu">
+                  <li><a class="dropdown-item" href="{{ Route('my_pois') }}">Мои точки</a></li>
+                  <li><a class="dropdown-item" href="{{ Route('my_routes') }}">Мои маршруты</a></li>
+                </ul>
               </li>
               <li class="nav-item">
                 <a  class="nav-link" href="{{ Route('user_edit') }}"  >
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </a>
                 </li>
-            <li class="nav-item">
-              <a  class="nav-link" href="{{ Route('secure') }}"  >
-                Публикации
-              </a>
-            </li>
             @if (Auth::user()->email=='andreev-e@mail.ru')
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="servicemenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">

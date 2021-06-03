@@ -5,7 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Routes;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
+
+use Auth;
+
 
 class RoutesController extends Controller
 {
@@ -18,6 +24,14 @@ class RoutesController extends Controller
   //default sort
   protected $default_table='id';
   protected $default_direction='desc';
+
+
+  public function my_routes_index()    {
+        $routes=array();
+        if (Auth::check()) $routes=Routes::where('user_id','=',auth()->user()->id)->where('status','<>',99)->orderbyDESC('updated_at')->Paginate(env('OBJECTS_ON_PAGE',15));
+        return view('my_routes', compact('routes'));
+    }
+
 
   public function routes(Request $request)
   {

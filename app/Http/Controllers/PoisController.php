@@ -51,7 +51,7 @@ class PoisController extends Controller
       return view('izbrannoye');
   }
 
-  public function secure_index()    {
+  public function my_pois_index()    {
         $pois=array();
         if (Auth::check()) $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->with('tags')->orderbyDESC('updated_at')->Paginate(env('OBJECTS_ON_PAGE',15));
         return view('secure', compact('pois'));
@@ -334,7 +334,7 @@ foreach ($file as $location) {
 
 
 
-public function store(Request $request)
+public function my_pois_add(Request $request)
 {
     // выполнять код, если есть POST-запрос
     if ($request->isMethod('post')) {
@@ -345,6 +345,7 @@ public function store(Request $request)
         'lat'  => 'required',
         'lng'  => 'required',
         'description'  => '',
+        'category'  => 'required',
     ]);
 
     $images = $request->file('photos');
@@ -381,13 +382,9 @@ public function store(Request $request)
       }
 
     }
+    return redirect()->route('my_pois');
 
-
-
-
-    return redirect()->route('secure');
-
-} else return view('poi_add');
+  } else return view('poi_add');
 }
 
 
