@@ -179,6 +179,27 @@ class ServiceController extends Controller
       unset($all);
       Schema::disableForeignKeyConstraints();
 
+
+
+      if ($what=='edits') {
+          foreach ($edits->data as $value) {
+
+            if ($value->APPROVED==1)
+            {
+              $poi=Pois::firstWhere('old_id','=',$value->POSTID);
+              if (is_object($poi)) {
+                if ($value->SECTION=='links_text') {$poi->links=$value->NEWTEXT; $poi->save(); $echo.=$poi->id."<br>";}
+                elseif ($value->SECTION=='route_o_text') {$poi->route_o=$value->NEWTEXT; $poi->save(); $echo.=$poi->id."<br>";}
+                elseif ($value->SECTION=='route_text') {$poi->route=$value->NEWTEXT; $poi->save(); $echo.=$poi->id."<br>";}
+                elseif ($value->SECTION=='addon_text') {$poi->prim=$value->NEWTEXT; $poi->save(); $echo.=$poi->id."<br>";}
+                elseif ($value->SECTION=='interesting_text') {$poi->description=$value->NEWTEXT; $poi->save(); $echo.=$poi->id."<br>";}
+              }
+            }
+            else if($value->NEWTEXT!='') dd($value);
+
+        }
+      }
+
       if ($what=='users') {
         User::query()->truncate();
         Schema::enableForeignKeyConstraints();

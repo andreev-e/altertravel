@@ -132,7 +132,7 @@
                   <li><a class="dropdown-item" href="{{route('import','photo_objects')}}">10 Фото объектов в storage</a></li>
                   <li><a class="dropdown-item" href="{{route('import','photo_routes')}}">11 Фото маршрутов в storage</a></li>
                   <li><a class="dropdown-item" href="{{route('import','photo_avatars')}}">12 Аватарки в storage</a></li>
-
+                  <li><a class="dropdown-item" href="{{route('import','edits')}}">13 Внесение правок</a></li>
               </ul>
             </li>
             @endif
