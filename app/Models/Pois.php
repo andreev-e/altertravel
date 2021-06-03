@@ -13,7 +13,7 @@ class Pois extends Model
 
     public function locations()
     {
-       return $this->belongsToMany(Locations::class, 'pois_locations')->orderBy('locations.id', 'asc');
+       return $this->belongsToMany(Locations::class, 'pois_locations');
     }
     public function tags()
     {

@@ -153,7 +153,7 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 @endforeach
 </div>
 <h2>Метки</h2>
-@foreach ($poi->tags as $tag) <a href="{{ Route('tag',$tag->url) }}" class="btn btn-primary btn-sm">{{ $tag->name }}</a> @endforeach
+@foreach ($poi->tags as $tag) <a href="{{ Route('tag',[$tag->url,'']) }}" class="btn btn-primary btn-sm">{{ $tag->name }}</a> @endforeach
     <div class="row justify-content-center">
         <div class="col-md-8">
 

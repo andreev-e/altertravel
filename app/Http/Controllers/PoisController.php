@@ -19,6 +19,7 @@ use Image;
 use Storage;
 use Auth;
 
+
 class PoisController extends Controller
 {
 
@@ -176,21 +177,32 @@ class PoisController extends Controller
       $tags=Tags::orderby('name','ASC')->get();
 
       if ($location_url=='' and $category_url=='' and $tag_url=='') {
-        //d($location_url,$category_url,$tag_url);
-        $tags=Tags::orderby('name','ASC')->get();
-        $pois=Pois::where('status','=',1)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+
       }
 
-      if ($location_url!='') $current_location=Locations::Where('url', $location_url)->firstOrFail();
-      if ($category_url!='') $current_category=Categories::Where('url', $category_url)->firstOrFail();
-      if ($tag_url!='') $current_tag=Tags::Where('url', $tag_url)->firstOrFail();
+      if ($location_url!='') {$current_location=Locations::Where('url', $location_url)->firstOrFail();  $breadcrumbs=$this->get_parent_location($current_location->parent); }
+      if ($category_url!='') {$current_category=Categories::Where('url', $category_url)->firstOrFail(); $tags=null; $categories=null;}
+      if ($tag_url!='') {$current_tag=Tags::Where('url', $tag_url)->firstOrFail(); $tags=null; $categories=null;}
 
-      if ($location_url!='')  $breadcrumbs=$this->get_parent_location($current_location->parent);
-      if ($tag_url!='')  {$tags=null; $categories=null;}
+      $pois=Pois::where('status','=',1);
 
+      if (is_object($current_location))  {
+        $subregions=Locations::where('parent', $current_location->id)->orderby('count','DESC')->get();
+          $pois=$current_location->pois;
+          // /dd($pois);
+        //$pois=$pois->with(['locations' => function($query) { $query->wherePivot('locations_id',true);  }]);
+      }
+
+      //if (is_object($current_category)) $pois=$pois->where('category_id','=',$current_category->id);
+
+
+
+
+      //$pois=$pois->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+
+/*
       if (is_object($current_location))
       {
-      $subregions=Locations::where('parent', $current_location->id)->orderby('count','DESC')->get();
 
       $pois=$current_location->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
       }
@@ -198,15 +210,16 @@ class PoisController extends Controller
       if (is_object($current_category))
       {
       $pois=$current_category->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
+
       }
 
       if (is_object($current_tag))
       {
       $pois=$current_tag->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
       }
+      */
 
-        return view('location', compact('pois','subregions','current_location','locations','current_category','categories','current_tag','tags','breadcrumbs','sorts', 'request'));
-
+      return view('catalog', compact('pois','subregions','current_location','locations','current_category','categories','current_tag','tags','breadcrumbs','sorts', 'request'));
     }
 
     private function get_parent_location($parent) {
