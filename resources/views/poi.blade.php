@@ -103,7 +103,7 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
   </ul>
   @endif
   <h1>{!!$poi->name!!}
-    @if ($poi->user_id==Auth::user()->id)
+    @if ($poi->user_id==Auth::user()->id or Auth::user()->email=='andreev-e@mail.ru')
     <a href="{{ route('single-poi-edit', $poi->id) }}" title="Отредактировать">
     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
     @endif

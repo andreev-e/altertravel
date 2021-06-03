@@ -52,4 +52,12 @@ class CatalogTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_secure()
+    {
+        $response = $this->get('/secure');
+        $response->assertStatus(200);
+        
+    }
+
+
 }

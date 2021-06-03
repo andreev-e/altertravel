@@ -225,7 +225,7 @@ google.maps.event.addListener(map, 'idle', function() {
     @include('blocks.poi_card')
   @endforeach
 </div>
- /*$pois->appends(Request::query())->links()*/
+{{ $pois->appends(Request::query())->links()}}
 @endif
 </div>
 

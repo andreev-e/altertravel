@@ -33,7 +33,7 @@
         </td>
         <td>
           @foreach ($poi->tags as $tag)
-            <a href="{{ route('tag', $tag->url) }}">{{ $tag->name }}</a>{{ ($loop->last ? '' : ',') }}
+            <a href="{{ route('tag', [$tag->url,'']) }}">{{ $tag->name }}</a>{{ ($loop->last ? '' : ',') }}
           @endforeach
         </td>
       @if ($poi->status==1)

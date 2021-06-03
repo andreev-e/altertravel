@@ -78,8 +78,7 @@ class PoisController extends Controller
     }
   public function single_edit($id,Request $request)    {
         $poi=Pois::find($id);
-        if (auth()->user()!==null and auth()->user()->id==$poi->user_id) {
-
+        if (auth()->user()->id==$poi->user_id or Auth::user()->email=='andreev-e@mail.ru') {
             if ($request->isMethod('post')) {
             $validated = $request->validate([
                 'name'  => 'required|min:5|max:255|unique:pois,name,'.$poi->id,
@@ -119,7 +118,7 @@ class PoisController extends Controller
                 }
 
                 Cache::forget('single_poi_'.$poi->url);
-                return redirect()->route('secure');
+                return redirect()->route('single-poi',$poi->url);
             }
 
         }
@@ -184,22 +183,17 @@ class PoisController extends Controller
       if ($category_url!='') {$current_category=Categories::Where('url', $category_url)->firstOrFail(); $tags=null; $categories=null;}
       if ($tag_url!='') {$current_tag=Tags::Where('url', $tag_url)->firstOrFail(); $tags=null; $categories=null;}
 
-      $pois=Pois::where('status','=',1);
+      $pois=Pois::where('status','=',1)->Paginate(env('OBJECTS_ON_PAGE',15));
 
       if (is_object($current_location))  {
         $subregions=Locations::where('parent', $current_location->id)->orderby('count','DESC')->get();
-          $pois=$current_location->pois;
+          //$pois=$current_location->pois;
           // /dd($pois);
         //$pois=$pois->with(['locations' => function($query) { $query->wherePivot('locations_id',true);  }]);
       }
 
       //if (is_object($current_category)) $pois=$pois->where('category_id','=',$current_category->id);
-
-
-
-
       //$pois=$pois->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
-
 /*
       if (is_object($current_location))
       {
