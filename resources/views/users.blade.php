@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title')Публикации автора @endsection
+@section('title')Авторы путеводителя @endsection
 @section('content')
 <div class="container">
   <h1>Авторы путеводителя</h1>
