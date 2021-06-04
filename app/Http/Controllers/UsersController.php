@@ -41,7 +41,7 @@ class UsersController extends Controller
           $image_resize = Image::make(storage_path().'/app/'.$path);
           $image_resize->resize(75, 75)->crop(75, 75)->save(storage_path().'/app/public/avatars/thumbs/'.$filename);
 
-          $user->avatar_original='avatars/'.$filename;
+          $user->avatar_original='/avatars/'.$filename;
           $user->avatar='/avatars/thumbs/'.$filename;
           }
 
