@@ -109,7 +109,7 @@ class ServiceController extends Controller
 
             if ($what=='photo_avatars') {
 
-              foreach (User::where('avatar_original','=','')->limit(50)->get() as $user) {
+              foreach (User::where('avatar_original','=','')->limit(40)->get() as $user) {
                   $image=false;
                   $i=0;
                   $directory="/avatars/";
