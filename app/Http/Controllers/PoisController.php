@@ -185,33 +185,25 @@ class PoisController extends Controller
 
       $pois=Pois::where('status','=',1)->Paginate(env('OBJECTS_ON_PAGE',15));
 
+      $wherein=[];
+      $wherein_tag=[];
+      $wherein_loc=[];
+
       if (is_object($current_location))  {
         $subregions=Locations::where('parent', $current_location->id)->orderby('count','DESC')->get();
-          //$pois=$current_location->pois;
-          // /dd($pois);
-        //$pois=$pois->with(['locations' => function($query) { $query->wherePivot('locations_id',true);  }]);
+        $poi_ids=\DB::table('pois_locations')->where('locations_id',"=",$current_location->id)->join('pois', 'pois.id', '=', 'pois_locations.pois_id')->get('pois.id');
+        foreach ($poi_ids as $poi_id) $wherein_loc[]=$poi_id->id;
       }
 
-      //if (is_object($current_category)) $pois=$pois->where('category_id','=',$current_category->id);
-      //$pois=$pois->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
-/*
-      if (is_object($current_location))
-      {
-
-      $pois=$current_location->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
+      if (is_object($current_tag))  {
+        $poi_ids=\DB::table('pois_tags')->where('tags_id',"=",$current_tag->id)->join('pois', 'pois.id', '=', 'pois_tags.pois_id')->get('pois.id');
+        foreach ($poi_ids as $poi_id) $wherein_tag[]=$poi_id->id;
       }
+      if (!empty($wherein_loc) and !empty($wherein_tag)) $wherein=array_intersect($wherein_loc,$wherein_tag);
+      else $wherein=array_merge($wherein_loc,$wherein_tag);
 
-      if (is_object($current_category))
-      {
-      $pois=$current_category->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
+      $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
 
-      }
-
-      if (is_object($current_tag))
-      {
-      $pois=$current_tag->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
-      }
-      */
 
       return view('catalog', compact('pois','subregions','current_location','locations','current_category','categories','current_tag','tags','breadcrumbs','sorts', 'request'));
     }
