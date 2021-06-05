@@ -101,7 +101,7 @@
 
             <li class="nav-item dropdown">
                 <a  class="nav-link dropdown-toggle" href="#"  id="usermenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img height="20px" class="avatar" src="{{ ((strpos ( Auth::user()->avatar , '//')>0)?Auth::user()->avatar:Storage::url(Auth::user()->avatar))}}" alt="ava"> <b>{{Auth::user()->name}}</b>
+                  <img height="20px" class="avatar" src="@if (Auth::user()->avatar!='-' ){{asset('/storage'.Auth::user()->avatar)}} @else /i/empty.jpg @endif" width="200px"  alt="ava"> <b>{{Auth::user()->name}}</b>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="usermenu">
                   <li><a class="dropdown-item" href="{{ Route('my_pois') }}">Мои точки</a></li>
@@ -125,7 +125,7 @@
                   <li><a class="dropdown-item" href="{{route('import','routes')}}">4 Импорт маршрутов</a></li>
                   <li><a class="dropdown-item" href="{{route('import','rel')}}">5 Отношения точка тег</a></li>
                   <li><a class="dropdown-item" href="{{route('import','locating')}}">6 Парсинг локаций</a></li>
-                  <li><a class="dropdown-item" href="{{route('import','slovar')}}">7 Справочник</a></li>
+                  <li><a class="dropdown-item" href="{{route('import','slovar')}}">7 Справочник локаций</a></li>
                   <li><a class="dropdown-item" href="{{route('import','comments')}}">8 Комменарии</a></li>
                   <li><a class="dropdown-item" href="{{route('import','comments_fix')}}">9 Привязать комменты к юзерам</a></li>
                   <li><a class="dropdown-item" href="{{route('import','photo_objects')}}">10 Фото объектов в storage</a></li>

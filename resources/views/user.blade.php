@@ -2,9 +2,9 @@
 @section('title')Публикации автора {{$user->name}} @endsection
 @section('content')
 <div class="container">
-  <h1>Публикации автора {{$user->name}}</h1>
-  <img height="50px" class="avatar" src="{{ ((strpos ( $user->avatar_original , '//')>0)?$user->avatar_original:Storage::url($user->avatar_original))}}" alt="ava">
-  Показать сначала:
+  <h1>Публикации автора {{$user->name}} <img height="50px" class="avatar" src="@if ($user->avatar!='-' ){{asset('/storage'.$user->avatar)}} @else /i/empty.jpg @endif"  alt="{{$user->login}}" alt="ava"></h1>
+
+  <p class="sorts">Показать сначала:
   @foreach ($sorts as $sort)
   @if ($request->sort==$sort['sort'] or ($request->sort=='' and $sort['sort']=='id.desc'))
   <b>{{$sort['name']}}</b>
