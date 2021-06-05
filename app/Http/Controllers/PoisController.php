@@ -71,7 +71,7 @@ class PoisController extends Controller
 
         //$comments=PoisComments::where('status','=',1)->where('poi_id','=',$poi->id)->orderby('updated_at','ASC')->limit(env('OBJECTS_ON_PAGE',15))->get();
         $comments=PoisComments::where('status','=',1)->where('poi_id','=',$poi->id)->orderby('updated_at','ASC')->get();
-        //dd($comments);
+
 
         if (auth()->user()!==null) return view('poi', compact('poi','comments'));
         else return view('poi', compact('poi','comments'));
