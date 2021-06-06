@@ -6,6 +6,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
+    <meta name="description" content="@yield('description')">
     <!-- Scripts -->
     <script src="//maps.google.com/maps/api/js?key=AIzaSyDVxoYcrB_2arTNlYpFClzzKy9KgFW3_Y8"></script>
     <script  async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>

@@ -87,7 +87,9 @@ google.maps.event.addListener(map, 'idle', function() {
 
 @endpush
 @extends('layouts.app')
-@section('title')@if (isset($current_location)) {{$current_location->name}}@else Весь мир@endif: @if (isset($current_category)) {{$current_category->name}} @else достопримечательности @endif @endsection
+@section('title'){{$meta['h1']}} на карте | Альтернативный путеводитель @endsection'
+@section('description')Все {{$meta['h1']}} в путеводителе с фото, описаниями, отзывами, картами проезда. Строим маршруты, делимся впечатлениями и фотографиями @endsection'
+
 @section('content')
 <div class="container">
   <ul class="breadcrumbs">
@@ -189,9 +191,9 @@ google.maps.event.addListener(map, 'idle', function() {
   <p class="h2">Метки</p>
     @foreach ($tags as $tag)
       @if (isset($current_location))
-        <a href="{{route('tag',[$tag->url,$current_location->url])}}">{{$tag->name}}</a>
+        <a href="{{route('tag',[$tag->url,$current_location->url])}}" title="{{$tag->name_rod}} {{$current_location->name_rod}}">{{$tag->name_rod}}</a>
       @else
-        <a href="{{route('tag',[$tag->url,''])}}">{{$tag->name}}</a>
+        <a href="{{route('tag',[$tag->url,''])}}">{{$tag->name_rod}}</a>
       @endif
     @endforeach
   @endif

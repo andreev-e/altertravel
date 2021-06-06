@@ -74,6 +74,6 @@ class LoginController extends Controller
             $newUser->save();
             auth()->login($newUser, true);
         }
-        return redirect()->to('/secure');
+        return redirect()->route('my_pois');
     }
 }
