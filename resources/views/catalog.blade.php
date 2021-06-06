@@ -122,20 +122,7 @@ google.maps.event.addListener(map, 'idle', function() {
   @endif
 </ul>
   <h1>
-    @if (isset($current_category))
-      {{$current_category->name}}
-    @elseif (isset($current_tag))
-      {{$current_tag->name_rod}}
-    @else
-      Достопримечательности
-    @endif
-    @if (isset($current_location->name_rod))
-      {{$current_location->name_rod}}
-    @else
-      @if (isset($current_location))
-        {{$current_location->name}}: достопримечательности
-      @endif
-    @endif
+{{$meta['h1']}}
   </h1>
 <div class="row">
   <div class="col-sm-6">
@@ -216,7 +203,7 @@ google.maps.event.addListener(map, 'idle', function() {
 </div>
 
 <div class="col-sm-6">
-  <h2>Достопримечательности на карте</h2>
+  <h2>{{$meta['h1']}} на карте</h2>
   <div class="map" id="map"></div>
 </div>
 </div>

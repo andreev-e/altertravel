@@ -147,27 +147,33 @@ class PoisController extends Controller
       if (!in_array($direction,['asc','desc']) or !in_array($table,['id','views'])) abort(404);
 
       $breadcrumbs=$locations=$current_location=$current_category=$current_tag=$subregions=null;
+      $categories=[];
+      $h1='Достопримечательности ';
 
       if ($location_url!='') {$current_location=Locations::Where('url', $location_url)->firstOrFail();  $breadcrumbs=$this->get_parent_location($current_location->parent); }
-      if ($category_url!='') {$current_category=Categories::Where('url', $category_url)->firstOrFail(); $tags=null; $categories=null;}
-      if ($tag_url!='') {$current_tag=Tags::Where('url', $tag_url)->firstOrFail(); $tags=null; $categories=null;}
+      if ($category_url!='') {$current_category=Categories::Where('url', $category_url)->firstOrFail(); $tags=null; $categories=[];}
+      if ($tag_url!='') {$current_tag=Tags::Where('url', $tag_url)->firstOrFail(); $tags=null; $categories=[];}
 
       $wherein=$wherein_tag=$wherein_loc=$wherein_category=[];
 
+
+      if (is_object($current_category))  {
+        $h1=$current_category->name;
+        $poi_ids=\DB::table('pois')->where('category_id',"=",$current_category->id)->get('id');
+        foreach ($poi_ids as $poi_id) $wherein_category[]=$poi_id->id;
+      }
+
       if (is_object($current_location))  {
+        $h1.=' '.$current_location->name_rod;
         $subregions=Locations::where('parent', $current_location->id)->orderby('count','DESC')->get();
         $poi_ids=\DB::table('pois_locations')->where('locations_id',"=",$current_location->id)->get('pois_id');
         foreach ($poi_ids as $poi_id) $wherein_loc[]=$poi_id->pois_id;
-      }
+      } else $h1.='мира';
 
       if (is_object($current_tag))  {
+        $h1=$current_tag->name_rod.' - '.$h1;
         $poi_ids=\DB::table('pois_tags')->where('tags_id',"=",$current_tag->id)->get('pois_id');
         foreach ($poi_ids as $poi_id) $wherein_tag[]=$poi_id->pois_id;
-      }
-
-      if (is_object($current_category))  {
-        $poi_ids=\DB::table('pois')->where('category_id',"=",$current_category->id)->get('id');
-        foreach ($poi_ids as $poi_id) $wherein_category[]=$poi_id->id;
       }
 
       if (!empty($wherein_loc) and !empty($wherein_tag)) $wherein=array_intersect($wherein_loc,$wherein_tag);
@@ -185,7 +191,8 @@ class PoisController extends Controller
 
       if (!is_object($current_category)) $categories=\DB::table('pois')->leftjoin('categories', 'categories.id', '=', 'pois.category_id')->whereIn('pois.id', $wherein)->where('categories.id',"<>", null)->groupBy('categories.id')->get('categories.*');
 
-      return view('catalog', compact('pois','subregions','current_location','locations','current_category','categories','current_tag','tags','breadcrumbs','sorts', 'request'));
+      $meta['h1']=$h1;
+      return view('catalog', compact('pois','subregions','current_location','locations','current_category','categories','current_tag','tags','breadcrumbs','sorts', 'request', 'meta'));
     }
 
     private function get_parent_location($parent) {
