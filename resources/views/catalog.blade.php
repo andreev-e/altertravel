@@ -208,15 +208,8 @@ google.maps.event.addListener(map, 'idle', function() {
   <div class="map" id="map"></div>
 </div>
 <div class="container">
-  Показать сначала:
   @if (isset($sorts))
-    @foreach ($sorts as $sort)
-      @if ($request->sort==$sort['sort'] or ($request->sort=='' and $sort['sort']=='id.desc'))
-      <b>{{$sort['name']}}</b>
-      @else
-      <a href="?sort={{$sort['sort']}}">{{$sort['name']}}</a>
-      @endif
-    @endforeach
+    @include('blocks.sort')
   @endif
 
 @if (isset($pois))

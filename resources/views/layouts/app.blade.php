@@ -51,17 +51,6 @@
           </ul>
         </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Метки
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            @foreach (App\Models\Tags::orderby('name','ASC')->get() as $tag)
-              <li><a class="dropdown-item" href="{{route('tag',[$tag->url,''])}}">{{$tag->name}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-
         @if (Route::has('routes'))
             <li class="nav-item">
                 <a class="nav-link" href="{{route('routes')}}">Маршруты</a>

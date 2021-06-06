@@ -3,15 +3,9 @@
 @section('content')
 <div class="container">
   <h1>Путешествия и маршруты</h1>
-  <div class="sort"><span>Показать сначала:</span>
-  @foreach ($sorts as $sort)
-  @if ($request->sort==$sort['sort'] or ($request->sort=='' and $sort['sort']=='id.desc'))
-  <b>{{$sort['name']}}</b>
-  @else
-  <a href="?sort={{$sort['sort']}}">{{$sort['name']}}</a>
+  @if (isset($sorts))
+    @include('blocks.sort')
   @endif
-  @endforeach
-  </div>
   <div class="gallery d-flex flex-wrap justify-content-between align-items-stretch">
   @foreach ($routes as $route)
     @include('blocks.route_card')
