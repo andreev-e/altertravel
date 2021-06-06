@@ -24,9 +24,9 @@ class PoisController extends Controller
 {
 
   protected $sorts= [
+    ['views.desc', 'Самые популярные'],
     ['id.desc', 'Самые новые'],
     ['id.asc', 'Самые старые'],
-    ['views.desc', 'Самые популярные'],
   ];
 
   public function index()
@@ -163,18 +163,18 @@ class PoisController extends Controller
         foreach ($poi_ids as $poi_id) $wherein_category[]=$poi_id->id;
       }
 
+      if (is_object($current_tag))  {
+        $h1=$current_tag->name_rod;
+        $poi_ids=\DB::table('pois_tags')->where('tags_id',"=",$current_tag->id)->get('pois_id');
+        foreach ($poi_ids as $poi_id) $wherein_tag[]=$poi_id->pois_id;
+      }
+
       if (is_object($current_location))  {
         $h1.=' '.$current_location->name_rod;
         $subregions=Locations::where('parent', $current_location->id)->orderby('count','DESC')->get();
         $poi_ids=\DB::table('pois_locations')->where('locations_id',"=",$current_location->id)->get('pois_id');
         foreach ($poi_ids as $poi_id) $wherein_loc[]=$poi_id->pois_id;
-      } else $h1.='мира';
-
-      if (is_object($current_tag))  {
-        $h1=$current_tag->name_rod.' - '.$h1;
-        $poi_ids=\DB::table('pois_tags')->where('tags_id',"=",$current_tag->id)->get('pois_id');
-        foreach ($poi_ids as $poi_id) $wherein_tag[]=$poi_id->pois_id;
-      }
+      } else $h1.=' мира';
 
       if (!empty($wherein_loc) and !empty($wherein_tag)) $wherein=array_intersect($wherein_loc,$wherein_tag);
       elseif (!empty($wherein_loc) and !empty($wherein_category)) $wherein=array_intersect($wherein_loc,$wherein_category);

@@ -46,8 +46,8 @@ Route::get('/place_edit/{id}', 'App\Http\Controllers\PoisController@single_edit'
 Route::post('/place_edit/{id}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit-post');
 
 Route::get('/my_routes', 'App\Http\Controllers\RoutesController@my_routes_index')->name('my_routes');
-Route::get('/my_routes/add', 'App\Http\Controllers\RoutesController@my_routes_store')->name('my_routes_add');
-Route::post('/my_routes/add', 'App\Http\Controllers\RoutessController@my_routes_store');
+Route::get('/my_routes/add', 'App\Http\Controllers\RoutesController@my_routes_add')->name('my_routes_add');
+Route::post('/my_routes/add', 'App\Http\Controllers\RoutessController@my_routes_add');
 Route::post('/route_hide/{url}', 'App\Http\Controllers\RoutesController@hide')->name('route-hide');
 Route::post('/route_show/{url}', 'App\Http\Controllers\RoutesController@show')->name('route-show');
 Route::post('/route_delete/{url}', 'App\Http\Controllers\RoutesController@delete')->name('route-delete');

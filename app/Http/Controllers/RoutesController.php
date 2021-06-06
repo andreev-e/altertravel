@@ -17,9 +17,9 @@ class RoutesController extends Controller
 {
 
   protected $sorts= [
+    ['views.desc', 'Самые популярные'],
     ['id.desc', 'Самые новые'],
     ['id.asc', 'Самые старые'],
-    ['views.desc', 'Самые популярные'],
   ];
 
   public function my_routes_index()    {
@@ -55,4 +55,58 @@ class RoutesController extends Controller
       $route->increment('views');
       return view('route', compact('route'));
   }
+
+  public function my_routes_add(Request $request)
+  {
+      // выполнять код, если есть POST-запрос
+      if ($request->isMethod('post')) {
+
+      // валидация формы
+      $validated = $request->validate([
+          'name'  => 'required|min:5|max:255|unique:pois',
+          'lat'  => 'required',
+          'lng'  => 'required',
+          'description'  => '',
+          'category'  => 'required',
+      ]);
+
+      $images = $request->file('photos');
+      if ($request->hasFile('photos')) :
+      foreach ($images as $file):
+      $arr[] =$file->store('public');
+      endforeach;
+      $image = implode(",", $arr);
+      else:
+              $image = '';
+      endif;
+      if ($validated and Auth::check()) {
+
+
+        $new_poi=Pois::create([
+          'name' => $request->get('name'),
+          'url'=> Str::slug($request->get('name'), '_'),
+          'user_id'=>auth()->user()->id,
+          'status'=>1,
+          'description'=>$request->get('description'),
+          'category'=>$request->get('category'),
+          'prim'=>$request->get('prim'),
+          'route'=>$request->get('route'),
+          'route_o'=>$request->get('route_o'),
+          'video'=>$request->get('video'),
+          'lat'=>$request->get('lat'),
+          'lng'=>$request->get('lng'),
+          'photos'=>$image,
+        ]);
+
+        if (is_array($request->tags)) foreach ($request->tags as $tag) {
+          $tag=Tags::find($tag);
+          $new_poi->tags()->save($tag);
+        }
+
+      }
+      return redirect()->route('my_pois');
+
+    } else return view('route_add');
+  }
+
 }
