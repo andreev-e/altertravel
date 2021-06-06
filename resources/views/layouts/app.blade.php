@@ -91,7 +91,7 @@
 
             <li class="nav-item dropdown">
                 <a  class="nav-link dropdown-toggle" href="#"  id="usermenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img height="20px" class="avatar" src="@if (Auth::user()->avatar!='-' ){{asset('/storage'.Auth::user()->avatar)}} @else /i/empty.jpg @endif" width="200px"  alt="ava"> <b>{{Auth::user()->name}}</b>
+                  <img height="20px" class="avatar" src="@if (Auth::user()->avatar!='-' ){{asset('/storage'.Auth::user()->avatar)}} @else /i/empty.jpg @endif"  alt="ava"> <b>{{Auth::user()->name}}</b>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="usermenu">
                   <li><a class="dropdown-item" href="{{ Route('my_pois') }}">Мои точки</a></li>
