@@ -153,7 +153,7 @@ class PoisController extends Controller
       return $this->location_category_tag($request,$location_url,'',$tag_url);
     }
 
-    public function location_category_tag(Request $request,$location_url='',$category_url='',$tag_url='' )
+    protected  function location_category_tag(Request $request,$location_url='',$category_url='',$tag_url='' )
     {
 
       $sorts=$this->sorts;
