@@ -219,13 +219,14 @@ class PoisController extends Controller
         if ($request->get('mne')!==NULL and $request->get('msw')!==NULL) {
         list($nelat,$nelng) = explode(',',$request->get('mne'));
         list($swlat,$swlng) = explode(',',$request->get('msw'));
+
          $pois=Pois::where([
            ['status','=',1],
            ['lat', '>=', $swlat],
            ['lat', '<=', $nelat],
            ['lng', '<=', $nelng],
            ['lng', '>=', $swlng]
-         ])->with('tags')->orderby('views','DESC')->limit(500)->get();
+         ])->with('tags')->orderby(\DB::raw("ABS(`lat`-'".(($nelat+$swlat)/2)."')+ABS(`lng`-'".(($nelng+$swlng)/2)."')"),'ASC')->limit(1000)->get();
 
       }
         else $pois=null;
