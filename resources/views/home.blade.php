@@ -1,7 +1,8 @@
 @push('scripts')
-
 <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <script type="text/javascript">
+
+
     var icon = "/i/map_marker.png";
     var json_url = "{{ route('poi_json') }}";
     var infowindow = new google.maps.InfoWindow();
@@ -25,7 +26,6 @@
       markersArray.length = 0;
     }
 
-
     function loadPointsfomJSON() {
       var i=0;
       clearOverlays();
@@ -48,10 +48,7 @@
 
         var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
         bindInfoWindow(marker, map, infowindow, details);
-        /*
-        i=i+1;
-            if (i<={{ env('OBJECTS_ON_MAIN_PAGE',6) }}) $('#shown_on_map ').append('<div class="poi p-3"><div class="card"><a href="{{ route('poi') }}/'+data.url+'" target="_blank"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div></a> </div></div></div>');
-            */
+
             data.tags.forEach(function(item, i, arr) {
               $('[data-tag_id="'+item.id+'"]').show();
             });
@@ -66,16 +63,18 @@
 
     }
 
+
+
 window.onload = function()
 {
+    oldzoom=9;
     map = new google.maps.Map(document.getElementById("map"),
     {
-      center: new google.maps.LatLng(55.7499172, 37.6199341), zoom: 9, gestureHandling: 'greedy'
+      center: new google.maps.LatLng(55.7499172, 37.6199341), zoom: oldzoom, gestureHandling: 'greedy'
     });
 
     markerClusterer= new MarkerClusterer(map, markersArray, {
         imagePath: "/i/markers/pie",
-        zoomOnClick: false,
     });
 
 
@@ -85,7 +84,8 @@ google.maps.event.addListener(map, 'dragend', function() {
          loadPointsfomJSON();
       });
 google.maps.event.addListener(map, 'zoom_changed', function() {
-         loadPointsfomJSON();
+  if (oldzoom>map.getZoom())  loadPointsfomJSON();
+     oldzoom=map.getZoom();
       });
 var first=true;
 google.maps.event.addListener(map, 'idle', function() {

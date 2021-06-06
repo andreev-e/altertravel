@@ -10,8 +10,7 @@
     <!-- Scripts -->
     <script src="//maps.google.com/maps/api/js?key=AIzaSyDVxoYcrB_2arTNlYpFClzzKy9KgFW3_Y8"></script>
     <script  async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script src="{{ mix('js/app.js') }}" defer></script>
-
+    <script src="{{ mix('js/app.js') }}" ></script>
      @stack('scripts')
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">

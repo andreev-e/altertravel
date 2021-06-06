@@ -1,76 +1,106 @@
 @push('scripts')
-
+<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
 <script type="text/javascript">
+
 var icon = "/i/map_marker.png";
 var json_url = "{{ route('poi_json') }}";
 var infowindow = new google.maps.InfoWindow();
 var markersArray = [];
 var first=true; //
-window.onload = function()
-{
-map = new google.maps.Map(document.getElementById("map"),
-{
-@if (isset($current_location))
-center: new google.maps.LatLng({{$current_location->lat}}, {{$current_location->lng}}), zoom: {{$current_location->scale}},
-@else
-center: new google.maps.LatLng(28.425261, 74.771668), zoom: 2,
-@endif
-gestureHandling: 'greedy',
-});
 
 function bindInfoWindow(marker, map, infowindow, strDescription) {
-google.maps.event.addListener(marker, 'click', function () {
-    infowindow.setContent(strDescription);
-    infowindow.open(map, marker);
-});
-}
-function clearOverlays() {
-if (markersArray) {
-for (i in markersArray) {
-  markersArray[i].setMap(null);
-}
-}
+    google.maps.event.addListener(marker, 'click', function () {
+        infowindow.setContent(strDescription);
+        infowindow.open(map, marker);
+    });
 }
 
 function clearOverlays() {
-for (var i = 0; i < markersArray.length; i++ ) {
-markersArray[i].setMap(null);
-}
-markersArray.length = 0;
+  if (markersArray) {
+    for (i in markersArray) {
+      markersArray[i].setMap(null);
+
+    }
+  }
+  markersArray.length = 0;
 }
 
 function loadPointsfomJSON() {
-var i=0;
-clearOverlays();
-var bounds = map.getBounds();
-var url=json_url+'?mne=' + bounds.getNorthEast().toUrlValue() + '&msw=' + bounds.getSouthWest().toUrlValue();
-
-$.getJSON(url, function(json) {
-$('#shown_on_map').empty();
-$.each(json, function (key, data) {
-var latLng = new google.maps.LatLng(data.lat, data.lng);
-var marker = new google.maps.Marker({
-    position: latLng,
-    map: map,
-    icon: icon,
-    title: data.name
-});
-markersArray.push(marker);
-var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
-bindInfoWindow(marker, map, infowindow, details);
 
 
+
+  var i=0;
+  clearOverlays();
+  $("#tags").children().hide();
+
+  var bounds = map.getBounds();
+  var url=json_url+'?mne=' + bounds.getNorthEast().toUrlValue() + '&msw=' + bounds.getSouthWest().toUrlValue();
+
+  $.getJSON(url, function(json) {
+  /*$('#shown_on_map').empty();*/
+  $.each(json, function (key, data) {
+    var latLng = new google.maps.LatLng(data.lat, data.lng);
+    var marker = new google.maps.Marker({
+        position: latLng,
+        map: map,
+        icon: '/i/markers/'+data.icon,
+        title: data.name
+    });
+    markersArray.push(marker);
+
+    var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
+    bindInfoWindow(marker, map, infowindow, details);
+    /*
+    i=i+1;
+        if (i<={{ env('OBJECTS_ON_MAIN_PAGE',6) }}) $('#shown_on_map ').append('<div class="poi p-3"><div class="card"><a href="{{ route('poi') }}/'+data.url+'" target="_blank"><img class="card-img-top" src="'+data.photo+'" alt="'+data.name+'"><div class="card-body"><div class="h5 card-title">'+data.name+'</div></a> </div></div></div>');
+        */
+        data.tags.forEach(function(item, i, arr) {
+          $('[data-tag_id="'+item.id+'"]').show();
+        });
+
+
+  });
+
+  markerClusterer.clearMarkers();
+  markerClusterer.addMarkers(markersArray);
+
+
 });
-});
+
 }
 
 
+
+window.onload = function()
+{
+  @if (isset($current_location)) oldzoom=2
+  @else oldzoom={{$current_location->scale}}
+  @endif
+    map = new google.maps.Map(document.getElementById("map"),
+    {
+      @if (isset($current_location))
+      center: new google.maps.LatLng({{$current_location->lat}}, {{$current_location->lng}}), zoom: {{$current_location->scale}},
+      @else
+      center: new google.maps.LatLng(28.425261, 74.771668), zoom: oldzoom,
+      @endif
+      gestureHandling: 'greedy',
+    });
+
+    markerClusterer= new MarkerClusterer(map, markersArray, {
+        imagePath: "/i/markers/pie",
+    });
+
 google.maps.event.addListener(map, 'dragend', function() {
      loadPointsfomJSON();
+
+
   });
 google.maps.event.addListener(map, 'zoom_changed', function() {
-     loadPointsfomJSON();
+  if (oldzoom>map.getZoom())  loadPointsfomJSON();
+     oldzoom=map.getZoom();
+
   });
+
 var first=true;
 google.maps.event.addListener(map, 'idle', function() {
               var bounds =  map.getBounds();
@@ -83,12 +113,10 @@ google.maps.event.addListener(map, 'idle', function() {
 }
 
 </script>
-
-
 @endpush
 @extends('layouts.app')
-@section('title'){{$meta['h1']}} на карте | Альтернативный путеводитель @endsection'
-@section('description')Все {{$meta['h1']}} в путеводителе с фото, описаниями, отзывами, картами проезда. Строим маршруты, делимся впечатлениями и фотографиями @endsection'
+@section('title'){{$meta['h1']}} на карте | Альтернативный путеводитель @endsection
+@section('description')Все {{$meta['h1']}} в путеводителе с фото, описаниями, отзывами, картами проезда. Строим маршруты, делимся впечатлениями и фотографиями @endsection
 
 @section('content')
 <div class="container">
@@ -131,7 +159,7 @@ google.maps.event.addListener(map, 'idle', function() {
   @if (isset($subregions))
     @if ($subregions->count()>0)
       <h2>
-      Регионы
+      Подрегионы
       @if (isset($current_location->name_rod))
         {{$current_location->name_rod}}
       @endif
