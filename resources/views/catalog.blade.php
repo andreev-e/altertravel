@@ -137,7 +137,8 @@ google.maps.event.addListener(map, 'idle', function() {
       @endif
     @endif
   </h1>
-
+<div class="row">
+  <div class="col-sm-6">
   @if (isset($subregions))
     @if ($subregions->count()>0)
       <h2>
@@ -170,8 +171,12 @@ google.maps.event.addListener(map, 'idle', function() {
     @endforeach
   @endif
 
-@if (isset($categories))
-  <h2>Категории</h2>
+@if (count($categories)!=0)
+  <h2>Категории достопримечательностей
+    @if (isset($current_location->name_rod))
+      {{$current_location->name_rod}}
+    @endif
+  </h2>
   @foreach ($categories as $loc_category)
     @if (isset($current_category))
       @if ($current_category->id!=$loc_category->id)
@@ -193,8 +198,8 @@ google.maps.event.addListener(map, 'idle', function() {
   @endforeach
 @endif
 
-  @if (isset($tags))
-    <h2>Метки</h2>
+@if (count($tags)!=0)
+  <p class="h2">Метки</p>
     @foreach ($tags as $tag)
       @if (isset($current_location))
         <a href="{{route('tag',[$tag->url,$current_location->url])}}">{{$tag->name}}</a>
@@ -203,11 +208,26 @@ google.maps.event.addListener(map, 'idle', function() {
       @endif
     @endforeach
   @endif
+  <p class="h2">Вы можете</p>
+<div class="btn-group">
+    <a class="btn btn-primary" href="http://altertravel-ru.ru/my_pois/add">Добавить точку</a>
+    <a class="btn btn-secondary" href="http://altertravel-ru.ru/my_routes/add">Добавить маршурт</a>
 </div>
-<div class="container">
+</div>
+
+<div class="col-sm-6">
+  <h2>Достопримечательности на карте</h2>
   <div class="map" id="map"></div>
 </div>
+</div>
+</div>
 <div class="container">
+  <div class="col-12">
+      <h2>Список достопримечательностей
+        @if (isset($current_location->name_rod))
+          {{$current_location->name_rod}}
+        @endif
+       с фото</h2>
   @if (isset($sorts))
     @include('blocks.sort')
   @endif

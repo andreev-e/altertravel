@@ -8,6 +8,7 @@
     <title>@yield('title')</title>
     <!-- Scripts -->
     <script src="//maps.google.com/maps/api/js?key=AIzaSyDVxoYcrB_2arTNlYpFClzzKy9KgFW3_Y8"></script>
+    <script  async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script src="{{ mix('js/app.js') }}" defer></script>
 
      @stack('scripts')
@@ -144,6 +145,14 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-2550364618248551",
+            enable_page_level_ads: true
+          });
+        </script>
+
 
         <!-- Yandex.Metrika counter -->
         <script type="text/javascript" >

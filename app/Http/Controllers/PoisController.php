@@ -183,7 +183,7 @@ class PoisController extends Controller
 
       $tags=\DB::table('tags')->join('pois_tags', 'pois_tags.tags_id', '=', 'tags.id')->whereIn('pois_tags.pois_id', $wherein)->groupBy('tags.id')->get('tags.*');
 
-      $categories=\DB::table('pois')->leftjoin('categories', 'categories.id', '=', 'pois.category_id')->whereIn('pois.id', $wherein)->where('categories.id',"<>", null)->groupBy('categories.id')->get('categories.*');
+      if (!is_object($current_category)) $categories=\DB::table('pois')->leftjoin('categories', 'categories.id', '=', 'pois.category_id')->whereIn('pois.id', $wherein)->where('categories.id',"<>", null)->groupBy('categories.id')->get('categories.*');
 
       return view('catalog', compact('pois','subregions','current_location','locations','current_category','categories','current_tag','tags','breadcrumbs','sorts', 'request'));
     }
@@ -225,7 +225,7 @@ class PoisController extends Controller
            ['lat', '<=', $nelat],
            ['lng', '<=', $nelng],
            ['lng', '>=', $swlng]
-         ])->with('tags')->with('user')->with('category')->orderby('views','DESC')->limit(500)->get();
+         ])->with('tags')->orderby('views','DESC')->limit(500)->get();
 
       }
         else $pois=null;
@@ -233,7 +233,7 @@ class PoisController extends Controller
         $responce=[];
         foreach ($pois as $poi) {
           $marker='marker_1_.png';
-          if (is_object($poi->category)) $marker='marker_'.$poi->category->id.'_.png';
+          $marker='marker_'.$poi->category_id.'_.png';
           $point['lat']=$poi->lat;
           $point['lng']=$poi->lng;
           $point['name']=$poi->name;
@@ -301,9 +301,6 @@ foreach ($file as $location) {
        }
      }
    }
-
-
-
 
 
 public function my_pois_add(Request $request)

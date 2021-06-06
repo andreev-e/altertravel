@@ -11,8 +11,8 @@
   @guest
   @else
   <div class="col-sm-3 text-end">
-    <a class="btn btn-success" href="{{route('my_pois_add')}}">Добавить точку</a>
-      <a class="btn btn-success" href="{{route('my_routes_add')}}">Добавить маршурт</a>
+    <a class="btn btn-primary" href="http://altertravel-ru.ru/my_pois/add">Добавить точку</a>
+    <a class="btn btn-secondary" href="http://altertravel-ru.ru/my_routes/add">Добавить маршурт</a>
   </div>
   @endguest
 </div>

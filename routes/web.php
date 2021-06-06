@@ -36,10 +36,6 @@ Route::get('/route/{url}', 'App\Http\Controllers\RoutesController@single_route')
 Route::get('/routes', 'App\Http\Controllers\RoutesController@routes')->name('routes');
 
 
-
-
-
-
 Route::get('/my_pois', 'App\Http\Controllers\PoisController@my_pois_index')->name('my_pois');
 Route::get('/my_pois/add', 'App\Http\Controllers\PoisController@my_pois_add')->name('my_pois_add');
 Route::post('/my_pois/add', 'App\Http\Controllers\PoisController@my_pois_add');
