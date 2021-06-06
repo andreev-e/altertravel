@@ -23,14 +23,11 @@ use Auth;
 class PoisController extends Controller
 {
 
-  protected $sorts= array(
-    array('sort'=>'id.desc', 'name'=> 'Самые новые'),
-    array('sort'=>'id.asc', 'name'=> 'Самые старые'),
-    array('sort'=>'views.desc', 'name'=>'Самые популярные')
-  );
-  //default sort
-  protected $default_table='id';
-  protected $default_direction='desc';
+  protected $sorts= [
+    ['id.desc', 'Самые новые'],
+    ['id.asc', 'Самые старые'],
+    ['views.desc', 'Самые популярные'],
+  ];
 
   public function index()
   {
@@ -69,7 +66,6 @@ class PoisController extends Controller
         $poi->increment('views');
         $comments=$poi->comments();
 
-        //$comments=PoisComments::where('status','=',1)->where('poi_id','=',$poi->id)->orderby('updated_at','ASC')->limit(env('OBJECTS_ON_PAGE',15))->get();
         $comments=PoisComments::where('status','=',1)->where('poi_id','=',$poi->id)->orderby('updated_at','ASC')->get();
 
 
@@ -86,15 +82,13 @@ class PoisController extends Controller
                 'lng'  => 'required',
                 'description'  => '',
             ]);
+
             $images = $request->file('photos');
-            if ($request->hasFile('photos')) :
-            foreach ($images as $file):
-            $arr[] =$file->store('public');
-            endforeach;
-            $image = implode(",", $arr);
-            else:
-                    $image = '';
-            endif;
+            if ($request->hasFile('photos')) {
+              foreach ($images as $file) $arr[] =$file->store('public');
+              $image = implode(",", $arr);
+            }
+            else $image = '';
 
             if ($validated and Auth::check()) {
                 $poi->name=$request->get('name');
@@ -123,20 +117,12 @@ class PoisController extends Controller
 
         }
         else {
-          //not post - edit form
-
+          //get - showing form
           $poi=Pois::find($id);
           $checked_tags=array();
-          foreach ($poi->tags as $tag) {
-            $checked_tags[]=$tag->id;
-          }
-
-
+          foreach ($poi->tags as $tag) $checked_tags[]=$tag->id;
           return view('poi_edit', compact('poi','checked_tags'));
         }
-
-
-
       }
         else return redirect()->route('single-poi', $poi->url);
     }
@@ -153,57 +139,51 @@ class PoisController extends Controller
       return $this->location_category_tag($request,$location_url,'',$tag_url);
     }
 
-    protected  function location_category_tag(Request $request,$location_url='',$category_url='',$tag_url='' )
+    protected function location_category_tag(Request $request,$location_url='',$category_url='',$tag_url='' )
     {
-
       $sorts=$this->sorts;
-      $table=$this->default_table;
-      $direction=$this->default_direction;
-      if (isset($request->sort))  {
-        $sort=explode('.',$request->sort);
-        $table=$sort[0];
-        $direction=$sort[1];
-      }
-      $breadcrumbs=array();
-      $current_location=null;
-      $current_category=null;
-      $current_tag=null;
-      $pois=null;
-      $subregions=null;
+      if (isset($request->sort)) [$table,$direction]=explode('.',$request->sort);
+      else [$table,$direction]=explode('.',$this->sorts[0][0]);
+      if (!in_array($direction,['asc','desc']) or !in_array($table,['id','views'])) abort(404);
 
-      $categories=Categories::orderby('name','ASC')->get();
-      $locations=Locations::where('type','=','country')->orderby('name','ASC')->get();
-      $tags=Tags::orderby('name','ASC')->get();
-
-      if ($location_url=='' and $category_url=='' and $tag_url=='') {
-
-      }
+      $breadcrumbs=$locations=$current_location=$current_category=$current_tag=$subregions=null;
 
       if ($location_url!='') {$current_location=Locations::Where('url', $location_url)->firstOrFail();  $breadcrumbs=$this->get_parent_location($current_location->parent); }
       if ($category_url!='') {$current_category=Categories::Where('url', $category_url)->firstOrFail(); $tags=null; $categories=null;}
       if ($tag_url!='') {$current_tag=Tags::Where('url', $tag_url)->firstOrFail(); $tags=null; $categories=null;}
 
-      $pois=Pois::where('status','=',1)->Paginate(env('OBJECTS_ON_PAGE',15));
-
-      $wherein=[];
-      $wherein_tag=[];
-      $wherein_loc=[];
+      $wherein=$wherein_tag=$wherein_loc=$wherein_category=[];
 
       if (is_object($current_location))  {
         $subregions=Locations::where('parent', $current_location->id)->orderby('count','DESC')->get();
-        $poi_ids=\DB::table('pois_locations')->where('locations_id',"=",$current_location->id)->join('pois', 'pois.id', '=', 'pois_locations.pois_id')->get('pois.id');
-        foreach ($poi_ids as $poi_id) $wherein_loc[]=$poi_id->id;
+        $poi_ids=\DB::table('pois_locations')->where('locations_id',"=",$current_location->id)->get('pois_id');
+        foreach ($poi_ids as $poi_id) $wherein_loc[]=$poi_id->pois_id;
       }
 
       if (is_object($current_tag))  {
-        $poi_ids=\DB::table('pois_tags')->where('tags_id',"=",$current_tag->id)->join('pois', 'pois.id', '=', 'pois_tags.pois_id')->get('pois.id');
-        foreach ($poi_ids as $poi_id) $wherein_tag[]=$poi_id->id;
+        $poi_ids=\DB::table('pois_tags')->where('tags_id',"=",$current_tag->id)->get('pois_id');
+        foreach ($poi_ids as $poi_id) $wherein_tag[]=$poi_id->pois_id;
       }
+
+      if (is_object($current_category))  {
+        $poi_ids=\DB::table('pois')->where('category_id',"=",$current_category->id)->get('id');
+        foreach ($poi_ids as $poi_id) $wherein_category[]=$poi_id->id;
+      }
+
       if (!empty($wherein_loc) and !empty($wherein_tag)) $wherein=array_intersect($wherein_loc,$wherein_tag);
-      else $wherein=array_merge($wherein_loc,$wherein_tag);
+      elseif (!empty($wherein_loc) and !empty($wherein_category)) $wherein=array_intersect($wherein_loc,$wherein_category);
+      elseif (!empty($wherein_category) and !empty($wherein_tag)) $wherein=array_intersect($wherein_category,$wherein_tag);
+      else $wherein=array_merge($wherein_loc,$wherein_tag,$wherein_category);
 
-      $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+      if (!empty($wherein)) $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+      else {
+        $locations=Locations::where('type','=','country')->orderby('name','ASC')->get();
+        $pois=Pois::where('status','=',1)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+      }
 
+      $tags=\DB::table('tags')->join('pois_tags', 'pois_tags.tags_id', '=', 'tags.id')->whereIn('pois_tags.pois_id', $wherein)->groupBy('tags.id')->get('tags.*');
+
+      $categories=\DB::table('pois')->leftjoin('categories', 'categories.id', '=', 'pois.category_id')->whereIn('pois.id', $wherein)->where('categories.id',"<>", null)->groupBy('categories.id')->get('categories.*');
 
       return view('catalog', compact('pois','subregions','current_location','locations','current_category','categories','current_tag','tags','breadcrumbs','sorts', 'request'));
     }

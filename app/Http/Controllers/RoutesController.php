@@ -16,15 +16,11 @@ use Auth;
 class RoutesController extends Controller
 {
 
-  protected $sorts= array(
-    array('sort'=>'id.desc', 'name'=> 'Самые новые'),
-    array('sort'=>'id.asc', 'name'=> 'Самые старые'),
-    array('sort'=>'views.desc', 'name'=>'Самые популярные')
-  );
-  //default sort
-  protected $default_table='id';
-  protected $default_direction='desc';
-
+  protected $sorts= [
+    ['id.desc', 'Самые новые'],
+    ['id.asc', 'Самые старые'],
+    ['views.desc', 'Самые популярные'],
+  ];
 
   public function my_routes_index()    {
         $routes=array();
@@ -36,13 +32,10 @@ class RoutesController extends Controller
   public function routes(Request $request)
   {
     $sorts=$this->sorts;
-    $table=$this->default_table;
-    $direction=$this->default_direction;
-    if (isset($request->sort))  {
-      $sort=explode('.',$request->sort);
-      $table=$sort[0];
-      $direction=$sort[1];
-    }
+    if (isset($request->sort)) [$table,$direction]=explode('.',$request->sort);
+    else [$table,$direction]=explode('.',$this->sorts[0][0]);
+    if (!in_array($direction,['asc','desc']) or !in_array($table,['id','views'])) abort(404);
+
       $routes=Routes::where('status','=',1)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
       return view('routes', compact('routes','sorts','request'));
   }
