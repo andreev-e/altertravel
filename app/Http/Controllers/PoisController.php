@@ -212,14 +212,10 @@ class PoisController extends Controller
     public function user($url, Request $request)
     {
 
-        $sorts=$this->sorts;
-        $table=$this->default_table;
-        $direction=$this->default_direction;
-        if (isset($request->sort))  {
-          $sort=explode('.',$request->sort);
-          $table=$sort[0];
-          $direction=$sort[1];
-        }
+      $sorts=$this->sorts;
+      if (isset($request->sort)) [$table,$direction]=explode('.',$request->sort);
+      else [$table,$direction]=explode('.',$this->sorts[0][0]);
+      if (!in_array($direction,['asc','desc']) or !in_array($table,['id','views'])) abort(404);
 
         $user=User::where('login', $url)->firstOrFail();
         $pois=$user->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
