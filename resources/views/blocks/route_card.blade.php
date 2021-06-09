@@ -1,4 +1,4 @@
-<div class="poi p-3">
+<div class="col-sm-3 p-3">
   <div class="card">
     <a href="{{ route('single-route', $route->url) }}">
     <img src="{{$route->thumb()}}" class="card-img-top" alt="{{ $route->name }}">
