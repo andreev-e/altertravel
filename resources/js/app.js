@@ -5,9 +5,24 @@ $(document).ready(function() {
   $(".izbr").click(function(e){
       e.preventDefault();
       izbrannoe($(this).data("pois_id"));
+      $(this).toggleClass('fa-star-o');
       $(this).toggleClass('starred');
+      $(this).toggleClass('fa-star');
+
   });
+
+  var izbr=readCookie('izbr');
+  izbr_arr= izbr.split('\|');
+  for (var i = 0; i < izbr_arr.length; i++) {
+    $('#izbr'+izbr_arr[i]).toggleClass('fa-star-o');
+    $('#izbr'+izbr_arr[i]).toggleClass('starred');
+    $('#izbr'+izbr_arr[i]).toggleClass('fa-star');
+  }
+
+
 });
+
+
 
 
 function readCookie(cookieName) {
