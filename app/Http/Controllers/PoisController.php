@@ -55,7 +55,6 @@ class PoisController extends Controller
 
     $beginend=[55.75370903771494,37.61981338262558,55.75370903771494,37.61981338262558];
     if (isset($_COOKIE['fromto'])) if (isset($_COOKIE['fromto'])) $beginend_from_cookie=explode(",",$_COOKIE['fromto']);
-    dd($beginend_from_cookie);
     if (count($beginend_from_cookie)==4) $beginend=$beginend_from_cookie;
 
     $wherein=$this->get_izbr_array();
