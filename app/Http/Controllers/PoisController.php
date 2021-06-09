@@ -81,7 +81,7 @@ class PoisController extends Controller
         $poi->increment('views');
         $comments=$poi->comments();
 
-        if (Auth::user()->email=='andreev-e@mail.ru') $comments=PoisComments::where('status','!=',3)->where('poi_id','=',$poi->id)->orderby('updated_at','ASC')->get();
+        if (Auth::check()) if (Auth::user()->email=='andreev-e@mail.ru') $comments=PoisComments::where('status','!=',3)->where('poi_id','=',$poi->id)->orderby('updated_at','ASC')->get();
         else  $comments=PoisComments::where('status','=',1)->where('poi_id','=',$poi->id)->orderby('updated_at','ASC')->get();
 
 
