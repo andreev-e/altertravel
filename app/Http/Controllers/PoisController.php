@@ -23,11 +23,7 @@ use Auth;
 class PoisController extends Controller
 {
 
-  protected $sorts= [
-    ['views.desc', 'Самые популярные'],
-    ['id.desc', 'Самые новые'],
-    ['id.asc', 'Самые старые'],
-  ];
+  Use \App\Traits\Sortable;
 
   public function index()
   {
@@ -44,8 +40,23 @@ class PoisController extends Controller
       return redirect()->route('single-poi',$poi->url);
   }
 
-  public function izbrannoye()   {
-      return view('izbrannoye');
+  protected function get_izbr_array() {
+    $pois_ids=[];
+    $pois_ids=explode("|",$_COOKIE['izbr']);
+    $pois_ids = array_diff($pois_ids, array(''));
+    return $pois_ids;
+  }
+
+
+  public function izbrannoye(Request $request)   {
+
+    $sort=$this->sorting_array($request);
+    $sorts=$sort[0];
+
+    $wherein=$this->get_izbr_array();
+    $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($sort[1],$sort[2])->Paginate(env('OBJECTS_ON_PAGE',15));
+    return view('izbrannoye',compact('pois','sorts', 'request'));
+
   }
 
   public function my_pois_index()    {
@@ -141,10 +152,8 @@ class PoisController extends Controller
 
     protected function location_category_tag(Request $request,$location_url='',$category_url='',$tag_url='' )
     {
-      $sorts=$this->sorts;
-      if (isset($request->sort)) [$table,$direction]=explode('.',$request->sort);
-      else [$table,$direction]=explode('.',$this->sorts[0][0]);
-      if (!in_array($direction,['asc','desc']) or !in_array($table,['id','views'])) abort(404);
+      $sort=$this->sorting_array($request);
+      $sorts=$sort[0];
 
       $breadcrumbs=$locations=$current_location=$current_category=$current_tag=$subregions=null;
       $categories=$tags=[];
@@ -184,11 +193,11 @@ class PoisController extends Controller
       elseif (!empty($wherein_category) and !empty($wherein_tag)) $wherein=array_intersect($wherein_category,$wherein_tag);
       else $wherein=array_merge($wherein_loc,$wherein_tag,$wherein_category);
 
-      if (!empty($wherein)) $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+      if (!empty($wherein)) $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($sort[1],$sort[2])->Paginate(env('OBJECTS_ON_PAGE',15));
       else {
         $locations=Locations::where('type','=','country')->orderby('name','ASC')->get();
         if (!is_object($current_tag)) $tags=Tags::orderby('name','ASC')->get();
-        $pois=Pois::where('status','=',1)->orderby($table,$direction)->Paginate(env('OBJECTS_ON_PAGE',15));
+        $pois=Pois::where('status','=',1)->orderby($sort[1],$sort[2])->Paginate(env('OBJECTS_ON_PAGE',15));
       }
 
       if (!is_object($current_tag) and !empty($wherein)) $tags=\DB::table('tags')->join('pois_tags', 'pois_tags.tags_id', '=', 'tags.id')->whereIn('pois_tags.pois_id', $wherein)->groupBy('tags.id')->get('tags.*');
@@ -212,13 +221,11 @@ class PoisController extends Controller
     public function user($url, Request $request)
     {
 
-      $sorts=$this->sorts;
-      if (isset($request->sort)) [$table,$direction]=explode('.',$request->sort);
-      else [$table,$direction]=explode('.',$this->sorts[0][0]);
-      if (!in_array($direction,['asc','desc']) or !in_array($table,['id','views'])) abort(404);
+      $sort=$this->sorting_array($request);
+      $sorts=$sort[0];
 
         $user=User::where('login', $url)->firstOrFail();
-        $pois=$user->pois()->where('status','=',1)->orderby($table,$direction)->paginate(env('OBJECTS_ON_PAGE',15));
+        $pois=$user->pois()->where('status','=',1)->orderby($sort[1],$sort[2])->paginate(env('OBJECTS_ON_PAGE',15));
 
         return view('user', compact('pois','user','sorts','request'));
     }

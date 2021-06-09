@@ -16,12 +16,8 @@ use Auth;
 class RoutesController extends Controller
 {
 
-  protected $sorts= [
-    ['views.desc', 'Самые популярные'],
-    ['id.desc', 'Самые новые'],
-    ['id.asc', 'Самые старые'],
-  ];
-
+  Use \App\Traits\Sortable;
+  
   public function my_routes_index()    {
         $routes=array();
         if (Auth::check()) $routes=Routes::where('user_id','=',auth()->user()->id)->where('status','<>',99)->orderbyDESC('updated_at')->Paginate(env('OBJECTS_ON_PAGE',15));

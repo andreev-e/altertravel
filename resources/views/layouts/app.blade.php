@@ -10,7 +10,7 @@
     <!-- Scripts -->
     <script src="//maps.google.com/maps/api/js?key=AIzaSyDVxoYcrB_2arTNlYpFClzzKy9KgFW3_Y8"></script>
     <script  async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script src="{{ mix('js/app.js') }}" ></script>
+    <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
      @stack('scripts')
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
@@ -71,7 +71,7 @@
 
         @if (Route::has('izbrannoye'))
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('izbrannoye') }}" title="Избранное"><i class="fa fa-star-o" aria-hidden="true"></i></a>
+                <a class="nav-link" href="{{ route('izbrannoye') }}" title="Избранное"><i class="fa fa-star-o" aria-hidden="true"></i> Избранное</a>
             </li>
         @endif
 

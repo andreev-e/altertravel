@@ -20,13 +20,17 @@ ul.breadcrumbs {
 .breadcrumbs li:last-child:after {
   display: none;
 }
+
+.page-link {
+  padding: 0.25rem 0.55rem;
+}
 #map {
   width: 100%;
   height: 400px;
 }
 
-.navbar-brand {
-
+.starred {
+  color:gold;
 }
 .navbar-brand img {
   margin-right: 3px;

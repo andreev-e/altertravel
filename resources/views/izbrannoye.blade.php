@@ -2,10 +2,21 @@
 @section('title')Избранное @endsection
 @section('content')
 <div class="container">
-  <h1>Избранное</h1>
+    <div class="col-12">
+        <h1>Избранное</h1>
+    @if (isset($sorts))
+      @include('blocks.sort')
+    @endif
+
+  @if (isset($pois))
   <div class="row">
+    @foreach ($pois as $poi)
+      @include('blocks.poi_card')
+    @endforeach
+  </div>
+  {{ $pois->appends(Request::query())->onEachSide(1)->links()}}
+  @endif
 
 </div>
 </div>
-
 @endsection

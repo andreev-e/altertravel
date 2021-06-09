@@ -156,7 +156,6 @@ google.maps.event.addListener(map, 'idle', function() {
   </h1>
 <div class="row">
   <div class="col-sm-6">
-    <h2>{{$meta['h1']}} на карте</h2>
     <div class="map" id="map"></div>
   </div>
   <div class="col-sm-6">
@@ -239,7 +238,7 @@ google.maps.event.addListener(map, 'idle', function() {
 
 </div>
 </div>
-<div class="container">
+<div class="container mt-3">
   <div class="col-12">
       <h2>Список достопримечательностей
         @if (isset($current_location->name_rod))
@@ -256,8 +255,8 @@ google.maps.event.addListener(map, 'idle', function() {
     @include('blocks.poi_card')
   @endforeach
 </div>
-{{ $pois->appends(Request::query())->links()}}
+{{ $pois->appends(Request::query())->onEachSide(1)->links()}}
 @endif
 </div>
-
+</div>
 @endsection

@@ -76,3 +76,6 @@ Route::get('view.php', 'App\Http\Controllers\PoisController@old_redirect');
 Route::get('view_route.php', 'App\Http\Controllers\RoutesController@old_redirect');
 Route::get('/catalog/{url}', 'App\Http\Controllers\LocationsController@old_redirect');
 Route::get('/catalog/{url}/{category}', 'App\Http\Controllers\LocationsController@old_redirect');
+
+Route::get('/cookie/set','CookieController@setCookie');
+Route::get('/cookie/get','CookieController@getCookie');
