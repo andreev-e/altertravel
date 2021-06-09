@@ -30,4 +30,47 @@ class PoisCommentsController extends Controller
       }
       return redirect()->route('single-poi', $poi->url);
     }
+
+
+    public function approve($id, Request $request) {
+          if ($request->isMethod('post')) {
+            if (Auth::check()) {
+              $comment=PoisComments::findOrFail($id);
+              if (Auth::user()->email=='andreev-e@mail.ru') {
+                $comment->status=1;
+                $comment->save();
+              }
+            }
+          }
+          return redirect()->back();
+        }
+
+    public function delete($id, Request $request) {
+      if ($request->isMethod('post')) {
+        if (Auth::check()) {
+          $comment=PoisComments::findOrFail($id);
+          if ($comment->user_id==Auth::user()->id or Auth::user()->email=='andreev-e@mail.ru') {
+            $comment->delete();
+          }
+        }
+      }
+      return redirect()->back();
+    }
+
+
+    public function delete_all($id, Request $request) {
+      if ($request->isMethod('post')) {
+        if (Auth::check()) {
+          $comment=PoisComments::findOrFail($id);
+          if ($comment->user_id==Auth::user()->id or Auth::user()->email=='andreev-e@mail.ru') {
+            if (!is_null($comment->email)) $comments=PoisComments::where('email','=',$comment->email)->delete();
+            else $comment->delete();
+          }
+        }
+      }
+      return redirect()->back();
+    }
+
+
+
 }

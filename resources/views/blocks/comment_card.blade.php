@@ -21,7 +21,26 @@
     <p class="card-text">{{ $comment->comment }}</p>
     </div>
     @if (isset($pois))
-    <img class="comment_card_thumb d-none d-sm-block" src="{{$comment->poi->thumb()}}"  alt="{{ $comment->poi->name }}">
+      <img class="comment_card_thumb d-none d-sm-block" src="{{$comment->poi->thumb()}}"  alt="{{ $comment->poi->name }}">
     @endif
+
+      @if ($comment->user_id==Auth::user()->id or Auth::user()->email=='andreev-e@mail.ru')
+        <form action="{{ route('pois_comments_delete', $comment->id) }}" method="post">
+        @csrf
+        <button type="submit" class="btn btn-outline-danger" title="Удалить"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </form>
+      @endif
+      @if (Auth::user()->email=='andreev-e@mail.ru' and $comment->status!=1)
+        <form  action="{{ route('pois_comments_approve', $comment->id) }}" method="post">
+        @csrf
+        <button type="submit" class="btn btn-outline-success" title="Принять"><i class="fa fa-check" aria-hidden="true"></i></button>
+        </form>
+        <form  action="{{ route('pois_comments_delete_all', $comment->id) }}" method="post">
+        @csrf
+        <button type="submit" class="btn btn-outline-danger" title="Все с данной почтой удалить"><i class="fa fa-times" aria-hidden="true"></i><i class="fa fa-times" aria-hidden="true"></i></button>
+        </form>
+      @endif
   </div>
+
+
 </div>

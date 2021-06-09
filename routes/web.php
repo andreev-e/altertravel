@@ -60,6 +60,9 @@ Route::post('/me/edit', 'App\Http\Controllers\UsersController@user_edit');
 
 Route::get('/poi_comment/add', 'App\Http\Controllers\PoisCommentsController@add')->name('pois_comments_add');
 Route::post('/poi_comment/add', 'App\Http\Controllers\PoisCommentsController@add');
+Route::post('/poi_comment/delete/{id}', 'App\Http\Controllers\PoisCommentsController@delete')->name('pois_comments_delete');
+Route::post('/poi_comment/approve/{id}', 'App\Http\Controllers\PoisCommentsController@approve')->name('pois_comments_approve');
+Route::post('/poi_comment/delete_all/{id}', 'App\Http\Controllers\PoisCommentsController@delete_all')->name('pois_comments_delete_all');
 
 
 Route::get('/json/poi.json', 'App\Http\Controllers\PoisController@poi_json')->name('poi_json');
