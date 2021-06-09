@@ -54,7 +54,9 @@ class PoisController extends Controller
     $sorts=$sort[0];
 
     $beginend=[55.75370903771494,37.61981338262558,55.75370903771494,37.61981338262558];
-    if (isset($_COOKIE['fromto'])) $beginend=explode(",",$_COOKIE['fromto']);
+    if (isset($_COOKIE['fromto'])) if (isset($_COOKIE['fromto'])) $beginend_from_cookie=explode(",",$_COOKIE['fromto']);
+    dd($beginend_from_cookie);
+    if (count($beginend_from_cookie)==4) $beginend=$beginend_from_cookie;
 
     $wherein=$this->get_izbr_array();
     $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($sort[1],$sort[2])->Paginate(env('OBJECTS_ON_PAGE',15));
