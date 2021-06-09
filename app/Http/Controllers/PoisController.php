@@ -42,7 +42,7 @@ class PoisController extends Controller
 
   protected function get_izbr_array() {
     $pois_ids=[];
-    $pois_ids=explode("|",$_COOKIE['izbr']);
+    if (isset($_COOKIE['izbr'])) $pois_ids=explode("|",$_COOKIE['izbr']);
     $pois_ids = array_diff($pois_ids, array(''));
     return $pois_ids;
   }
