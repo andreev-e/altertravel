@@ -6,146 +6,56 @@ var json_url = "{{ route('poi_json') }}";
 var infowindow = new google.maps.InfoWindow();
 var markersArray = [];
 var first=true; //
+var total = 0;
 
-function bindInfoWindow(marker, map, infowindow, strDescription) {
-    google.maps.event.addListener(marker, 'click', function () {
-        infowindow.setContent(strDescription);
-        infowindow.open(map, marker);
-    });
-}
-
-function clearOverlays() {
-  if (markersArray) {
-    for (i in markersArray) {
-      markersArray[i].setMap(null);
-
-    }
-  }
-  markersArray.length = 0;
-}
-
-
-function calcRoute(glat,glng,glatf,glngf) {
-
-    var waypts = [
-		 {location : new google.maps.LatLng(45.114059, 36.863419), stopover : true}, {location : new google.maps.LatLng(44.803333, 33.989723), stopover : true}
-    ]
-    if (glat &&  glng)      var start = new google.maps.LatLng(glat, glng);
-    else var start = new google.maps.LatLng(47.190135835580335, 41.307006249999986);
-      if (glatf &&  glngf)     var end = new google.maps.LatLng(glatf, glngf);
-    else var end = new google.maps.LatLng(45.38050600157554, 39.92075625);
-
-    var request = {
-        origin:start,
-        destination:end,
-        waypoints: waypts, optimizeWaypoints: true,
-        travelMode: google.maps.DirectionsTravelMode.DRIVING
-    };
-
-    directionsService.route(request, function(response, status) {
-
-      if (status == google.maps.DirectionsStatus.OK) {
-								        directionsDisplay.setDirections(response);
-								        computeTotalDistance(directionsDisplay.directions);
-
-								var myRoute = response.routes[0].legs[0];
-								var route= response.routes[0];
-								var points_search='';
-								var prevlng=0;
-								var prevlat=0;
-								var cont_steps=0;
-								var prevpoint=start;
-								var prevpoint2=start;
-								    var nakopl_dist=0;
-								all_points=[];
-								route.legs.forEach(function(leg){
-								    leg.steps.forEach(function(step){
-								        step.path.forEach(function(point){
-								       latlng=point.toString();
-								        latlng=latlng.replace(')','');
-								     latlng=latlng.replace('(','');
-								     latlng_arr=  latlng.split(',');
-								    lat1=parseFloat(latlng_arr[0]);
-								    lng1=parseFloat(latlng_arr[1]);
-
-								    if (google.maps.geometry.spherical.computeDistanceBetween (prevpoint2, point)>odtalenie*100) {
-								    	 all_points.push(point);
-								    	 prevpoint2=point;
-								    	 }
-								        if (google.maps.geometry.spherical.computeDistanceBetween (prevpoint, point)>odtalenie*750)
-								        {
-									        points_search=points_search+lat1.toFixed(4)+'%'+lng1.toFixed(4)+'!';
-									        cont_steps=cont_steps+1;
-								            prevpoint=point;
-								        }
-
-
-        }
-          );
-    });
-}  );
-
-     $('#loading').show();
-   $.ajax({
-  url: 'additional_points.php',
-  data: 'coords='+points_search+'&otdalenie='+odtalenie+'&',
-  success: function(msg){
-  $('#formessages').html(msg);
-  $('#loading').hide();
-  } ,
-  complete: function() {
-        $('#loading').hide();
-    }
-});
+var glat={{$beginend[0]}};
+var glng={{$beginend[1]}};
+var glatf={{$beginend[2]}};
+var glngf={{$beginend[3]}};
 
 
 
-
-      }               else alert('Не получается построить маршрут. Возможно, что одна из точек находится там, куда нельзя проехать');
-    });
-  }
-
-
-    var total = 0;
   function computeTotalDistance(result) {
-
     var myroute = result.routes[0];
-    for (i = 0; i < myroute.legs.length; i++) {
-      total += myroute.legs[i].distance.value;
-    }
-
+    for (i = 0; i < myroute.legs.length; i++)   total += myroute.legs[i].distance.value;
     total = total / 1000.
-    if (total>1000)   { document.cookie='otd=50' ;   odtalenie=50; }
-    document.getElementById('total').innerHTML = 'Маршрут длиной '+ Math.round(total * 10) / 10 + ' км';
+    document.getElementById('total').innerHTML = 'Построен маршрут длиной '+ Math.round(total * 10) / 10 + ' км';
   }
 
+  function bindInfoWindow(marker, map, infowindow, strDescription) {
+      google.maps.event.addListener(marker, 'click', function () {
+          infowindow.setContent(strDescription);
+          infowindow.open(map, marker);
+      });
+  }
 
+  function clearOverlays() {
+    if (markersArray) {
+      for (i in markersArray) {
+        markersArray[i].setMap(null);
+
+      }
+    }
+    markersArray.length = 0;
+  }
 
 window.onload = function()
 {
 
-  var odtalenie='50';
+var odtalenie='50';
 var markerf;
 var marker;
 var markers = [];
 var all_points=[];
 
-function set_odtalenie(num) {
-$('.odtalenie').removeClass('selected');
-
-$('#odtalenie'+num).addClass('selected');
-odtalenie=num;
-document.cookie='otd='+num ;
-calcRoute(marker.getPosition().lat(),marker.getPosition().lng(),markerf.getPosition().lat(),markerf.getPosition().lng());
-}
-
-  var myLatlng = new google.maps.LatLng(46.285320918578, 40.61388125);
+  var myLatlng = new google.maps.LatLng({{$beginend[0]}}, {{$beginend[1]}});
       var myOptions = {
-          zoom: 7,
+          zoom: 6,
           center: myLatlng,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           draggingCursor: 'crosshair',
           draggableCursor: 'pointer',
+          gestureHandling: 'greedy',
       }
   var map = new google.maps.Map(document.getElementById('izbrannoe_map_guide'), myOptions);
 
@@ -156,49 +66,30 @@ calcRoute(marker.getPosition().lat(),marker.getPosition().lng(),markerf.getPosit
 
       directionsDisplay.setMap(map);
 
-  			image5984='/i/star.png'
-  					var latlng = new google.maps.LatLng(45.114059, 36.863419);
-  					var marker5984 = new google.maps.Marker({
-  				    position: latlng,
-  				    url: '#id5984',
-  				    map: map,
-  				    animation: google.maps.Animation.DROP,
-  				    title:'Озеро Соленое' ,
-  				    icon: image5984
+      @foreach ($pois as $poi)
+      image{{$poi->id}}='/i/star.png'
+          var latlng = new google.maps.LatLng({{$poi->lat}}, {{$poi->lng}});
+          var marker21898 = new google.maps.Marker({
+            position: latlng,
+            url: '#id{{$poi->id}}',
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title:'{{$poi->name}}' ,
+            icon: image{{$poi->id}}
 
-  				});
-
-
-  google.maps.event.addListener(marker5984, 'click', function() {
-        window.location.href = marker5984.url;
-      });
+        });
 
 
-  			image21898='/i/star.png'
-  					var latlng = new google.maps.LatLng(44.803333, 33.989723);
-  					var marker21898 = new google.maps.Marker({
-  				    position: latlng,
-  				    url: '#id21898',
-  				    map: map,
-  				    animation: google.maps.Animation.DROP,
-  				    title:'Пиленые скалы' ,
-  				    icon: image21898
-
-  				});
-
-
-  google.maps.event.addListener(marker21898, 'click', function() {
-        window.location.href = marker21898.url;
-      });
-
-
-
+        google.maps.event.addListener(marker21898, 'click', function() {
+      window.location.href = marker21898.url;
+    });
+      @endforeach
 
 
 
      var imagef = '/i/end.png';
       markerf = new google.maps.Marker({
-      position: new google.maps.LatLng(45.38050600157554, 39.92075625),
+      position: new google.maps.LatLng({{$beginend[2]}}, {{$beginend[3]}}),
   	draggable:true,
   	icon:imagef,
       map: map,
@@ -207,7 +98,7 @@ calcRoute(marker.getPosition().lat(),marker.getPosition().lng(),markerf.getPosit
 
        var image = '/i/start.png';
       marker = new google.maps.Marker({
-      position: new google.maps.LatLng(47.190135835580335, 41.307006249999986),
+      position: new google.maps.LatLng({{$beginend[0]}}, {{$beginend[1]}}),
   	draggable:true,
   	icon:image,
       map: map,
@@ -215,21 +106,112 @@ calcRoute(marker.getPosition().lat(),marker.getPosition().lng(),markerf.getPosit
     });
 
        google.maps.event.addListener(marker,"dragend", function(event) {
-  	calcRoute(marker.getPosition().lat(),marker.getPosition().lng(),markerf.getPosition().lat(),markerf.getPosition().lng());
-  	document.cookie='fromto='+marker.getPosition().lat()+'-'+marker.getPosition().lng()+'-'+markerf.getPosition().lat()+'-'+markerf.getPosition().lng();
-  });
-         google.maps.event.addListener(markerf,"dragend", function(event) {
-  	calcRoute(marker.getPosition().lat(),marker.getPosition().lng(),markerf.getPosition().lat(),markerf.getPosition().lng());
-  	document.cookie='fromto='+marker.getPosition().lat()+'-'+marker.getPosition().lng()+'-'+markerf.getPosition().lat()+'-'+markerf.getPosition().lng();
-  });
+         start=marker.getPosition();
+         finish=markerf.getPosition();
+  	     calcRoute(start.lat(),start.lng(),finish.lat(),finish.lng());
+  	     document.cookie='fromto='+[start.lat(), start.lng(), finish.lat(), finish.lng()].join(',');
+       });
+
+       google.maps.event.addListener(markerf,"dragend", function(event) {
+         start=marker.getPosition();
+         finish=markerf.getPosition();
+        calcRoute(start.lat(),start.lng(),finish.lat(),finish.lng());
+        document.cookie='fromto='+[start.lat(), start.lng(), finish.lat(), finish.lng()].join(',');
+       });
+
+    $( document ).ready(calcRoute(glat,glng,glatf,glngf));
+
+
+    function calcRoute(glat,glng,glatf,glngf) {
+
+        var waypts = [
+          @foreach ($pois as $poi)
+            {location : new google.maps.LatLng({{$poi->lat}}, {{$poi->lng}}), stopover : true},
+          @endforeach
+        ]
+        if (glat &&  glng)  var start = new google.maps.LatLng(glat, glng);
+        if (glatf &&  glngf) var end = new google.maps.LatLng(glatf, glngf);
+
+        var request = {
+            origin:start,
+            destination:end,
+            waypoints: waypts, optimizeWaypoints: true,
+            travelMode: google.maps.DirectionsTravelMode.DRIVING
+        };
+
+        directionsService.route(request, function(response, status) {
+
+          if (status == google.maps.DirectionsStatus.OK) {
+    								directionsDisplay.setDirections(response);
+    								computeTotalDistance(directionsDisplay.directions);
+    								var myRoute = response.routes[0].legs[0];
+    								var route= response.routes[0];
+    								var points_search='';
+    								var prevlng=0;
+    								var prevlat=0;
+    								var cont_steps=0;
+    								var prevpoint=start;
+    								var prevpoint2=start;
+    								var nakopl_dist=0;
+                    var odtalenie=50;
+    								all_points=[];
+    								route.legs.forEach(function(leg){
+    								    leg.steps.forEach(function(step){
+    								        step.path.forEach(function(point){
+          								    latlng=point.toString();
+          								    latlng=latlng.replace(')','');
+          								    latlng=latlng.replace('(','');
+          								    latlng_arr=  latlng.split(',');
+          								    lat1=parseFloat(latlng_arr[0]);
+          								    lng1=parseFloat(latlng_arr[1]);
+
+          								    if (google.maps.geometry.spherical.computeDistanceBetween (prevpoint2, point)>odtalenie*100) {
+          								    	 all_points.push(point);
+          								    	 prevpoint2=point;
+          								    }
+          								    if (google.maps.geometry.spherical.computeDistanceBetween (prevpoint, point)>odtalenie*750) {
+          									        points_search=points_search+lat1.toFixed(4)+','+lng1.toFixed(4)+'!';
+          									        cont_steps=cont_steps+1;
+          								          prevpoint=point;
+          								    }
+                            });
+                        });
+                      });
+
+        clearOverlays();
+      $.getJSON('{{route('route_points')}}'+'?coords='+points_search+'&otdalenie='+odtalenie, function(json) {
+      /*$('#shown_on_map').empty();*/
+      $.each(json, function (key, data) {
+        var latLng = new google.maps.LatLng(data.lat, data.lng);
+        var marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+            icon: '/i/markers/'+data.icon,
+            title: data.name
+        });
+        markersArray.push(marker);
+
+        var details = "<p>"+data.name+"<br><a target='_blank' href='/place/"+data.url+"'>подробнее</a>";
+        bindInfoWindow(marker, map, infowindow, details);
+
+            data.tags.forEach(function(item, i, arr) {
+              $('[data-tag_id="'+item.id+'"]').show();
+            });
+
+
+      });
+
+
+
+    });
 
 
 
 
-    $( document ).ready(function() {
+          } else alert('Не получается построить маршрут. Возможно, что одна из точек находится там, куда нельзя проехать');
+        });
+      }
 
-      calcRoute();
-  });
 
 }
 
@@ -240,11 +222,15 @@ calcRoute(marker.getPosition().lat(),marker.getPosition().lng(),markerf.getPosit
 @section('title')Поиск достопримечательностей вдоль маршрута @endsection
 @section('content')
 <div class="container">
-    <div class="col-12">
-        <h1>Избранное</h1>
-
+  <h1>Избранное</h1>
+  <div class="row">
+    <div class="col-8">
         <div id="izbrannoe_map_guide" class="map"></div>
-
+    </div>
+    <div class="col-4">
+      <p id="total">
+    </div>
+  </div>
     @if (isset($sorts))
       @include('blocks.sort')
     @endif

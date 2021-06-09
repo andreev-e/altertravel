@@ -102,7 +102,8 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
     <li>@if (isset($poi->category)) <a href="{{ route ('category',[$poi->category->url,$location->url]) }}">{{$poi->category->name}}</a> @endif</li>
   </ul>
   @endif
-  <h1>{!!$poi->name!!}
+  <h1><i class="fa fa-star-o izbr" id="izbr{{ $poi->id }}" data-pois_id="{{ $poi->id }}" aria-hidden="true"></i>
+    {!!$poi->name!!}
     @if ($poi->user_id==Auth::user()->id or Auth::user()->email=='andreev-e@mail.ru')
     <a href="{{ route('single-poi-edit', $poi->id) }}" title="Отредактировать">
     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

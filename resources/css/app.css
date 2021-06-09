@@ -32,6 +32,11 @@ ul.breadcrumbs {
 .starred {
   color:gold;
 }
+
+.izbr {
+  cursor:pointer;
+}
+
 .navbar-brand img {
   margin-right: 3px;
 }

@@ -1,5 +1,4 @@
 @push('scripts')
-<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
 <script type="text/javascript">
 
 var icon = "/i/map_marker.png";
@@ -26,8 +25,6 @@ function clearOverlays() {
 }
 
 function loadPointsfomJSON() {
-
-
 
   var i=0;
   clearOverlays();

@@ -53,9 +53,12 @@ class PoisController extends Controller
     $sort=$this->sorting_array($request);
     $sorts=$sort[0];
 
+    $beginend=[55.75370903771494,37.61981338262558,55.75370903771494,37.61981338262558];
+    if (isset($_COOKIE['fromto'])) $beginend=explode(",",$_COOKIE['fromto']);
+
     $wherein=$this->get_izbr_array();
     $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($sort[1],$sort[2])->Paginate(env('OBJECTS_ON_PAGE',15));
-    return view('izbrannoye',compact('pois','sorts', 'request'));
+    return view('izbrannoye',compact('pois','sorts', 'request', 'beginend'));
 
   }
 
@@ -229,6 +232,46 @@ class PoisController extends Controller
 
         return view('user', compact('pois','user','sorts','request'));
     }
+
+    public function route_points(Request $request) {
+      if ($request->get('coords')!==NULL and $request->get('otdalenie')!==NULL)
+          $steps=explode("!",$request->get('coords'));
+          $radius=(float)$request->get('otdalenie')/200;
+
+          $pois=Pois::orderby('views','DESC');
+          foreach ($steps as $step) {
+            $step=explode(",",$step);
+            if (count($step)==2)
+            $pois->orwhere([
+              ['lat',"<",(float)$step[0]+$radius],
+              ['lat',">",(float)$step[0]-$radius],
+              ['lng',"<",(float)$step[1]+$radius],
+              ['lng',">",(float)$step[1]-$radius]
+            ]);
+          }
+
+          $pois->where(function ($query) {
+              $query->Where('status', '=', 1);
+          });
+
+          $pois=$pois->limit(100)->get();
+
+         $responce=[];
+         foreach ($pois as $poi) {
+           $marker='marker_1_.png';
+           $marker='marker_'.$poi->category_id.'_.png';
+           $point['lat']=$poi->lat;
+           $point['lng']=$poi->lng;
+           $point['name']=$poi->name;
+           $point['tags']=$poi->tags;
+           $point['url']=$poi->url;
+           $point['icon']=$marker;
+           $point['photo']=$poi->photo;
+           $responce[]=$point;
+         }
+         return json_encode($responce);
+    }
+
     public function poi_json(Request $request) {
         if ($request->get('mne')!==NULL and $request->get('msw')!==NULL) {
         list($nelat,$nelng) = explode(',',$request->get('mne'));

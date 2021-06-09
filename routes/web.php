@@ -59,6 +59,8 @@ Route::post('/me/edit', 'App\Http\Controllers\UsersController@user_edit');
 
 
 Route::get('/json/poi.json', 'App\Http\Controllers\PoisController@poi_json')->name('poi_json');
+Route::get('/json/route_points.json', 'App\Http\Controllers\PoisController@route_points')->name('route_points');
+
 
 Route::get('/users', 'App\Http\Controllers\UsersController@list')->name('users');
 
