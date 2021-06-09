@@ -53,7 +53,7 @@ class PoisController extends Controller
     $sort=$this->sorting_array($request);
     $sorts=$sort[0];
 
-    $beginend=[55.75370903771494,37.61981338262558,55.75370903771494,37.61981338262558];
+    $beginend=[55.75370903771494,37.61981338262558,55.75,37.61];
     if (isset($_COOKIE['fromto'])) if (isset($_COOKIE['fromto'])) $beginend_from_cookie=explode(",",$_COOKIE['fromto']);
     if (count($beginend_from_cookie)==4) $beginend=$beginend_from_cookie;
 
@@ -255,7 +255,7 @@ class PoisController extends Controller
               $query->Where('status', '=', 1);
           });
 
-          $pois=$pois->limit(100)->get();
+          $pois=$pois->limit(1000)->get();
 
          $responce=[];
          foreach ($pois as $poi) {

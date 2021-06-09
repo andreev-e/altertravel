@@ -112,13 +112,7 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
   <p class="small">Автор публикации <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a>
      @isset($poi->copyright) / Автор фото {{$poi->copyright}}@endisset
    / {{$poi->views}} просмотров</p>
-<nav>
-<ul class="fastnav">
-  <li>Как добраться
-  <li>Кто уже побывал?
-  <li>Отзывы и комментарии
-</ul>
-</nav>
+
 <img src="{{$poi->main_image()}}" alt="{{$poi->name}}"/>
 @foreach ($poi->gallery() as $photo)
 <img src="{{ $photo }}" alt="{{$poi->name}}"/>
@@ -142,16 +136,40 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 <h2>Ссылки</h2>
 {{$poi->links}}
 <h2>Маршруты</h2>
-  <div class="d-flex flex-wrap align-items-stretch">
+  <div class="row">
 @foreach ($poi->routes as $route)
 @include('blocks.route_card')
 @endforeach
   </div>
 <h2>Комментарии</h2>
-<div class="d-flex flex-wrap align-items-stretch">
+<div class="row">
   @foreach ($comments as $comment)
 @include('blocks.comment_card')
 @endforeach
+  <div class="col-12">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+    @guest
+      @include('blocks.register_or_login')
+    @else
+    <form method="post" action="{{route('pois_comments_add')}}">
+      @csrf
+      <div class="form-group mb-3">
+        <label for="description">Комментарий</label>
+        <textarea  class="form-control @error('comment') is-invalid @enderror" name="comment">{{ old('comment') }}</textarea>
+      </div>
+      <input type="hidden" name="pois_id" value="{{$poi->id}}">
+      <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+    @endguest
+  </div>
 </div>
 <h2>Метки</h2>
 @foreach ($poi->tags as $tag) <a href="{{ Route('tag',[$tag->url,'']) }}" class="btn btn-primary btn-sm">{{ $tag->name }}</a> @endforeach

@@ -58,6 +58,10 @@ Route::get('/me/edit', 'App\Http\Controllers\UsersController@user_edit')->name('
 Route::post('/me/edit', 'App\Http\Controllers\UsersController@user_edit');
 
 
+Route::get('/poi_comment/add', 'App\Http\Controllers\PoisCommentsController@add')->name('pois_comments_add');
+Route::post('/poi_comment/add', 'App\Http\Controllers\PoisCommentsController@add');
+
+
 Route::get('/json/poi.json', 'App\Http\Controllers\PoisController@poi_json')->name('poi_json');
 Route::get('/json/route_points.json', 'App\Http\Controllers\PoisController@route_points')->name('route_points');
 
