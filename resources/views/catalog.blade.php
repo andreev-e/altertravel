@@ -73,7 +73,7 @@ function loadPointsfomJSON() {
 
 window.onload = function()
 {
-  @if (isset($current_location)) oldzoom=2
+  @if ($current_location==null) oldzoom=2
   @else oldzoom={{$current_location->scale}}
   @endif
     map = new google.maps.Map(document.getElementById("map"),
@@ -156,6 +156,10 @@ google.maps.event.addListener(map, 'idle', function() {
   </h1>
 <div class="row">
   <div class="col-sm-6">
+    <h2>{{$meta['h1']}} на карте</h2>
+    <div class="map" id="map"></div>
+  </div>
+  <div class="col-sm-6">
   @if (isset($subregions))
     @if ($subregions->count()>0)
       <h2>
@@ -232,10 +236,7 @@ google.maps.event.addListener(map, 'idle', function() {
 </div>
 </div>
 
-<div class="col-sm-6">
-  <h2>{{$meta['h1']}} на карте</h2>
-  <div class="map" id="map"></div>
-</div>
+
 </div>
 </div>
 <div class="container">
