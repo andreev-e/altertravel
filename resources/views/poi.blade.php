@@ -168,11 +168,14 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
         <textarea  class="form-control @error('comment') is-invalid @enderror" name="comment">{{ old('comment') }}</textarea>
       </div>
       <input type="hidden" name="pois_id" value="{{$poi->id}}">
-      <button type="submit" class="btn btn-primary">Отправить</button>
+      <button type="submit" class="btn btn-primary  mb-3">Отправить</button>
     </form>
     @endguest
+    {{ $comments->appends(Request::query())->onEachSide(1)->links()}}
   </div>
+
 </div>
+
 <h2>Метки</h2>
 @foreach ($poi->tags as $tag) <a href="{{ Route('tag',[$tag->url,'']) }}" class="btn btn-primary btn-sm">{{ $tag->name }}</a> @endforeach
     <div class="row justify-content-center">
