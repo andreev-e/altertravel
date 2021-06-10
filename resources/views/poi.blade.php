@@ -85,12 +85,8 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 
 }
 
-<<<<<<< HEAD
 $(document).ready(function(){
   $('.owl-carousel').owlCarousel({
-=======
-$('.owl-carousel').owlCarousel({
->>>>>>> 12b00b61b93cc486da02936927f0ffc6f05c1964
     loop:true,
     margin:10,
     nav:true,
@@ -106,10 +102,7 @@ $('.owl-carousel').owlCarousel({
         }
     }
 })
-<<<<<<< HEAD
 });
-=======
->>>>>>> 12b00b61b93cc486da02936927f0ffc6f05c1964
 
     </script>
 @endpush
