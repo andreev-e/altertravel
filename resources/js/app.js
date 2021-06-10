@@ -1,5 +1,9 @@
-require('./bootstrap');
-require('./jquery');
+require('bootstrap');
+
+
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
 
 $(document).ready(function() {
   $(".izbr").click(function(e){
@@ -12,7 +16,7 @@ $(document).ready(function() {
   });
 
   var izbr=readCookie('izbr');
-  izbr_arr= izbr.split('\|');
+  var izbr_arr= izbr.split('\|');
   for (var i = 0; i < izbr_arr.length; i++) {
     $('#izbr'+izbr_arr[i]).toggleClass('fa-star-o');
     $('#izbr'+izbr_arr[i]).toggleClass('starred');

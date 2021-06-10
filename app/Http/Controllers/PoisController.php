@@ -138,6 +138,7 @@ class PoisController extends Controller
         else {
           //get - showing form
           $poi=Pois::find($id);
+          if ($poi->category_id==null) $poi->category_id=1;
           $checked_tags=array();
           foreach ($poi->tags as $tag) $checked_tags[]=$tag->id;
           return view('poi_edit', compact('poi','checked_tags'));
