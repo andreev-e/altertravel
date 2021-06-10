@@ -85,9 +85,22 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 
 }
 
-$(document).ready(function(){
-  $(".owl-carousel").owlCarousel();
-});
+$('.owl-carousel').owlCarousel({
+    loop:true,
+    margin:10,
+    nav:true,
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:1
+        },
+        1000:{
+            items:1
+        }
+    }
+})
 
     </script>
 @endpush
@@ -119,9 +132,6 @@ $(document).ready(function(){
      @isset($poi->copyright) / Автор фото {{$poi->copyright}}@endisset
    / {{$poi->views}} просмотров</p>
   <div class="owl-carousel">
-    @foreach ($poi->gallery() as $photo)
-    <img src="{{ $photo }}" alt="{{$poi->name}}"/>
-    @endforeach
     @foreach ($poi->gallery() as $photo)
     <img src="{{ $photo }}" alt="{{$poi->name}}"/>
     @endforeach
