@@ -12,7 +12,6 @@
     <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
      @stack('scripts')
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/owl.carousel.min.css') }}" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">

@@ -122,6 +122,9 @@ $(document).ready(function(){
     @foreach ($poi->gallery() as $photo)
     <img src="{{ $photo }}" alt="{{$poi->name}}"/>
     @endforeach
+    @foreach ($poi->gallery() as $photo)
+    <img src="{{ $photo }}" alt="{{$poi->name}}"/>
+    @endforeach
   </div>
 <h2>Карта</h2>
 <div class="map" id="map"></div>
