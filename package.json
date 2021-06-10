@@ -12,6 +12,8 @@
     "devDependencies": {
         "axios": "^0.21",
         "bootstrap": "^5.0.0",
+        "browser-sync": "^2.26.14",
+        "browser-sync-webpack-plugin": "^2.3.0",
         "font-awesome": "4.7",
         "jquery": "^3.6.0",
         "laravel-mix": "^6.0.6",

@@ -3,21 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     <meta name="description" content="@yield('description')">
-    <!-- Scripts -->
     <script src="//maps.google.com/maps/api/js?key=AIzaSyDVxoYcrB_2arTNlYpFClzzKy9KgFW3_Y8"></script>
     <script src="//unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <script  async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
      @stack('scripts')
-    <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
   <div class="container">
     <a class="navbar-brand" href="{{ url('/') }}">
         <img src="{{ route('/') }}/i/l.png" alt="Альтернативный путеводитель">

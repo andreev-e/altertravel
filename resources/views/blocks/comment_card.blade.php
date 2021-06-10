@@ -1,4 +1,4 @@
-<div class="comment pb-3" @if (isset($pois)) style="cursor:pointer;" onclick="location.href='{{ route('single-poi',$comment->poi->url) }}'" @endif>
+<div class="comment p-3" @if (isset($pois)) style="cursor:pointer;" onclick="location.href='{{ route('single-poi',$comment->poi->url) }}'" @endif>
   <div class="card flex-row" id="comment{{$comment->id}}">
     <div class="card-body text-start">
     <p class="h4 card-title ">

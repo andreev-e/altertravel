@@ -85,6 +85,10 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 
 }
 
+$(document).ready(function(){
+  $(".owl-carousel").owlCarousel();
+});
+
     </script>
 @endpush
 @extends('layouts.app')
@@ -114,11 +118,11 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
   <p class="small">Автор публикации <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a>
      @isset($poi->copyright) / Автор фото {{$poi->copyright}}@endisset
    / {{$poi->views}} просмотров</p>
-
-<img src="{{$poi->main_image()}}" alt="{{$poi->name}}"/>
-@foreach ($poi->gallery() as $photo)
-<img src="{{ $photo }}" alt="{{$poi->name}}"/>
-@endforeach
+  <div class="owl-carousel">
+    @foreach ($poi->gallery() as $photo)
+    <img src="{{ $photo }}" alt="{{$poi->name}}"/>
+    @endforeach
+  </div>
 <h2>Карта</h2>
 <div class="map" id="map"></div>
 <h2>Описание</h2>
