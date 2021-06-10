@@ -45746,9 +45746,12 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************************!*\
   !*** ./resources/css/owl.carousel.min.css ***!
   \********************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-throw new Error("Module build failed (from ./node_modules/mini-css-extract-plugin/dist/loader.js):\nModuleBuildError: Module build failed (from ./node_modules/css-loader/dist/cjs.js):\nError: Can't resolve 'owl.video.play.png' in 'E:\\GIT\\altertravel\\resources\\css'\n    at finishWithoutResolve (E:\\GIT\\altertravel\\node_modules\\enhanced-resolve\\lib\\Resolver.js:293:18)\n    at E:\\GIT\\altertravel\\node_modules\\enhanced-resolve\\lib\\Resolver.js:362:15\n    at E:\\GIT\\altertravel\\node_modules\\enhanced-resolve\\lib\\Resolver.js:410:5\n    at eval (eval at create (E:\\GIT\\altertravel\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:16:1)\n    at E:\\GIT\\altertravel\\node_modules\\enhanced-resolve\\lib\\Resolver.js:410:5\n    at eval (eval at create (E:\\GIT\\altertravel\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:27:1)\n    at E:\\GIT\\altertravel\\node_modules\\enhanced-resolve\\lib\\DescriptionFilePlugin.js:87:43\n    at E:\\GIT\\altertravel\\node_modules\\enhanced-resolve\\lib\\Resolver.js:410:5\n    at eval (eval at create (E:\\GIT\\altertravel\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:15:1)\n    at E:\\GIT\\altertravel\\node_modules\\enhanced-resolve\\lib\\Resolver.js:410:5\n    at processResult (E:\\GIT\\altertravel\\node_modules\\webpack\\lib\\NormalModule.js:676:19)\n    at E:\\GIT\\altertravel\\node_modules\\webpack\\lib\\NormalModule.js:778:5\n    at E:\\GIT\\altertravel\\node_modules\\loader-runner\\lib\\LoaderRunner.js:399:11\n    at E:\\GIT\\altertravel\\node_modules\\loader-runner\\lib\\LoaderRunner.js:251:18\n    at context.callback (E:\\GIT\\altertravel\\node_modules\\loader-runner\\lib\\LoaderRunner.js:124:13)\n    at Object.loader (E:\\GIT\\altertravel\\node_modules\\css-loader\\dist\\index.js:154:5)\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
 
 /***/ }),
 
@@ -46068,7 +46071,8 @@ process.umask = function() { return 0; };
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
 /******/ 			"/js/app": 0,
-/******/ 			"css/app": 0
+/******/ 			"css/app": 0,
+/******/ 			"css/owl.carousel.min": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -46116,11 +46120,11 @@ process.umask = function() { return 0; };
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/app.js")))
-/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/owl.carousel.min.js")))
-/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
-/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/css/app.css")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/css/owl.carousel.min.css")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","css/owl.carousel.min"], () => (__webpack_require__("./resources/js/app.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","css/owl.carousel.min"], () => (__webpack_require__("./resources/js/owl.carousel.min.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","css/owl.carousel.min"], () => (__webpack_require__("./resources/sass/app.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/app","css/owl.carousel.min"], () => (__webpack_require__("./resources/css/app.css")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app","css/owl.carousel.min"], () => (__webpack_require__("./resources/css/owl.carousel.min.css")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
