@@ -417,6 +417,7 @@ public static function make_pois_geocodes($poi)
 
     if ($file!=null) {
         dd($file);
+        
         foreach ($file as $location) {
             if ($location->GeoObject->name==$prev_loc_name) {
                continue;
