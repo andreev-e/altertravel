@@ -143,7 +143,6 @@ class PoisController extends Controller
                     $poi->lng=$request->get('lng');
                     $poi->photos=$image;
                     $poi->save();
-
                     $poi->locations()->detach();
                     $poi->tags()->detach();
                     if (is_array($request->tags)) {
@@ -405,7 +404,9 @@ public static function make_pois_geocodes($poi)
     $file=json_decode($file);
 
     if (is_object($file)) {
-        $file=array_reverse($file->response->GeoObjectCollection->featureMember);
+        if (isset($file->response->GeoObjectCollection->featureMember)) {
+            $file=array_reverse($file->response->GeoObjectCollection->featureMember);
+        }
     } else {
         $file=[];
     }
@@ -528,5 +529,5 @@ public function add(Request $request)
         }
         return redirect()->route('secure');
     }
-    
+
 }

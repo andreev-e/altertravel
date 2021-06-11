@@ -52,12 +52,25 @@ class CatalogTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_secure()
+    public function test_secure_pois()
     {
-        $response = $this->get('/secure');
+        $response = $this->get('/my_pois');
         $response->assertStatus(200);
-        
+
     }
 
+    public function json_common()
+    {
+        $response = $this->get('/json/poi.json');
+        $response->assertStatus(200);
+
+    }
+
+    public function json_route()
+    {
+        $response = $this->get('/json/route_points.json');
+        $response->assertStatus(200);
+
+    }
 
 }

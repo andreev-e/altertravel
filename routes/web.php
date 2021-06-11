@@ -54,8 +54,8 @@ Route::post('/my_routes/add', 'App\Http\Controllers\RoutesController@add');
 Route::post('/route_hide/{url}', 'App\Http\Controllers\RoutesController@hide')->name('route-hide');
 Route::post('/route_show/{url}', 'App\Http\Controllers\RoutesController@show')->name('route-show');
 Route::post('/route_delete/{url}', 'App\Http\Controllers\RoutesController@delete')->name('route-delete');
-Route::get('/route_edit/{id}', 'App\Http\Controllers\RoutesController@single_edit')->name('single-route-edit');
-Route::post('/route_edit/{id}', 'App\Http\Controllers\RoutesController@single_edit')->name('single-route-edit-post');
+Route::get('/route_edit/{id}', 'App\Http\Controllers\RoutesController@edit')->name('single-route-edit');
+Route::post('/route_edit/{id}', 'App\Http\Controllers\RoutesController@edit')->name('single-route-edit-post');
 
 Route::get('/me/edit', 'App\Http\Controllers\UsersController@edit')->name('user_edit');
 Route::post('/me/edit', 'App\Http\Controllers\UsersController@edit');
