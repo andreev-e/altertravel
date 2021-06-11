@@ -24,5 +24,4 @@ mix.js([
 'public/js/')
     .sass('resources/sass/app.scss', 'public/css')
     .css('resources/css/app.css', 'public/css')
-    .css('resources/css/owl.carousel/owl.carousel.css', 'public/css')
     .version();
