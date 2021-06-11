@@ -1,7 +1,7 @@
 <div class="col-sm-3 poi p-3">
   <div class="card">
     <a href="{{ route('single-poi', $poi->url) }}">
-    <img src="{{$poi->thumb()}}" class="card-img-top" alt="{{ $poi->name }}">
+    <img loading="lazy" src="{{$poi->thumb()}}" class="card-img-top" alt="{{ $poi->name }}">
     <div class="card-body">
     <p class="h5 card-title"><i class="fa fa-star-o izbr" id="izbr{{ $poi->id }}" data-pois_id="{{ $poi->id }}" aria-hidden="true"></i> {{ $poi->name }}</p>
     <p class="card-text">{{ $poi->author }}</p>

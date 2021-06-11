@@ -1,7 +1,7 @@
 <div class="col-sm-3 poi p-3">
   <div class="card">
     <a href="{{ route('single-route', $route->url) }}">
-    <img src="{{$route->thumb()}}" class="card-img-top" alt="{{ $route->name }}">
+    <img loading="lazy" src="{{$route->thumb()}}" class="card-img-top" alt="{{ $route->name }}">
     <!--<img src="{{ $route->photo }}" class="card-img-top" alt="{{ $route->name }}">-->
     <div class="card-body">
     <p class="h5 card-title">{{ $route->name }}</p>

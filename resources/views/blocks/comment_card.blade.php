@@ -21,7 +21,7 @@
     <p class="card-text">{{ $comment->comment }}</p>
     </div>
     @if (isset($pois))
-      <img class="comment_card_thumb d-none d-sm-block" src="{{$comment->poi->thumb()}}"  alt="{{ $comment->poi->name }}">
+      <img loading="lazy" class="comment_card_thumb d-none d-sm-block" src="{{$comment->poi->thumb()}}"  alt="{{ $comment->poi->name }}">
     @endif
 
       @guest
