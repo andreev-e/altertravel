@@ -18,7 +18,11 @@ import GoogleMaps from '@googlemaps/js-api-loader';
 */
 
 
-mix.js(['resources/js/app.js','resources/js/owl.carousel.js'], 'public/js/')
+mix.js([
+    'resources/js/app.js',
+],
+'public/js/')
     .sass('resources/sass/app.scss', 'public/css')
     .css('resources/css/app.css', 'public/css')
+    .css('resources/css/owl.carousel/owl.carousel.css', 'public/css')
     .version();

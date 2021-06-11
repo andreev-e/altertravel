@@ -45,6 +45,9 @@ Route::post('/place_delete/{url}', 'App\Http\Controllers\PoisController@delete')
 Route::get('/place_edit/{id}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit');
 Route::post('/place_edit/{id}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit-post');
 
+//Route::resource('users', 'UsersController');
+
+
 Route::get('/my_routes', 'App\Http\Controllers\RoutesController@my_routes_index')->name('my_routes');
 Route::get('/my_routes/add', 'App\Http\Controllers\RoutesController@my_routes_add')->name('my_routes_add');
 Route::post('/my_routes/add', 'App\Http\Controllers\RoutessController@my_routes_add');
@@ -85,6 +88,3 @@ Route::get('view.php', 'App\Http\Controllers\PoisController@old_redirect');
 Route::get('view_route.php', 'App\Http\Controllers\RoutesController@old_redirect');
 Route::get('/catalog/{url}', 'App\Http\Controllers\LocationsController@old_redirect');
 Route::get('/catalog/{url}/{category}', 'App\Http\Controllers\LocationsController@old_redirect');
-
-Route::get('/cookie/set','CookieController@setCookie');
-Route::get('/cookie/get','CookieController@getCookie');

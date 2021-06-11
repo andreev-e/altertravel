@@ -8,3 +8,92 @@
 @import '~bootstrap/scss/bootstrap';
 
 @import "node_modules/font-awesome/scss/font-awesome.scss";
+
+
+.body {
+  color: #244255;
+}
+.fastnav li a {
+    display: inline-block;
+    border-bottom: 2px dotted #234358;
+    text-decoration: none;
+}
+ul.breadcrumbs {
+  padding: 0;
+}
+.breadcrumbs li {
+    display: inline-block;
+}
+.breadcrumbs li:after {
+  content: "/";
+  color:#244255;
+  margin: 0 5px;
+}
+.breadcrumbs li:last-child:after {
+  display: none;
+}
+
+.page-link {
+  padding: 0.25rem 0.55rem;
+}
+#map, #izbrannoe_map_guide {
+  width: 100%;
+  height: 500px;
+}
+
+.starred {
+  color:gold;
+}
+
+.izbr {
+  cursor:pointer;
+}
+
+.navbar-brand img {
+  margin-right: 3px;
+}
+h1 {
+  letter-spacing: -1.9px;
+}
+.avatar {
+  border-radius: 50%;
+}
+
+.gallery {
+  margin: 0 -15px;
+}
+
+.card {
+  border-radius: 0;
+  border: none;
+  -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.1);
+-moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.1);
+box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.1);
+}
+.card-img, .card-img-top {
+border-radius: 0;
+}
+.btn {
+  border-radius: 0;
+}
+
+
+.poi a, .comment a {
+  text-decoration: none;
+  color:inherit;
+}
+.poi .card-title {
+  height: 42px;
+  overflow: hidden;
+}
+
+.comment {
+  width:100%;
+}
+
+
+.comment_card_thumb {
+  height:150px;
+}
+
+.sort {text-align:left;}
