@@ -288,18 +288,18 @@ class PoisController extends Controller
           return view('catalog', compact('pois','subregions','current_location','locations','current_category','categories','current_tag','tags','breadcrumbs','sorts', 'request', 'meta'));
     }
 
-    private function get_parent_location($parent) {
-      static $out = [];
-      $loc=Locations::firstWhere('id', $parent);
-      if ($loc) {
-          $out[]=array('name'=>$loc->name,'url'=>$loc->url);
-          if ($loc->type!='country' and count($out)<10) {
-              $this->get_parent_location($loc->parent);
-          }
-      }
-      return array_reverse($out);
+    private function get_parent_location($parent)
+    {
+        static $out = [];
+        $loc=Locations::firstWhere('id', $parent);
+        if ($loc) {
+            $out[]=array('name'=>$loc->name,'url'=>$loc->url);
+            if ($loc->type!='country' and count($out)<10) {
+                $this->get_parent_location($loc->parent);
+            }
+        }
+        return array_reverse($out);
     }
-
 
     public function user($url, Request $request)
     {
@@ -351,7 +351,8 @@ class PoisController extends Controller
         }
     }
 
-    public function poiJson(Request $request) {
+    public function poiJson(Request $request)
+    {
         if ($request->get('mne')!==NULL and $request->get('msw')!==NULL) {
             [$nelat,$nelng] = explode(',',$request->get('mne'));
             [$swlat,$swlng] = explode(',',$request->get('msw'));
@@ -384,7 +385,7 @@ class PoisController extends Controller
             $responce[]=$point;
         }
         return json_encode($responce);
-      }
+    }
 
 ////////////////actions////////////////////////
 
@@ -408,38 +409,40 @@ public static function make_pois_geocodes($poi)
             $file=array_reverse($file->response->GeoObjectCollection->featureMember);
         }
     } else {
-        $file=[];
+        $file=null;
     }
     $prev_loc=0;
     $exclude_kinds = array('street','house','area','district','vegetation');
     $prev_loc_name="";
 
-    foreach ($file as $location) {
-        if ($location->GeoObject->name==$prev_loc_name) {
-           continue;
-        }
-        $latlng=explode(" ",$location->GeoObject->Point->pos);
+    if ($file) {
+        foreach ($file as $location) {
+            if ($location->GeoObject->name==$prev_loc_name) {
+               continue;
+            }
+            $latlng=explode(" ",$location->GeoObject->Point->pos);
 
-        if (Locations::where('name', '=', $location->GeoObject->name)->count() == 0)  {
-            if (!in_array($location->GeoObject->metaDataProperty->GeocoderMetaData->kind,$exclude_kinds)) {
-               $new_loc=Locations::create([
-                   'name'=>$location->GeoObject->name,
-                   'url'=>Str::slug($location->GeoObject->name, '_'),
-                   'parent'=>$prev_loc,
-                   'type'=>0,
-                   'lat'=>$latlng[1],
-                   'lng'=>$latlng[0],
-                   'type'=>$location->GeoObject->metaDataProperty->GeocoderMetaData->kind,
-                ]);
+            if (Locations::where('name', '=', $location->GeoObject->name)->count() == 0)  {
+                if (!in_array($location->GeoObject->metaDataProperty->GeocoderMetaData->kind,$exclude_kinds)) {
+                   $new_loc=Locations::create([
+                       'name'=>$location->GeoObject->name,
+                       'url'=>Str::slug($location->GeoObject->name, '_'),
+                       'parent'=>$prev_loc,
+                       'type'=>0,
+                       'lat'=>$latlng[1],
+                       'lng'=>$latlng[0],
+                       'type'=>$location->GeoObject->metaDataProperty->GeocoderMetaData->kind,
+                    ]);
+                    $new_loc->pois()->save($poi);
+                    $prev_loc=$new_loc->id;
+                    $prev_loc_name=$new_loc->name;
+                }
+            } else {
+                $new_loc=Locations::where('name', '=', $location->GeoObject->name)->first();
                 $new_loc->pois()->save($poi);
                 $prev_loc=$new_loc->id;
                 $prev_loc_name=$new_loc->name;
             }
-        } else {
-            $new_loc=Locations::where('name', '=', $location->GeoObject->name)->first();
-            $new_loc->pois()->save($poi);
-            $prev_loc=$new_loc->id;
-            $prev_loc_name=$new_loc->name;
         }
     }
 }
