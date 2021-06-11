@@ -415,7 +415,8 @@ public static function make_pois_geocodes($poi)
     $exclude_kinds = array('street','house','area','district','vegetation');
     $prev_loc_name="";
 
-    if ($file) {
+    if ($file!=null) {
+        dd($file);
         foreach ($file as $location) {
             if ($location->GeoObject->name==$prev_loc_name) {
                continue;
