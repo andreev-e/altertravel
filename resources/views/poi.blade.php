@@ -137,7 +137,9 @@ $(document).ready(function(){
    / {{$poi->views}} просмотров</p>
   <div class="owl-carousel">
     @foreach ($poi->gallery() as $photo)
-    <a href="{{$photo}}" data-fancybox="photoes"><img src="{{$photo}}" height="200px" alt="{{$poi->name}} {{ $loop->iteration }}"/></a>
+    <!--<a href="{{$photo}}" data-fancybox="photoes">-->
+    <img src="{{$photo}}" alt="{{$poi->name}} {{ $loop->iteration }}"/>
+    <!--</a>-->
     @endforeach
   </div>
 <h2>Карта</h2>
