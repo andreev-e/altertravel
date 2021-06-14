@@ -121,6 +121,11 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
                 <small class="form-text text-muted">На машине и общественным транспортом</small>
               </div>
               <div class="form-group">
+                <label for="route">Ссылки</label>
+                <textarea  class="form-control @error('links') is-invalid @enderror" name="links" >@if (strlen(old('links'))){{old('links')}}@else{{ $poi->links }}@endif</textarea>
+                <small class="form-text text-muted">На машине и общественным транспортом</small>
+              </div>
+              <div class="form-group">
                 <label for="prim">Примечание</label>
                 <textarea  class="form-control @error('prim') is-invalid @enderror" name="prim" >@if (strlen(old('prim'))){{old('prim')}}@else{{ $poi->prim }}@endif</textarea>
                 <small class="form-text text-muted">Что еще хотите сообщить</small>

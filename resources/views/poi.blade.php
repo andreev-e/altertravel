@@ -87,15 +87,16 @@ google.maps.event.addListener(map, 'idle', function() { if (flag_first_poi_load)
 
 $(document).ready(function(){
   $('.owl-carousel').owlCarousel({
-    loop:true,
+    loop:false,
     margin:10,
     nav:true,
+    items:4,
     responsive:{
         0:{
-            items:2
+            items:1
         },
         600:{
-            items:3
+            items:2
         },
         1000:{
             items:4
@@ -135,7 +136,7 @@ $(document).ready(function(){
    / {{$poi->views}} просмотров</p>
   <div class="owl-carousel">
     @foreach ($poi->gallery() as $photo)
-    <img src="{{ $photo }}" alt="{{$poi->name}}"/>
+    <a href="{{$photo}}" data-fancybox="photoes"><img src="{{$photo}}" width="200px" height="150px" alt="{{$poi->name}} {{ $loop->iteration }}"/></a>
     @endforeach
   </div>
 <h2>Карта</h2>
@@ -155,7 +156,7 @@ $(document).ready(function(){
 {!!$poi->prim!!}
 @endisset
 <h2>Ссылки</h2>
-{{$poi->links}}
+{!!$poi->links!!}
 <h2>Маршруты</h2>
   <div class="row">
 @foreach ($poi->routes as $route)

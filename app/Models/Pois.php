@@ -11,6 +11,27 @@ class Pois extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'url',
+        'user_id',
+        'category_id',
+        'old_id',
+        'status',
+        'description',
+        'route',
+        'route_o',
+        'prim',
+        'video',
+        'photos',
+        'lat',
+        'lng',
+        'views',
+        'dominatecolor',
+        'copyright',
+        'links'
+    ];
+
     public function locations()
     {
        return $this->belongsToMany(Locations::class, 'pois_locations')->orderBy('locations.id', 'asc');
@@ -72,25 +93,6 @@ class Pois extends Model
       return $photos;
     }
 
-    protected $fillable = [
-        'name',
-        'url',
-        'user_id',
-        'category_id',
-        'old_id',
-        'status',
-        'description',
-        'route',
-        'route_o',
-        'prim',
-        'video',
-        'photos',
-        'lat',
-        'lng',
-        'views',
-        'dominatecolor',
-        'copyright',
-        'links'
-    ];
+
 
 }

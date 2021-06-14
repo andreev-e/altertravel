@@ -94,6 +94,7 @@ class PoisController extends Controller
         );
 
         $poi->increment('views');
+        $poi->links=str_replace("\n",'<br>',$this->make_links_clickable($poi->links));
 
         if (Auth::check()) {
             if (Auth::user()->email=='andreev-e@mail.ru') {
@@ -141,6 +142,7 @@ class PoisController extends Controller
                     $poi->video=$request->get('video');
                     $poi->lat=$request->get('lat');
                     $poi->lng=$request->get('lng');
+                    $poi->links=$request->get('links');
                     $poi->photos=$image;
                     $poi->save();
                     $poi->locations()->detach();
