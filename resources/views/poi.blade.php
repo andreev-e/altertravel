@@ -92,7 +92,7 @@ $(document).ready(function(){
     nav:true,
     items:4,
     autoWidth:true,
-    autoHeight: true,
+    autoHeight: false,
     responsive:{
         0:{
             items:1
@@ -138,7 +138,7 @@ $(document).ready(function(){
    / {{$poi->views}} просмотров</p>
   <div class="owl-carousel">
     @foreach ($poi->gallery() as $photo)
-    <a href="{{$photo}}" data-fancybox="photoes" style="height:300px">
+    <a href="{{$photo}}" data-fancybox="photoes" style="height:300px; display:block;">
     <img src="{{$photo}}" alt="{{$poi->name}} #{{ $loop->iteration }}"/>
     </a>
     @endforeach
