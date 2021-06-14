@@ -19,10 +19,14 @@
   <li>Отзывы и комментарии
 </ul>
 </nav>
-<img src="{{$route->main_image()}}" class="card-img-top" alt="{{ $route->name }}">
-@foreach ($route->gallery() as $photo)
-<img src="{{ Storage::url($photo) }}" alt="{{$route->name}}"/>
-@endforeach
+<div class="owl-carousel">
+  @foreach ($route->gallery() as $photo)
+  <a href="{{ Storage::url($photo) }}" data-fancybox="photoes" >
+      <img src="{{ Storage::url($photo) }}" alt="{{$route->name}}" style="height:300px; width:auto;"/>
+  </a>
+  @endforeach
+</div>
+
 <h2>Карта</h2>
 <div class="map" id="map"></div>
 <h2>Описание</h2>
