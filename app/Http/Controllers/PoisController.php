@@ -363,7 +363,20 @@ class PoisController extends Controller
                ['lat', '<=', $nelat],
                ['lng', '<=', $nelng],
                ['lng', '>=', $swlng]
-            ])->with('tags')
+            ]);
+            if (($request->get('tag'))!="") {
+                $poi_ids=\DB::table('pois_tags')->where('tags_id',"=",$request->get('tag'))->get('pois_id');
+                foreach ($poi_ids as $poi_id) {
+                   $wherein_tag[]=$poi_id->pois_id;
+                }
+                $pois=$pois->whereIn('pois.id', $wherein_tag);
+            }
+
+            if (($request->get('cat'))!="") {
+                $pois=$pois->where('category_id', '=', $request->get('cat'));
+            }
+
+            $pois=$pois->with('tags')
             ->orderby(\DB::raw("ABS(`lat`-'".(($nelat+$swlat)/2)."')+ABS(`lng`-'".(($nelng+$swlng)/2)."')"),'ASC')
             ->limit(1000)->get();
 
@@ -415,7 +428,8 @@ public static function make_pois_geocodes($poi)
     $exclude_kinds = array('street','house','area','district','vegetation');
     $prev_loc_name="";
 
-    if ($file->statusCode==200) {
+
+    if (!isset($file->statusCode)) {
         foreach ($file as $location) {
             if ($location->GeoObject->name==$prev_loc_name) {
                continue;

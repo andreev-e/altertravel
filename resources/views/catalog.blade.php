@@ -31,7 +31,15 @@ function loadPointsfomJSON() {
   $("#tags").children().hide();
 
   var bounds = map.getBounds();
-  var url=json_url+'?mne=' + bounds.getNorthEast().toUrlValue() + '&msw=' + bounds.getSouthWest().toUrlValue();
+  var url=json_url+'?mne=' + bounds.getNorthEast().toUrlValue()
+  + '&msw=' + bounds.getSouthWest().toUrlValue()
+  @if (isset($current_category))
+  +'&cat={{$current_category->id}}';
+  @endif
+  @if (isset($current_tag))
+  +'&tag={{$current_tag->id}}';
+  @endif
+
 
   $.getJSON(url, function(json) {
   /*$('#shown_on_map').empty();*/
