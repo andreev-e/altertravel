@@ -14,11 +14,7 @@
   <h1>{!!$route->name!!}</h1>
   <p class="small">Автор маршрута <a href="{{ route('user', $route->user->login )}}">{{$route->user->name}}</a>
    / {{$route->views}} просмотров</p>
-<nav>
-<ul class="fastnav">
-  <li>Отзывы и комментарии
-</ul>
-</nav>
+
 <div class="owl-carousel">
   @foreach ($route->gallery() as $photo)
   <a href="{{ Storage::url($photo) }}" data-fancybox="photoes" >
