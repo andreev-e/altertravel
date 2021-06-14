@@ -1,7 +1,7 @@
 
 
-
 $(document).ready(function() {
+    
   $(".izbr").click(function(e){
       e.preventDefault();
       izbrannoe($(this).data("pois_id"));

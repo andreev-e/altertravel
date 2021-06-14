@@ -37,7 +37,7 @@ $(document).ready(function(){
   <p class="small">Автор маршрута <a href="{{ route('user', $route->user->login )}}">{{$route->user->name}}</a>
    / {{$route->views}} просмотров</p>
 
-<div class="owl-carousel">
+<div class="owl-carousel owl-theme">
   @foreach ($route->gallery() as $photo)
   <a href="{{ Storage::url($photo) }}" data-fancybox="photoes" >
       <img src="{{ Storage::url($photo) }}" alt="{{$route->name}}" style="height:300px; width:auto;"/>

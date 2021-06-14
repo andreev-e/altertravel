@@ -136,7 +136,7 @@ $(document).ready(function(){
   <p class="small">Автор публикации <a href="{{ route('user', $poi->user->login )}}">{{$poi->user->name}}</a>
      @isset($poi->copyright) / Автор фото {{$poi->copyright}}@endisset
    / {{$poi->views}} просмотров</p>
-  <div class="owl-carousel">
+  <div class="owl-carousel owl-theme">
     @foreach ($poi->gallery() as $photo)
     <a href="{{$photo}}" data-fancybox="photoes" >
         <img src="{{$photo}}" alt="{{$poi->name}} #{{ $loop->iteration }}" style="height:300px; width:auto;" />
