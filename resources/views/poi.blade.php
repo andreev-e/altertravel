@@ -138,8 +138,8 @@ $(document).ready(function(){
    / {{$poi->views}} просмотров</p>
   <div class="owl-carousel">
     @foreach ($poi->gallery() as $photo)
-    <a href="{{$photo}}" data-fancybox="photoes" style="height:300px; display:block;">
-    <img src="{{$photo}}" alt="{{$poi->name}} #{{ $loop->iteration }}"/>
+    <a href="{{$photo}}" data-fancybox="photoes" >
+    <img src="{{$photo}}" alt="{{$poi->name}} #{{ $loop->iteration }}" style="height:300px; display:block;" />
     </a>
     @endforeach
   </div>
