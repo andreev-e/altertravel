@@ -138,7 +138,7 @@ $(document).ready(function(){
   <div class="owl-carousel">
     @foreach ($poi->gallery() as $photo)
     <!--<a href="{{$photo}}" data-fancybox="photoes">-->
-    <img src="{{$photo}}" alt="{{$poi->name}} {{ $loop->iteration }}"/>
+    <img src="{{$photo}}" alt="{{$poi->name}} #{{ $loop->iteration }}"/>
     <!--</a>-->
     @endforeach
   </div>
