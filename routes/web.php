@@ -17,14 +17,8 @@ Route::get('/', 'App\Http\Controllers\PoisController@index')->name('/');
 
 
 Route::get('/my_pois', 'App\Http\Controllers\PoisController@my_pois_index')->name('my_pois');
-Route::get('/my_pois/add', 'App\Http\Controllers\PoisController@add')->name('my_pois_add');
-Route::post('/my_pois/add', 'App\Http\Controllers\PoisController@add');
-Route::post('/place_hide/{url}', 'App\Http\Controllers\PoisController@hide')->name('poi-hide');
-Route::post('/place_show/{url}', 'App\Http\Controllers\PoisController@show')->name('poi-show');
-Route::post('/place_delete/{url}', 'App\Http\Controllers\PoisController@delete')->name('poi-delete');
-Route::get('/place_edit/{id}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit');
-Route::post('/place_edit/{id}', 'App\Http\Controllers\PoisController@single_edit')->name('single-poi-edit-post');
-
+Route::post('/pois/{poi}/hide', 'App\Http\Controllers\PoisController@hide')->name('pois.hide');
+Route::post('/pois/{poi}/publish', 'App\Http\Controllers\PoisController@publish')->name('pois.publish');
 Route::resource('pois', 'App\Http\Controllers\PoisController');
 
 
@@ -56,6 +50,9 @@ Route::post('/route_show/{url}', 'App\Http\Controllers\RoutesController@show')->
 Route::post('/route_delete/{url}', 'App\Http\Controllers\RoutesController@delete')->name('route-delete');
 Route::get('/route_edit/{id}', 'App\Http\Controllers\RoutesController@edit')->name('single-route-edit');
 Route::post('/route_edit/{id}', 'App\Http\Controllers\RoutesController@edit')->name('single-route-edit-post');
+
+Route::resource('routes', 'App\Http\Controllers\RoutesController');
+
 
 Route::get('/me/edit', 'App\Http\Controllers\UsersController@edit')->name('user_edit');
 Route::post('/me/edit', 'App\Http\Controllers\UsersController@edit');

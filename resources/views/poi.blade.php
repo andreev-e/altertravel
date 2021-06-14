@@ -128,7 +128,7 @@ $(document).ready(function(){
     {!!$poi->name!!}
     @if (Auth::check())
       @if ($poi->user_id==Auth::user()->id or Auth::user()->email=='andreev-e@mail.ru')
-      <a href="{{ route('single-poi-edit', $poi->id) }}" title="Отредактировать">
+      <a href="{{ route('pois.edit', $poi->id) }}" title="Отредактировать">
       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
       @endif
     @endif

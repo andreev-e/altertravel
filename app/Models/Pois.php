@@ -36,6 +36,12 @@ class Pois extends Model
     {
        return $this->belongsToMany(Locations::class, 'pois_locations')->orderBy('locations.id', 'asc');
     }
+
+    public function photoes()
+    {
+       return $this->belongsToMany(Photoes::class);
+    }
+
     public function tags()
     {
        return $this->belongsToMany(Tags::class);

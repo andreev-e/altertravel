@@ -22,6 +22,11 @@ class Routes extends Model
       return $this->belongsToMany(Pois::class, 'routes_pois');
     }
 
+    public function photoes()
+    {
+       return $this->belongsToMany(Photoes::class);
+    }
+
     public function comments()
     {
       return $this->hasMany(RoutesComments::class, 'routes_id');

@@ -21,65 +21,63 @@ use Auth;
 class PoisController extends Controller
 {
 
-  use \App\Traits\Sortable;
+    use \App\Traits\Sortable;
 
-  public function index()
-  {
-      $pois=Pois::where('status','=',1)->orderby('created_at','DESC')->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
-      $routes=Routes::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
-      $tags=Tags::orderby('name','ASC')->get();
-      $comments=PoisComments::where('status','=',1)->orderby('updated_at','DESC')->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
-      return view('home', compact('pois','tags','routes','comments'));
-  }
-
-  public function redirectFromOldUrl(Request $request)
-  {
-      $poi=Pois::where('old_id','=',$request->id)->first();
-      return redirect()->route('single-poi',$poi->url);
-  }
-
-  protected function get_izbr_array() {
-    $pois_ids=[];
-    if (isset($_COOKIE['izbr'])) {
-      $pois_ids=explode("|",$_COOKIE['izbr']);
+    public function index()
+    {
+        $pois=Pois::where('status','=',1)->orderby('created_at','DESC')->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
+        $routes=Routes::where('status','=',1)->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
+        $tags=Tags::orderby('name','ASC')->get();
+        $comments=PoisComments::where('status','=',1)->orderby('updated_at','DESC')->limit(env('OBJECTS_ON_MAIN_PAGE',6))->get();
+        return view('home', compact('pois','tags','routes','comments'));
     }
-    $pois_ids = array_diff($pois_ids, array(''));
-    return $pois_ids;
-  }
 
+    public function redirectFromOldUrl(Request $request)
+    {
+        $poi=Pois::where('old_id','=',$request->id)->first();
+        return redirect()->route('single-poi',$poi->url);
+    }
 
-  public function izbrannoye(Request $request)   {
-
-    $sort=$this->sorting_array($request);
-    $sorts=$sort[0];
-
-    $beginend=[55.75370903771494,37.61981338262558,55.75,37.61];
-    if (isset($_COOKIE['fromto'])) {
-      if (isset($_COOKIE['fromto'])) {
-        $beginend_from_cookie=explode(",",$_COOKIE['fromto']);
-        if (count($beginend_from_cookie)==4) {
-          $beginend=$beginend_from_cookie;
+    protected function get_izbr_array()
+    {
+        $pois_ids=[];
+        if (isset($_COOKIE['izbr'])) {
+            $pois_ids=explode("|",$_COOKIE['izbr']);
         }
-      }
+        $pois_ids = array_diff($pois_ids, array(''));
+        return $pois_ids;
     }
 
-    $wherein=$this->get_izbr_array();
-    $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($sort[1],$sort[2])->Paginate(env('OBJECTS_ON_PAGE',15));
-    return view('izbrannoye',compact('pois','sorts', 'request', 'beginend'));
 
-  }
+    public function izbrannoye(Request $request)
+    {
+        $sort=$this->sorting_array($request);
+        $sorts=$sort[0];
+        $beginend=[55.75370903771494,37.61981338262558,55.75,37.61];
+        if (isset($_COOKIE['fromto'])) {
+          if (isset($_COOKIE['fromto'])) {
+            $beginend_from_cookie=explode(",",$_COOKIE['fromto']);
+            if (count($beginend_from_cookie)==4) {
+              $beginend=$beginend_from_cookie;
+            }
+          }
+        }
+        $wherein=$this->get_izbr_array();
+        $pois=Pois::where('status','=',1)->whereIn('id', $wherein)->orderby($sort[1],$sort[2])->Paginate(env('OBJECTS_ON_PAGE',15));
+        return view('izbrannoye',compact('pois','sorts', 'request', 'beginend'));
+    }
 
-  public function my_pois_index()
-  {
+    public function my_pois_index()
+    {
         $pois=array();
         if (Auth::check()) {
             $pois=Pois::where('user_id','=',auth()->user()->id)->where('status','<>',99)->with('tags')->orderbyDESC('updated_at')->Paginate(env('OBJECTS_ON_PAGE',15));
         }
         return view('secure', compact('pois'));
-  }
+    }
 
-  public function single_place($url)
-  {
+    public function single_place($url)
+    {
         $poi = Cache::remember(
             'single_poi_'.$url,
             env('CACHE_TIME',60),
@@ -96,6 +94,7 @@ class PoisController extends Controller
         $poi->increment('views');
         $poi->links=str_replace("\n",'<br>',$this->make_links_clickable($poi->links));
 
+
         if (Auth::check()) {
             if (Auth::user()->email=='andreev-e@mail.ru') {
                 $comments=PoisComments::where('status','!=',3);
@@ -110,13 +109,13 @@ class PoisController extends Controller
         } else {
             return view('poi', compact('poi','comments'));
         }
-  }
+    }
 
-  public function single_edit($id, Request $request)
-  {
+
+    public function update($id, Request $request)
+    {
         $poi=Pois::find($id);
         if (auth()->user()->id==$poi->user_id or Auth::user()->email=='andreev-e@mail.ru') {
-            if ($request->isMethod('post')) {
                 $validated = $request->validate([
                     'name'  => 'required|min:5|max:255|unique:pois,name,'.$poi->id,
                     'lat'  => 'required',
@@ -143,7 +142,6 @@ class PoisController extends Controller
                     $poi->lat=$request->get('lat');
                     $poi->lng=$request->get('lng');
                     $poi->links=$request->get('links');
-                    $poi->photos=$image;
                     $poi->save();
                     $poi->locations()->detach();
                     $poi->tags()->detach();
@@ -157,7 +155,16 @@ class PoisController extends Controller
                     Cache::forget('single_poi_'.$poi->url);
                     return redirect()->route('single-poi',$poi->url);
                 }
-            } else {
+        } else {
+            //auth failed
+            return redirect()->route('single-poi', $poi->url);
+        }
+    }
+
+    public function edit($id, Request $request)
+    {
+        $poi=Pois::find($id);
+        if (auth()->user()->id==$poi->user_id or Auth::user()->email=='andreev-e@mail.ru') {
                   //get - showing form
                   $poi=Pois::find($id);
                   if ($poi->category_id==null) {
@@ -169,7 +176,7 @@ class PoisController extends Controller
                       $checked_tags[]=$tag->id;
                   }
                   return view('poi_edit', compact('poi','checked_tags'));
-            }
+
         } else {
             //auth failed
             return redirect()->route('single-poi', $poi->url);
@@ -367,6 +374,7 @@ class PoisController extends Controller
                ['lng', '>=', $swlng]
             ]);
             if (($request->get('tag'))!="") {
+                $wherein_tag=[];
                 $poi_ids=\DB::table('pois_tags')->where('tags_id',"=",$request->get('tag'))->get('pois_id');
                 foreach ($poi_ids as $poi_id) {
                    $wherein_tag[]=$poi_id->pois_id;
@@ -404,113 +412,116 @@ class PoisController extends Controller
 
 ////////////////actions////////////////////////
 
-public static function make_pois_geocodes($poi)
-{
+    public static function make_pois_geocodes($poi)
+    {
 
-    $url="https://geocode-maps.yandex.ru/1.x/?format=json&geocode=$poi->lng,$poi->lat&apikey=7483ad1f-f61c-489b-a4e5-815eb06d5961" ;
-    if ($curl = curl_init()) {
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_AUTOREFERER, true);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_FRESH_CONNECT, FALSE);
-        $file = curl_exec($curl);
-    }
-    $file=json_decode($file);
-
-    if (is_object($file)) {
-        if (isset($file->response->GeoObjectCollection->featureMember)) {
-            $file=array_reverse($file->response->GeoObjectCollection->featureMember);
+        $url="https://geocode-maps.yandex.ru/1.x/?format=json&geocode=$poi->lng,$poi->lat&apikey=7483ad1f-f61c-489b-a4e5-815eb06d5961" ;
+        if ($curl = curl_init()) {
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_AUTOREFERER, true);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+            curl_setopt($curl, CURLOPT_HEADER, false);
+            curl_setopt($curl, CURLOPT_FRESH_CONNECT, FALSE);
+            $file = curl_exec($curl);
         }
-    } else {
-        $file=null;
-    }
-    $prev_loc=0;
-    $exclude_kinds = array('street','house','area','district','vegetation');
-    $prev_loc_name="";
+        $file=json_decode($file);
 
-
-    if (!isset($file->statusCode)) {
-        foreach ($file as $location) {
-            if ($location->GeoObject->name==$prev_loc_name) {
-               continue;
+        if (is_object($file)) {
+            if (isset($file->response->GeoObjectCollection->featureMember)) {
+                $file=array_reverse($file->response->GeoObjectCollection->featureMember);
             }
-            $latlng=explode(" ",$location->GeoObject->Point->pos);
+        } else {
+            $file=null;
+        }
+        $prev_loc=0;
+        $exclude_kinds = array('street','house','area','district','vegetation');
+        $prev_loc_name="";
 
-            if (Locations::where('name', '=', $location->GeoObject->name)->count() == 0)  {
-                if (!in_array($location->GeoObject->metaDataProperty->GeocoderMetaData->kind,$exclude_kinds)) {
-                   $new_loc=Locations::create([
-                       'name'=>$location->GeoObject->name,
-                       'url'=>Str::slug($location->GeoObject->name, '_'),
-                       'parent'=>$prev_loc,
-                       'type'=>0,
-                       'lat'=>$latlng[1],
-                       'lng'=>$latlng[0],
-                       'type'=>$location->GeoObject->metaDataProperty->GeocoderMetaData->kind,
-                    ]);
+
+        if (!isset($file->statusCode)) {
+            foreach ($file as $location) {
+                if ($location->GeoObject->name==$prev_loc_name) {
+                   continue;
+                }
+                $latlng=explode(" ",$location->GeoObject->Point->pos);
+
+                if (Locations::where('name', '=', $location->GeoObject->name)->count() == 0)  {
+                    if (!in_array($location->GeoObject->metaDataProperty->GeocoderMetaData->kind,$exclude_kinds)) {
+                       $new_loc=Locations::create([
+                           'name'=>$location->GeoObject->name,
+                           'url'=>Str::slug($location->GeoObject->name, '_'),
+                           'parent'=>$prev_loc,
+                           'type'=>0,
+                           'lat'=>$latlng[1],
+                           'lng'=>$latlng[0],
+                           'type'=>$location->GeoObject->metaDataProperty->GeocoderMetaData->kind,
+                        ]);
+                        $new_loc->pois()->save($poi);
+                        $prev_loc=$new_loc->id;
+                        $prev_loc_name=$new_loc->name;
+                    }
+                } else {
+                    $new_loc=Locations::where('name', '=', $location->GeoObject->name)->first();
                     $new_loc->pois()->save($poi);
                     $prev_loc=$new_loc->id;
                     $prev_loc_name=$new_loc->name;
                 }
-            } else {
-                $new_loc=Locations::where('name', '=', $location->GeoObject->name)->first();
-                $new_loc->pois()->save($poi);
-                $prev_loc=$new_loc->id;
-                $prev_loc_name=$new_loc->name;
             }
         }
     }
-}
 
-public function add(Request $request)
-{
-    if ($request->isMethod('post')) {
-        $validated = $request->validate([
-            'name'  => 'required|min:5|max:255|unique:pois',
-            'lat'  => 'required',
-            'lng'  => 'required',
-            'description'  => '',
-            'category'  => 'required',
-        ]);
+    public function create(Request $request)
+    {
+            return view('poi_add');
+    }
 
-        $images = $request->file('photos');
-        if ($request->hasFile('photos')) {
-            foreach ($images as $file) {
-                $arr[] =$file->store('public');
-            }
-            $image = implode(",", $arr);
-        } else {
-            $image = '';
-        }
-
-        if ($validated and Auth::check()) {
-            $new_poi=Pois::create([
-                'name' => $request->get('name'),
-                'url'=> Str::slug($request->get('name'), '_'),
-                'user_id'=>auth()->user()->id,
-                'status'=>1,
-                'description'=>$request->get('description'),
-                'category'=>$request->get('category'),
-                'prim'=>$request->get('prim'),
-                'route'=>$request->get('route'),
-                'route_o'=>$request->get('route_o'),
-                'video'=>$request->get('video'),
-                'lat'=>$request->get('lat'),
-                'lng'=>$request->get('lng'),
-                'photos'=>$image,
+    public function store(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $validated = $request->validate([
+                'name'  => 'required|min:5|max:255|unique:pois',
+                'lat'  => 'required',
+                'lng'  => 'required',
+                'description'  => '',
+                'category'  => 'required',
             ]);
 
-            if (is_array($request->tags)) foreach ($request->tags as $tag) {
-                $tag=Tags::find($tag);
-                $new_poi->tags()->save($tag);
+            $images = $request->file('photos');
+            if ($request->hasFile('photos')) {
+                foreach ($images as $file) {
+                    $arr[] =$file->store('public');
+                }
+                $image = implode(",", $arr);
+            } else {
+                $image = '';
             }
+
+            if ($validated and Auth::check()) {
+                $new_poi=Pois::create([
+                    'name' => $request->get('name'),
+                    'url'=> Str::slug($request->get('name'), '_'),
+                    'user_id'=>auth()->user()->id,
+                    'status'=>1,
+                    'description'=>$request->get('description'),
+                    'category'=>$request->get('category'),
+                    'prim'=>$request->get('prim'),
+                    'links'=>$request->get('links'),
+                    'route'=>$request->get('route'),
+                    'route_o'=>$request->get('route_o'),
+                    'video'=>$request->get('video'),
+                    'lat'=>$request->get('lat'),
+                    'lng'=>$request->get('lng'),
+                ]);
+
+                if (is_array($request->tags)) foreach ($request->tags as $tag) {
+                    $tag=Tags::find($tag);
+                    $new_poi->tags()->save($tag);
+                }
+            }
+            return redirect()->route('my_pois');
         }
-        return redirect()->route('my_pois');
-    } else {
-        return view('poi_add');
     }
-}
 
 
     public function hide($id)
@@ -522,10 +533,10 @@ public function add(Request $request)
                 $poi->save();
             }
         }
-        return redirect()->route('secure');
+        return redirect()->back();
     }
 
-    public function show($id)
+    public function publish($id)
     {
         if (auth()->user()!==null) {
             $poi = Pois::find($id);
@@ -534,10 +545,10 @@ public function add(Request $request)
                 $poi->save();
             }
         }
-        return redirect()->route('secure');
+        return redirect()->back();
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         if (auth()->user()!==null) {
             $poi = Pois::find($id);
@@ -546,7 +557,7 @@ public function add(Request $request)
                 $poi->save();
             }
         }
-        return redirect()->route('secure');
+        return redirect()->back();
     }
 
 }

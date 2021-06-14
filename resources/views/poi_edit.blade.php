@@ -68,8 +68,10 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
   @endif
     <div class="row justify-content-center">
         <div class="col-12">
-          <form method="POST" action="{{route('single-poi-edit-post', $poi->id)}}" enctype="multipart/form-data">
+          <form method="POST" action="{{route('pois.update', $poi->id)}}" enctype="multipart/form-data">
+
               @csrf
+              @method('PUT')
               <div class="form-group">
                 <label for="name">Название объекта</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="@if (strlen(old('name'))){{old('name')}}@else{{ $poi->name }}@endif">

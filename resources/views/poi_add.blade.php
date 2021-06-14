@@ -69,7 +69,7 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
             </div>
             @endif
 
-            <form method="POST" action="{{route('my_pois_add')}}" enctype="multipart/form-data">
+            <form method="POST" action="{{route('pois.store')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                   <label for="name">Название объекта</label>
@@ -125,6 +125,10 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
                   <label for="prim">Примечание</label>
                   <textarea  class="form-control @error('prim') is-invalid @enderror" name="prim" >{{ old('prim') }}</textarea>
                   <small class="form-text text-muted">Что еще хотите сообщить</small>
+                </div>
+                <div class="form-group">
+                  <label for="links">Ссылки</label>
+                  <textarea  class="form-control @error('links') is-invalid @enderror" name="links" >{{ old('links') }}</textarea>
                 </div>
                 <div class="form-group">
                   <label for="video">Видео</label>

@@ -30,8 +30,6 @@ class CreatePoisTable extends Migration
             $table->text('route_o')->nullable();
             $table->string('video')->nullable();
             $table->integer('status')->default(1);
-            $table->string('photo')->default('');
-            $table->text('photos')->nullable();
             $table->string('copyright')->nullable();
             $table->text('links')->nullable();;
             $table->unsignedBigInteger('views')->default('0');
