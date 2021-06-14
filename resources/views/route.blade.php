@@ -4,7 +4,7 @@ $(document).ready(function(){
   $('.owl-carousel').owlCarousel({
     loop:false,
     margin:10,
-    nav:true,
+    nav:false,
     items:4,
     autoWidth:true,
     autoHeight: false,
