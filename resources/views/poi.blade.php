@@ -159,18 +159,22 @@ $(document).ready(function(){
 <h2>Примечание</h2>
 {!!$poi->prim!!}
 @endisset
+@if($poi->links!='')
 <h2>Ссылки</h2>
 {!!$poi->links!!}
+@endif
+@if(count($poi->routes)>0)
 <h2>Маршруты</h2>
-  <div class="row">
-@foreach ($poi->routes as $route)
-@include('blocks.route_card')
-@endforeach
-  </div>
+<div class="row">
+    @foreach ($poi->routes as $route)
+        @include('blocks.route_card')
+    @endforeach
+ </div>
+@endif
 <h2>Комментарии</h2>
 <div class="row">
-  @foreach ($comments as $comment)
-@include('blocks.comment_card')
+@foreach ($comments as $comment)
+    @include('blocks.comment_card')
 @endforeach
   <div class="col-12">
     @if ($errors->any())
