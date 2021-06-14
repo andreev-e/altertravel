@@ -91,6 +91,7 @@ $(document).ready(function(){
     margin:10,
     nav:true,
     items:4,
+    autoWidth:true,
     responsive:{
         0:{
             items:1
