@@ -6,16 +6,20 @@
 @section('title')Кабинет автора@endsection
 @section('content')
 <div class="container">
-  <div class="row">
-  <div class="col-sm-9"><h1>Ваши публикации</h1></div>
-  @guest
-  @else
-  <div class="col-sm-3 text-end">
-    <a class="btn btn-primary" href="{{ route('pois.create') }}">Добавить точку</a>
-    <a class="btn btn-secondary" href="{{ route('routes.create') }}">Добавить маршурт</a>
-  </div>
-  @endguest
-</div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Ваши публикации</h1>
+        </div>
+        @guest
+        @else
+            <div class="col-sm-6 text-end">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ route('pois.create') }}">Добавить точку</a>
+                    <a class="btn btn-secondary" href="{{ route('routes.create') }}">Добавить маршурт</a>
+                </div>
+            </div>
+        @endguest
+    </div>
     @guest
     <p>Вы не авторизованы
     @else
