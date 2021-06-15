@@ -472,7 +472,7 @@ class PoisController extends Controller
     public function create(Request $request)
     {
         $files=[];
-        if (isset($request->session()->get('files'))) $files=$request->session()->get('files');
+        if ($request->session()->get('files')!='') $files=$request->session()->get('files');
         return view('poi_add',compact('files'));
     }
 
