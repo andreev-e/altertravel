@@ -22,6 +22,12 @@ Route::post('/pois/{poi}/publish', 'App\Http\Controllers\PoisController@publish'
 Route::resource('pois', 'App\Http\Controllers\PoisController');
 
 
+
+Route::post('/photoes/store', 'App\Http\Controllers\PhotoesController@store')->name('photoes.store');;
+//Route::resource('photoes', 'App\Http\Controllers\PhotoesController');
+
+
+
 Route::get('/izbrannoye', 'App\Http\Controllers\PoisController@izbrannoye')->name('izbrannoye');
 
 Route::get('/locations', 'App\Http\Controllers\PoisController@location')->name('catalog');

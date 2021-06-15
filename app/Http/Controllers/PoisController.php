@@ -14,8 +14,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
-use Image;
-use Storage;
 use Auth;
 
 class PoisController extends Controller
@@ -473,7 +471,8 @@ class PoisController extends Controller
 
     public function create(Request $request)
     {
-            return view('poi_add');
+            $files=$request->session()->get('files');
+            return view('poi_add',compact('files'));
     }
 
     public function store(Request $request)

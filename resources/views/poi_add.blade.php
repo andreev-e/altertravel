@@ -46,6 +46,57 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
 
 
      }
+
+
+     $(document).ready(function (e) {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             }
+        });
+
+        $('#formFile').change(function(){
+
+        for(var i=0; i< this.files.length; i++){
+            var file = this.files[i];
+            let reader = new FileReader();
+
+            reader.onload = (e) => {
+              $('#image_preview_container').append('<img src="'+e.target.result+'" width="200px">');
+            }
+
+            reader.readAsDataURL(this.files[i]);
+
+            console.log(this.files[i]);
+
+            var formData = new FormData();
+            formData.append('image', this.files[i]);
+
+            $.ajax({
+               type:'POST',
+               url: "{{ route('photoes.store') }}",
+               data: formData,
+               cache:false,
+               contentType: false,
+               processData: false,
+               success: (data) => {
+                   $('#response').html(data);
+               },
+               error: function(data){
+                  $('#response').html(data);
+                }
+              });
+
+        }
+
+
+
+
+        });
+
+     });
+
 </script>
 @endpush
 
@@ -92,11 +143,6 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
                   <textarea  class="form-control @error('description') is-invalid @enderror" name="description">{{ old('description') }}</textarea>
                 </div>
                 <div class="form-group">
-                  <label for="formFile" class="form-label">Загрузите фотографии</label>
-                  <input multiple="multiple" class="form-control @error('photos') is-invalid @enderror" name="photos[]" type="file" id="formFile">
-                  <small class="form-text text-muted">Хотя бы одно фото</small>
-                </div>
-                <div class="form-group">
                     <label for="category">Категория</label>
                     <select class="form-select" @error('category') is-invalid @enderror" name="category">
                         @foreach (App\Models\Categories::get() as $category)
@@ -134,6 +180,15 @@ myListener = google.maps.event.addListener(map, 'click', function(event) {
                   <label for="video">Видео</label>
                   <input type="text" class="form-control @error('video') is-invalid @enderror"  name="video" value="{{ old('video') }}">
                   <small class="form-text text-muted">https://www.youtube.com/watch?v=<b>xxxxxxx</b></small>
+                </div>
+                <div class="form-group">
+                  <label for="formFile" class="form-label">Загрузите фотографии</label>
+                  <input multiple="multiple" class="form-control @error('photos') is-invalid @enderror" name="photos[]" type="file" id="formFile">
+                  <small class="form-text text-muted">Хотя бы одно фото</small>
+                  <div id="image_preview_container"></div>
+                  @foreach ($files as $file)
+                    <img src="{{asset($file)}}" alt="foto #{{ $loop->iteration }} {{$file}}">
+                  @endforeach
                 </div>
                 <button type="submit" class="btn btn-primary">Опубликовать</button>
             </form>
